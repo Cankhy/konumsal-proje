@@ -1,0 +1,141 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Kurumsal Kaynak Planlama (ERP){% endblock %}
+
+{% block content %}
+
+<style>
+  /* ---- Tipografi (iri metin) ---- */
+  .erp-typography p,
+  .erp-typography li { font-size:18px; line-height:40px; }
+  .erp-typography p + p { margin-top:6px; }
+  .erp-typography ul { margin-top:6px; }
+  .erp-typography li + li { margin-top:2px; }
+
+  /* Başlık stili: gradient yazı + sol neon şerit */
+  .erp-title{ position:relative; font-weight:800; font-size:28px; line-height:1.15; color:#0f172a; margin:0 0 6px; }
+  .erp-title .flash{
+    background:linear-gradient(90deg,#0ea5e9,#22d3ee,#34d399);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    text-shadow:0 2px 24px rgba(34,211,238,.35);
+  }
+  .erp-title::before{
+    content:""; position:absolute; left:-14px; top:50%; transform:translateY(-50%);
+    width:6px; height:70%; border-radius:9999px;
+    background:linear-gradient(#22d3ee,#14b8a6);
+    box-shadow:0 0 16px rgba(14,165,233,.55);
+  }
+
+  /* Küçük üst etiket (kicker) */
+  .erp-kicker{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    font-weight:700; color:#0ea5e9; background:rgba(56,189,248,.10);
+    padding:4px 10px; border-radius:9999px; margin-bottom:8px;
+    border:1px solid rgba(56,189,248,.25);
+  }
+
+  /* Başlıklardaki eski mavi çizgiyi kapatalım */
+  .erp-underline{ display:none !important; }
+  .erp-typography h1,.erp-typography h2,.erp-typography h3,
+  .erp-typography p,.erp-typography a{ text-decoration:none !important; }
+
+  /* ---- Görsel kartı – daha büyük + vurgu ---- */
+  .erp-img{
+    width:560px;            /* masaüstü için daha büyük */
+    max-width:100%;
+    border-radius:20px;
+    box-shadow:0 20px 60px rgba(2,132,199,.35);
+    outline:2px solid rgba(56,189,248,.22);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  @media (min-width:1024px){ .erp-img{ width:640px; } }  /* geniş ekranlarda daha büyük */
+  .erp-img:hover{
+    transform:scale(1.02);
+    box-shadow:0 28px 80px rgba(2,132,199,.45);
+  }
+
+  /* bölümler arası denge */
+  .erp-section{ margin-top:18px; }
+</style>
+
+{# Üst banner #}
+<section class="relative w-full h-80 md:h-96">
+  <div class="absolute inset-0 bg-cover bg-center"
+       style="background-image:url('{% static "images/erp-hero.jpg" %}');"></div>
+  <div class="absolute inset-0 bg-black/35"></div>
+</section>
+
+<section class="max-w-6xl mx-auto px-4 py-10 erp-typography">
+
+  {# Sayfa başlığı #}
+  <div class="text-center mb-10">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide text-slate-900"
+        style="text-shadow:0 4px 10px rgba(15,23,42,.45);">
+      Kurumsal Kaynak Planlama (ERP)
+    </h1>
+    <p class="mt-1 font-semibold text-teal-700" style="font-size:18px; line-height:28px;">
+      Operasyon, maliyet ve verimliliği tek çatı altında yönetin
+    </p>
+  </div>
+
+  {# Sol metin – sağ büyük görsel #}
+  <div class="grid gap-10 md:grid-cols-2 items-start">
+    <div class="md:pr-6">
+
+      <div class="erp-section">
+        
+        <h2 class="erp-title"><span class="flash">ERP Nedir?</span></h2>
+
+        <p>
+         Kurumsal Kaynak Planlama Sistemleri (ERP), adından da anlaşılacağı üzere bir organizasyonun elinde bulunan kaynakları en etkili şekilde planlaması ve yönetmesi anlamını taşır. Bir organizasyonun elinde bulunan kaynakları etkin kullanımı ise işletmenin verimliliği ile doğrudan ilgilidir. İşletmeler, faaliyetlerini başlatmak ve idame ettirmek amacıyla yaptıkları yatırımları etkin kullandıklarında, hedeflerini gerçekleştirmeleri daha kolay hale gelmektedir. Aksi durumda ise yapılan yatırımlardan beklenen verimi tam anlamıyla alamama ihtimali ortaya çıkmaktadır.
+        </p>
+      </div>
+
+      <div class="erp-section">
+        
+        <h3 class="erp-title"><span class="flash">Neyi Amaçlar?</span></h3>
+
+        <p>
+         Günümüzde yazılım teknolojisinin işletmeler için olmazsa olmaz yatırımlar arasına girmesiyle, Kurumsal Kaynak Planlama sistemleri çok önemli bir yere sahip olmuştur. İşletmelerin bu sistemler ile elinde bulunan kaynaklara hükmetmesi ve bu kaynakları takip etmesi kolaylaşmıştır. Aynı zamanda böyle bir sistemin varlığı işletmedeki süreçleri standart hale getirmekte ve yeni alınan personellerin oryantasyonunda büyük faydalar sağlanmaktadır.
+
+Kurumsal Kaynak Planlama Sistemleri içerisinde barındırdığı özellik ve ürettiği sonuçlarla, hem işletmelerin faaliyetlerini gerçekleştirirken bir başvuru kaynağı olur hem de yöneticilerin ileriye dönük karar almalarında yol gösterir. Düşünün ki bir işletmenin elinde bulunan kaynakların kapasitesi ve veriminin istenilen anda öğlenilebilecek olması, bir yöneticinin işine yarar mı? Eğer cevabınız evet ise ERP sistemleri bu verileri üretebilmek amacıyla oluşturulmuştur.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="flex justify-center">
+      <img src="{% static 'images/erp-section1.jpg' %}" alt="ERP çalışma ekranı" class="erp-img">
+    </div>
+  </div>
+
+  {# Neden İhtiyaç Duyulur? #}
+  <div class="erp-section">
+    
+    <h2 class="erp-title"><span class="flash">Neden İhtiyaç Duyulur?</span></h2>
+
+    <p>
+      Büyük küçük tüm işletmeler, büyüyen ihtiyaçlarını karşılayabilmek, sağlıklı öngörüler ve olasılıkları göz önüne alarak simülasyon yapabilmek ve ortaya çıkan sonuçlara göre doğru karar verebilmek için ERP'ye ihtiyaç duyuyor. Bunun temel nedenlerini aşağıda sıralayabiliriz;
+    </p>
+
+    <ul class="list-disc pl-6">
+      <li>Daha az maliyetle aynı ürünü veya hizmeti nasıl üretebilirim?</li>
+      <li>Daha iyi planlama yaparak üretimi nasıl dengeleyebilirim?</li>
+      <li>Stoklarımı ve maliyetlerimi anlık ve doğru olarak nasıl görebilirim?</li>
+      <li>Mevcut ve doğru stoklarımla daha iyi malzeme ihtiyaç planlaması nasıl yapabilirim?</li>
+      <li>İş süreç ve onaylarımı dijital ortamda nasıl yönetebilirim?</li>
+      <li>Sevkiyatı iyi planlayarak termin tarihlerine nasıl uyabilirim?</li>
+      <li>Tedarik zincirimi daha verimli nasıl yönetebilirim?</li>
+      <li>Nakit akışını nasıl etkin yönetebilirim?</li>
+      <li>Gelir–gider analizleri ile bütçemi nasıl planlar, gerçekleşeni nasıl izleyebilirim?</li>
+      <li>Projelerimi nasıl planlar ve yönetirim?</li>
+      <li>Çalışanlarımın iş birliğini nasıl artırabilirim?</li>
+      <li>“Müşteri Kraldır” anlayışı ile müşteri ilişkilerini; satış öncesi ve sonrası hizmetleri nasıl takip ederim?</li>
+      <li>Belgelerimi raflarda, dosyalarda değil dijital ortamda nasıl saklayabilirim?</li>
+    </ul>
+  </div>
+
+</section>
+
+{% endblock %}

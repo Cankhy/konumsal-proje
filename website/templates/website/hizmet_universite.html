@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hizmetler • Üniversite Yönetim Sistemi (ÜYS)</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --brand:#0ec7c1;
+      --brand-2:#2fd7ff;
+      --ink:#0d2233;
+      --muted:#5b6b7b;
+      --paper:#f7fbfd;
+      --card:#ffffff;
+      --shadow:0 16px 40px rgba(13,34,51,.12);
+      --ring:0 0 0 6px rgba(46,207,235,.12);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    .container{max-width:1200px;margin:0 auto;padding:48px 20px}
+    .page-title{
+      font-weight:800; font-size:44px; line-height:1.15; letter-spacing:.2px;
+      text-align:center; margin:8px auto 4px;
+      text-shadow:0 8px 24px rgba(14,199,193,.12);
+    }
+    .page-sub{ text-align:center; color:var(--muted); font-weight:600; margin:0 auto 36px; font-size:18px; }
+
+    .section-title{ font-size:28px; font-weight:800; margin:0 0 16px; position:relative; }
+    .section-title::after{
+      content:""; position:absolute; left:0; bottom:-10px; height:6px; width:72px; border-radius:999px;
+      background:linear-gradient(90deg,var(--brand),var(--brand-2));
+      box-shadow:0 8px 20px rgba(14,199,193,.35);
+    }
+
+    .chip{
+      display:inline-block; font-size:12px; letter-spacing:.4px;
+      background:linear-gradient(90deg,var(--brand),var(--brand-2));
+      color:#fff; padding:6px 12px; border-radius:999px; font-weight:700;
+      box-shadow:0 10px 24px rgba(14,199,193,.25);
+      margin-bottom:14px;
+    }
+
+    .grid{display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:center}
+    .grid.reverse{grid-template-columns:.95fr 1.05fr}
+    @media (max-width:980px){
+      .grid,.grid.reverse{grid-template-columns:1fr}
+    }
+
+    .card{ background:var(--card); border-radius:24px; box-shadow:var(--shadow); padding:28px 28px 8px; margin:18px 0; }
+
+    .media{ border-radius:24px; overflow:hidden; box-shadow:var(--shadow); background:#000; position:relative; }
+    .media img{ display:block; width:100%; height:auto; transition:transform .55s ease; }
+    .media:hover img{ transform:scale(1.06); }
+    .media:focus-within{ outline:none; box-shadow:var(--ring); }
+    .caption{ position:absolute; right:14px; bottom:14px; color:#fff; font-size:12px; letter-spacing:.3px; opacity:.9; }
+
+    .h6{font-weight:700; color:var(--ink)}
+    p{color:var(--muted); line-height:1.75; margin:0 0 14px}
+    .mt-8{margin-top:8px} .mt-16{margin-top:16px} .mt-24{margin-top:24px}
+  </style>
+</head>
+<body>
+
+  <main class="container">
+    <h1 class="page-title">Konumsal ÜYS</h1>
+    <p class="page-sub">Üniversite Yönetim Sistemi – kurumsal verimliliği artıran modüler mimari</p>
+
+    <!-- BLOK 1: Sol metin / Sağ görsel -->
+    <section class="grid">
+      <div>
+        <span class="chip">TANIM</span>
+        <h2 class="section-title">Üniversite Yönetim Sistemi</h2>
+        <div class="card">
+          <p><span class="h6">Personel Özlük Modülü;</span> Personel detaylarının kurumların isterlerine göre depolanması ve gerektiğinde raporlanmasını sağlar. Değerlendirme işlemlerinin takibini basitleştirir ve süreç şeffaflığını arttırır.</p>
+          <p class="mt-8"><span class="h6">Dönem Sonu İşlemleri;</span> Bordrodan elde edilen veriler ile Banka Ödeme Listeleri, SGK yüklemeleri ve Muhtasar beyannamelere hızlı erişim imkânı sunar.</p>
+          <p class="mt-8"><span class="h6">Performans Modülü;</span> Kurum Stratejik Planı doğrultusunda; Kurum Hedef ve Kriterlerinin belirlenerek personellerin Performans Puanlarının takibi ve Ücret Artış işlemlerinde kullanılmasını sağlar.</p>
+        </div>
+      </div>
+
+      <figure class="media" aria-label="Üniversite Yönetim Ekranı">
+        <!-- images klasörü -->
+        <img src="../images/universite-1.jpg"
+     alt="Üniversite Yönetim Sistemi ekran 1"
+     onerror="this.onerror=null; this.src='images/universite-1.jpg'">
+        <figcaption class="caption">ÜYS – Genel Ekran</figcaption>
+      </figure>
+    </section>
+
+    <!-- BLOK 2: Sol görsel / Sağ metin -->
+    <section class="grid reverse mt-24">
+      <figure class="media" aria-label="Ders/Öğrenci/İK süreç ekranı">
+        <!-- images klasörü -->
+        <img src="../images/universite-2.jpg"
+     alt="Üniversite Yönetim Sistemi ekran 2"
+     onerror="this.onerror=null; this.src='images/universite-2.jpg'">
+        <figcaption class="caption">ÜYS – Süreç ve Modül İşleyişi</figcaption>
+      </figure>
+
+      <div>
+        <span class="chip">MODÜLLER</span>
+        <h2 class="section-title">Öne Çıkan Modüller</h2>
+
+        <div class="card">
+          <p><span class="h6">İşe Alım Modülü;</span> Aday personellerin belirlenmesi, başvuru–mülakat–referans–iş teklifi–evrak akışı süreçlerinin takibini sağlar.</p>
+          <p class="mt-8"><span class="h6">Kadro Yapısı;</span> Norm ve Görev bazında kadro yapısının oluşturularak kurum hiyerarşik kadro ağaç yapısının gösterilmesi, kullanılması ve raporlanmasını sağlar.</p>
+          <p class="mt-8"><span class="h6">Kariyer Modülü;</span> Terfi/rotasyon taleplerinin toplanarak; Görev/Unvan, Atama Kararnamesinin oluşturulması ve Personel Özlük Detay bilgisinin dijitalde yönetilmesini sağlar.</p>
+          <p class="mt-8"><span class="h6">İzin Yönetimi;</span> Personelin izin bilgilerinin ve devirlerinin takibini, raporlanmasını, ilgili bordro döneminde puantaj olarak işlenmesini ve bordro hesaplamalarında kullanımını sağlar.</p>
+          <p class="mt-8"><span class="h6">Ücret Artış İşlemleri;</span> Artışların toplu olarak yapılması ve özlük kartlarında gösterilmesi; yıllara bağlı olarak takibin sağlanması, gerektiğinde raporlanması için araçlar sunar.</p>
+          <p class="mt-8"><span class="h6">Stajyer Modülü;</span> Staja başlayan/bitiren öğrencilerin takibi, Muhtasar Beyannamesiyle SGK başlama/bitiriş işlemlerinin yapılmasını sağlar.</p>
+          <p class="mt-8"><span class="h6">Puantaj Modülü;</span> Kapı Geçiş Sistemleri ile entegre çalışarak personel hareketlerinin takip edilmesini, mesai ve vardiya tanımlarının yapılmasını ve puantajların hesaplanmasını sağlar.</p>
+          <p class="mt-8"><span class="h6">EBYS Servisleri;</span> EBYS süreçlerinin işletilmesi ve takibinin yapılmasını sağlar.</p>
+          <p class="mt-8"><span class="h6">Anlık Mail Servisi;</span> Bekleyen işler için uyarılar, iş başlangıç listeleri, işe alınan personelin kurumsal e-posta/LDAP entegrasyonunun otomatik yapılmasını sağlar.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

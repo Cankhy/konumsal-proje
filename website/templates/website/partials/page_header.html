@@ -1,0 +1,18 @@
+{% load static %}
+
+<section
+    class="relative h-[220px] md:h-[260px] flex items-center justify-center text-center text-white"
+    style="
+        background-image: url('{% static 'images/bg-header-triangles.jpg' %}');
+        background-size: cover;
+        background-position: center;
+    "
+>
+    <div class="absolute inset-0 bg-black/25"></div>
+
+    <div class="relative z-10">
+        <h1 class="text-3xl md:text-4xl font-extrabold drop-shadow-lg">
+            {{ title }}
+        </h1>
+    </div>
+</section>

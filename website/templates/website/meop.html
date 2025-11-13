@@ -1,0 +1,41 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Milli Emlak Otomasyon Sistemi | Konumsal{% endblock %}
+
+{% block content %}
+<section class="relative w-full">
+    <!-- Üst renkli arka plan -->
+    <div class="h-[320px] md:h-[360px] w-full bg-cover bg-center flex items-center justify-center text-center"
+         style="background-image: url('{% static "images/bg-header-triangles.jpg" %}');">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg">
+            Coğrafi Bilgi Sistemleri Genel Müdürlüğü<br>
+            Milli Emlak Otomasyon Sistemi
+        </h1>
+    </div>
+
+    <!-- İçerik -->
+    <div class="max-w-6xl mx-auto px-4 py-10 md:py-16 grid md:grid-cols-3 gap-10">
+
+        <!-- Sol: metin -->
+        <div class="md:col-span-2 space-y-4 text-justify leading-relaxed">
+            <p>
+                Ülkemizin en önemli e-devlet çalışmalarından birisi olan ve devlete ait gayrimenkullerin yönetildiği Milli Emlak Otomasyonu (MEOP) sisteminin son iki yıldır bakım ve idamesini Firmamız yapmaktadır. Bu projede bakımın yanı sıra ihtiyaç duyulan bir çok yeni modül geliştirilip hizmete alınmıştır. Sistemin aksayan tarafları başarıyla giderilmiş ve stabil çalışması sağlanmıştır. Ayrıca lisanslı olan veritabanı ve CBS altyapısı açık kaynak sistemlere, örnek olacak bir çalışmayla dönüştürülmüş olup, Kurum lisans giderlerinden kurtulmuştur.
+            </p>
+            <p>
+                
+            </p>
+            <p>
+                
+            </p>
+        </div>
+
+        <!-- Sağ: görsel -->
+        <div class="flex justify-center items-start">
+            <img src="{% static 'images/meop-logo.png' %}"
+                 alt="Çevre ve Şehircilik Bakanlığı - MEOP"
+                 class="max-h-64 object-contain shadow-lg rounded">
+        </div>
+    </div>
+</section>
+{% endblock %}

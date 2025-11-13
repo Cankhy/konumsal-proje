@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}Konumsal Bilgi Sistemleri{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+  <!-- ÜST İNCE ŞERİT (≈20px) -->
+  <div class="h-5 bg-[#00b7b1] w-full"></div>
+
+  <!-- ANA NAVBAR (≈100px yükseklik) -->
+  <header class="bg-white">
+    <div class="max-w-6xl mx-auto px-4 md:px-6
+                flex items-center justify-between
+                min-h-[100px]">
+      <!-- LOGO -->
+      <a href="{% url 'home' %}" class="flex items-center">
+        <!-- 300x67 piksele yakın durur -->
+        <img src="{% static 'images/konumsal-logo-full.png' %}"
+             alt="Konumsal Bilgi Sistemleri"
+             class="h-[67px] md:h-[72px] w-auto" />
+      </a>
+
+      <!-- MENÜ - yazılar teal, büyük -->
+      <nav class="flex items-center gap-8 md:gap-12
+                  text-[#00b7b1] font-semibold
+                  text-[18px] md:text-[22px] leading-none">
+        <a href="{% url 'home' %}"      class="hover:text-slate-900">Ana Sayfa</a>
+        <a href="{% url 'hakkimizda' %}"  class="hover:text-slate-900">Hakkımızda</a>
+        <a href="{% url 'hizmetler' %}" class="hover:text-slate-900">Hizmetlerimiz</a>
+        <a href="{% url 'projeler' %}"  class="hover:text-slate-900">Projelerimiz</a>
+        <a href="{% url 'iletisim' %}"  class="hover:text-slate-900">İletişim</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- SAYFA İÇERİĞİ -->
+  <main class="min-h-screen">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-black text-slate-100 pt-10 pb-6 mt-10">
+    <div class="max-w-6xl mx-auto px-4 grid gap-8 md:grid-cols-3">
+      <!-- Sol: Logo + metin -->
+      <div class="space-y-4">
+        <!-- LOGOYU BÜYÜTTÜM -->
+        <img src="{% static 'images/konumsal-logo-white.png' %}" 
+     alt="Konumsal Logo" 
+     class="h-12 w-auto">
+
+        <p class="text-sm leading-relaxed text-slate-300 max-w-md">
+          Konumsal BS, yazılım geliştirme alanında faaliyet gösteren ve uzman kadrosuyla
+          Türkiye'nin önde gelen hakkımızda çözümlerini üreten bilgi sistemleri şirketidir.
+        </p>
+      </div>
+
+      <!-- Orta: Bize Ulaşın -->
+      <div class="space-y-3">
+        <h3 class="text-sm font-semibold text-white tracking-wide uppercase">Bize Ulaşın</h3>
+        <div class="space-y-2 text-sm text-slate-300">
+          <p>Cyberpark Tepe Binası No:19-31<br/>Bilkent / ANKARA</p>
+          <p>Tel: (0312) 266 39 39</p>
+          <p>E-posta: <a href="mailto:bilgi@konumsal.com.tr" class="text-[#00b7b1]">bilgi@konumsal.com.tr</a></p>
+        </div>
+      </div>
+
+      <!-- Sağ: Bilgilendirmeler -->
+      <div class="space-y-3">
+        <h3 class="text-sm font-semibold text-white tracking-wide uppercase">Bilgilendirmeler</h3>
+        <ul class="space-y-1 text-sm text-slate-300">
+          <li><a href="#" class="hover:text-[#00b7b1]">Kalite Politikamız</a></li>
+          <li><a href="#" class="hover:text-[#00b7b1]">Gizlilik Sözleşmesi</a></li>
+          <li><a href="#" class="hover:text-[#00b7b1]">Kullanım Koşulları</a></li>
+          <li><a href="#" class="hover:text-[#00b7b1]">Kişisel Veriler ve Çerez Politikası</a></li>
+          <li><a href="#" class="hover:text-[#00b7b1]">KVKK Bilgilendirme Metni</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-800 mt-8 pt-4">
+      <div class="max-w-6xl mx-auto px-4 flex items-center justify-between text-xs text-slate-500">
+        <p>©2025 <span class="text-[#00b7b1] font-semibold">Konumsal Bilgi Sistemleri</span> All Rights Reserved</p>
+        <div class="flex items-center gap-3 text-sm">
+          <span>🌐</span><span>in</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

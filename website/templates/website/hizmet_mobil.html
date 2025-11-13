@@ -1,0 +1,35 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Mobil Uygulamalar | Konumsal{% endblock %}
+
+{% block content %}
+
+{% include 'website/partials/page_header.html' with title='Mobil Uygulamalar' %}
+
+<section class="max-w-6xl mx-auto px-4 py-12 space-y-10">
+
+  <div class="space-y-4 text-slate-700 leading-relaxed">
+    <p>
+      iOS/Android için native ve cross-platform mimarilerle saha ekiplerini güçlendiriyoruz.
+      Çevrimdışı çalışma, senkronizasyon, cihaz sensör entegrasyonları ve güvenli kimlik
+      doğrulama bileşenleriyle operasyonu hızlandırıyoruz.
+    </p>
+    <p>
+      Tasarım sistemleri, analitik ve crash izleme araçlarıyla ürün kalitesini sürekli iyileştirir,
+      yayınlama ve sürüm yönetimini DevOps pratikleriyle kurumsallaştırırız.
+    </p>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-2">
+    <div class="h-64 rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center border border-dashed border-slate-300">
+      <span class="text-slate-400 text-sm text-center px-4">Görsel 1 – Mobil ekran akışları / UI</span>
+    </div>
+    <div class="h-64 rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center border border-dashed border-slate-300">
+      <span class="text-slate-400 text-sm text-center px-4">Görsel 2 – Çevrimdışı senkron / mimari diagram</span>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

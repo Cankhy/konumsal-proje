@@ -1,0 +1,28 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Hava Emisyon Yönetim Portalı (HEY) | Konumsal{% endblock %}
+
+{% block content %}
+<section class="relative w-full">
+    <div class="h-[320px] md:h-[360px] w-full bg-cover bg-center flex items-center justify-center text-center"
+         style="background-image: url('{% static "images/bg-header-triangles.jpg" %}');">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg">
+            Çevre Yönetimi Genel Müdürlüğü<br>
+            Hava Emisyon Yönetim (HEY) Portalı
+        </h1>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 py-10 md:py-16 grid md:grid-cols-3 gap-10">
+        <div class="md:col-span-2 space-y-4 text-justify leading-relaxed">
+            <p>Buraya HEY projesi ile ilgili metni yazabilirsin...</p>
+        </div>
+
+        <div class="flex justify-center items-start">
+            <img src="{% static 'images/projeler/hey.jpg' %}"
+                 alt="HEY Portalı"
+                 class="max-h-64 object-cover shadow-lg rounded">
+        </div>
+    </div>
+</section>
+{% endblock %}

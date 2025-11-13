@@ -1,0 +1,29 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Orman Bilgi Sistemi | Konumsal{% endblock %}
+
+{% block content %}
+<section class="relative w-full">
+    <div class="h-[320px] md:h-[360px] w-full bg-cover bg-center flex items-center justify-center text-center"
+         style="background-image: url('{% static "images/bg-header-triangles.jpg" %}');">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg">
+            Orman Genel Müdürlüğü<br>
+            Orman Bilgi Sistemi
+        </h1>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 py-10 md:py-16 grid md:grid-cols-3 gap-10">
+        <div class="md:col-span-2 space-y-4 text-justify leading-relaxed">
+            <p>Buraya Orman Bilgi Sistemi için uzun açıklamanı yazabilirsin...</p>
+        </div>
+
+        <div class="flex flex-col gap-6">
+            <img src="{% static 'images/projeler/orman-1.jpg' %}" alt="Orman Bilgi Sistemi"
+                 class="w-full rounded shadow-lg object-cover">
+            <img src="{% static 'images/projeler/orman-2.jpg' %}" alt="Orman Bilgi Sistemi"
+                 class="w-full rounded shadow-lg object-cover">
+        </div>
+    </div>
+</section>
+{% endblock %}

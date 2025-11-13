@@ -1,0 +1,85 @@
+{# website/templates/website/iletisim.html #}
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}İletişim | Konumsal Bilgi Sistemleri{% endblock %}
+
+{% block content %}
+
+{# 1) ÜSTTEKİ RENKLİ ÜÇGENLİ ALAN #}
+<section class="relative h-[260px] md:h-[320px] overflow-hidden flex items-center justify-center">
+    <!-- Arka plan görseli: diğer sayfalarda ne kullanıyorsan aynısını koy -->
+    <img src="{% static 'images/bg-header-triangles.jpg' %}"
+         alt="İletişim Arka Plan"
+         class="absolute inset-0 w-full h-full object-cover">
+
+    <!-- Hafif karartma -->
+    <div class="absolute inset-0 bg-black/15"></div>
+
+    <!-- Başlık -->
+    <div class="relative text-center">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-white drop-shadow-lg">
+            İletişim
+        </h1>
+    </div>
+</section>
+
+
+{# 2) ALTTAKİ 4’LÜ İLETİŞİM BLOĞU #}
+<section class="bg-white py-12 md:py-16">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="grid gap-10 md:grid-cols-4 text-center">
+
+            <!-- Telefon -->
+            <div class="space-y-3">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-50">
+                    <span class="text-3xl text-[#005c7a]">📞</span>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900">Telefon</h3>
+                <p class="text-sm text-slate-600">
+                    (0312) 266 39 39
+                </p>
+            </div>
+
+            <!-- Fax -->
+            <div class="space-y-3">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-50">
+                    <span class="text-3xl text-[#005c7a]">📠</span>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900">Fax</h3>
+                <p class="text-sm text-slate-600">
+                    (0312) 266 39 41
+                </p>
+            </div>
+
+            <!-- E-Posta -->
+            <div class="space-y-3">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-50">
+                    <span class="text-3xl text-[#005c7a]">✉️</span>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900">E-Posta</h3>
+                <p class="text-sm text-slate-600">
+                    <a href="mailto:bilgi@konumsal.com.tr"
+                       class="text-[#00b7b1] hover:underline">
+                        bilgi@konumsal.com.tr
+                    </a>
+                </p>
+            </div>
+
+            <!-- Adres -->
+            <div class="space-y-3">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-50">
+                    <span class="text-3xl text-[#005c7a]">📍</span>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900">Adres</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    Cyberpark Tepe Binası Zemin Kat<br>
+                    No:19-31 Bilkent / ANKARA
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

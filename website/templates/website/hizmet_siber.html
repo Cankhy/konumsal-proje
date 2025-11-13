@@ -1,0 +1,142 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Siber Güvenlik Sistemleri{% endblock %}
+
+{% block content %}
+
+<style>
+  /* ERP ile aynı tipografi */
+  .svc-typo p,
+  .svc-typo li { font-size:18px; line-height:40px; }
+  .svc-typo p + p { margin-top:6px; }
+  .svc-typo ul { margin-top:6px; }
+  .svc-typo li + li { margin-top:2px; }
+  .svc-typo a, .svc-typo h1, .svc-typo h2, .svc-typo h3, .svc-typo p {
+    text-decoration: none !important;
+  }
+
+  /* Başlık (gradient + sol neon şerit) */
+  .svc-title{
+    position:relative; font-weight:800; font-size:28px; line-height:1.15;
+    color:#0f172a; margin:0 0 6px;
+  }
+  .svc-title .flash{
+    background:linear-gradient(90deg,#0ea5e9,#22d3ee,#34d399);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    text-shadow:0 2px 24px rgba(34,211,238,.35);
+  }
+  .svc-title::before{
+    content:""; position:absolute; left:-14px; top:50%; transform:translateY(-50%);
+    width:6px; height:70%; border-radius:9999px;
+    background:linear-gradient(#22d3ee,#14b8a6);
+    box-shadow:0 0 16px rgba(14,165,233,.55);
+  }
+
+  /* Kısa etiket */
+  .svc-kicker{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    font-weight:700; color:#0ea5e9; background:rgba(56,189,248,.10);
+    padding:4px 10px; border-radius:9999px; margin-bottom:8px;
+    border:1px solid rgba(56,189,248,.25);
+  }
+
+  /* Alt başlık (madde başlıkları) */
+  .svc-sub{ font-weight:800; font-size:20px; margin:18px 0 6px; color:#0f172a; }
+
+  /* Görsel kartı */
+  .svc-img{
+    width:560px; max-width:100%; border-radius:20px;
+    box-shadow:0 20px 60px rgba(2,132,199,.35);
+    outline:2px solid rgba(56,189,248,.22);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  @media (min-width:1024px){ .svc-img{ width:640px; } }
+  .svc-img:hover{ transform:scale(1.02); box-shadow:0 28px 80px rgba(2,132,199,.45); }
+
+  .svc-section{ margin-top:18px; }
+</style>
+
+{# ÜST BANNER (kendi dosya adını yaz) #}
+<section class="relative w-full h-80 md:h-96">
+  <div class="absolute inset-0 bg-cover bg-center"
+       style="background-image:url('{% static "images/siber/hero.jpg" %}');"></div>
+  <div class="absolute inset-0 bg-black/35"></div>
+</section>
+
+<section class="max-w-6xl mx-auto px-4 py-10 svc-typo">
+
+  {# Sayfa başlığı #}
+  <div class="text-center mb-10">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide text-slate-900"
+        style="text-shadow:0 4px 10px rgba(15,23,42,.45);">
+      Siber Güvenlik Sistemleri
+    </h1>
+    <p class="mt-1 font-semibold text-teal-700" style="font-size:18px; line-height:28px;">
+      Tehditleri erken yakalayın, verilerinizi ve operasyonlarınızı 7/24 koruyun
+    </p>
+  </div>
+
+  {# 1. BLOK — Sol metin, sağ görsel #}
+  <div class="grid gap-10 md:grid-cols-2 items-start">
+    <div class="md:pr-6">
+      <div class="svc-section">
+        
+        <h2 class="svc-title"><span class="flash">Siber Güvenlik Nedir?</span></h2>
+        <p>
+          Siber güvenlik; bilgisayarları, ağları, yazılım uygulamalarını, kritik sistemleri ve verileri olası dijital tehditlerden koruma uygulamasıdır. Kuruluşlar müşteri güvenini sürdürmek ve düzenleyici mevzuat uygunluğunu karşılamak için verileri güvenceye alma sorumluluğu taşır. Hassas verileri yetkisiz erişimden korumak ve bunun yanı sıra iş operasyonlarında istenmeyen ağ etkinliği nedeniyle kesinti oluşmasını önlemek için siber güvenlik önlemleri ve araçları kullanırlar. Kuruluşlar; çalışanlar, süreçler ve teknolojiler arasında dijital savunma sürecini düzene koyarak siber güvenliği uygularlar.
+        </p>
+      </div>
+
+      <div class="svc-section">
+        
+        <h2 class="svc-title"><span class="flash">Siber Güvenlik Neden Önemli?</span></h2>
+        <p>
+          Enerji, ulaşım, perakende ve üretim gibi çeşitli sektörlerde faaliyet gösteren işletmeler, etkili müşteri hizmetleri sunmak ve uygun maliyetli işletme operasyonları yürütmek için dijital sistemler ve yüksek hızlı bağlantı kullanır. Tıpkı sahip oldukları fiziksel varlıkları korudukları gibi, dijital varlıklarını da güvenceye almalı ve sistemlerini istenmeyen erişimden korumalıdırlar. Bir bilgisayar sistemine, ağa veya bağlı tesislere karşı ihlalde bulunarak bunlara yetkisiz erişim elde etmeye yönelik kasti bir etkinlik siber saldırı olarak adlandırılır. Başarılı bir siber saldırı gizli bilgilerin ifşası, çalınması, silinmesi veya değiştirilmesiyle sonuçlanır. Siber güvenlik önlemleri siber saldırılara karşı savunma sağlar ve aşağıdaki avantajları sunar.
+        </p>
+      </div>
+    </div>
+
+    <div class="flex justify-center">
+      <img src="{% static 'images/siber/section1.jpg' %}" alt="Siber güvenlik" class="svc-img">
+    </div>
+  </div>
+
+  {# 2. BLOK — Saldırı türleri + sağ görsel #}
+  <div class="svc-section">
+    
+    <h2 class="svc-title"><span class="flash">Siber Güvenliğin Savunmaya Çalıştığı Saldırı Türleri Nelerdir?</span></h2>
+    <p>
+         Siber güvenlik uzmanları, bilgisayar sistemlerine farklı yollarla sızan yeni tehditleri kontrol altında tutmak ve etkisini hafifletmek için çabalamaktadır. Yaygın siber tehditlere ilişkin bazı örnekler aşağıda verilmiştir.
+    <p>      
+
+    <div class="grid gap-10 md:grid-cols-2 items-start">
+      <div class="md:pr-6">
+        <h3 class="svc-sub">Malware</h3>
+        <p>Malware terimi kötü amaçlı yazılım demektir. Üçüncü tarafların hassas bilgilere yetkisiz erişim elde etmesini veya kritik bir altyapının normal çalışmasını kesintiye uğratmasını sağlamak için tasarlanmış bir dizi yazılım programını içerir. Kötü amaçlı yazılımın yaygın örnekleri truva atları, casus yazılım ve virüslerdir.</p>
+
+        <h3 class="svc-sub">Fidye yazılımı</h3>
+        <p>Fidye yazılımı, kötü amaçlı kişilerin özel ve tüzel kişilerden para sızdırmak için kullandığı bir işletme modeline veya geniş bir ilgili teknolojiler dizisine atıfta bulunur. İster AWS'yi yeni kullanmaya başlıyor ister halihazırda AWS'de içerik oluşturuyor olun, kritik sistemlerinizi ve hassas verilerinizi fidye yazılımına karşı korumaya yardımcı olmak için tahsis edilmiş kaynaklara sahibiz.</p>
+
+        <h3 class="svc-sub">Ortadaki adam saldırısı</h3>
+        <p>Ortadaki adam saldırısı, dışarıdaki bir tarafın veri alışverişi sırasında bir ağ üzerinden yetkisiz erişim sağlama girişimini içerir. Bu gibi saldırılar, finansal veriler gibi hassas bilgilere ilişkin güvenlik risklerini artırır.</p>
+
+        <h3 class="svc-sub">Kimlik hırsızlığı</h3>
+        <p>Kimlik hırsızlığı, kimliği tanımlayabilecek bilgileri ifşa etmeleri için kullanıcıları kandırmaya yönelik sosyal mühendislik tekniklerini kullanan bir siber tehdittir. Örneğin, siber saldırganlar kullanıcıların sahte bir ödeme web sayfasına tıklayarak bu sayfaya kredi kartı verilerini girmelerine neden olan e-postalar gönderirler. Kimlik hırsızlıkları aynı zamanda şirket cihazlarına kötü amaçlı yazılım yükleyen zararlı eklerin indirilmesiyle de sonuçlanabilir.</p>
+
+        <h3 class="svc-sub">DDoS</h3>
+        <p>Dağıtılmış hizmet reddi saldırısı (DDoS), yüksek hacimde sahte istek göndererek bir sunucuya aşırı yüklenmeyi içeren koordinasyonlu bir çabadır. Bu gibi etkinlikler, normal kullanıcıların hedeflenen sunucuya bağlanmasını veya bu sunuculara erişmesini engeller.</p>
+
+        <h3 class="svc-sub">İçeriden tehdit</h3>
+        <p>İçeriden tehdit, bir kuruluş dahilindeki kötü niyetli personelin neden olduğu bir güvenlik riskidir. Personel, bilgisayar sistemlerine yüksek düzey erişime sahiptir ve altyapı güvenliğinin dengesini içeriden bozabilir.</p>
+      </div>
+
+      <div class="flex justify-center">
+        <img src="{% static 'images/siber/section2.jpg' %}" alt="Tehditler" class="svc-img">
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

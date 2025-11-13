@@ -1,0 +1,75 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Orman Genel Müdürlüğü – Orman Bilgi Sistemi{% endblock %}
+
+{% block content %}
+
+<!-- HERO / ÜST BANNER -->
+<section class="relative">
+    <img src="{% static 'images/proje-orman-hero.jpg' %}"
+         alt="Orman Bilgi Sistemi Arka Plan"
+         class="w-full h-[260px] md:h-[320px] object-cover">
+
+    <div class="absolute inset-0 bg-black/45 flex items-center justify-center">
+        <div class="text-center text-white px-4">
+            <h1 class="text-2xl md:text-4xl font-bold">
+                Orman Genel Müdürlüğü<br>
+                Orman Bilgi Sistemi
+            </h1>
+        </div>
+    </div>
+</section>
+
+<!-- İÇERİK KISMI -->
+<section class="py-10 md:py-14 bg-white">
+    <div class="max-w-6xl mx-auto px-4 grid gap-10 md:grid-cols-[minmax(0,2fr)_minmax(0,1.1fr)]">
+
+        <!-- Sol: Metinler -->
+        <div class="space-y-6 text-sm md:text-base leading-relaxed text-slate-800">
+
+            <p>
+                Ülkemiz topraklarının yaklaşık üçte birini oluşturan orman arazilerinin yönetimi Orman
+                Genel Müdürlüğünce (OGM) gerçekleştirilmektedir. OGM’nin tüm iş ve işlemlerini elektronik
+                ortamda yönetmesini sağlayan proje, aynı zamanda 7 milyon orman köylüsünün istihdamı ve
+                ekonomik desteği içinde bileşenler içermektedir.
+            </p>
+
+            <p>
+                25.000’den fazla kurum içi, 100.000’in üstünde kurum dışı kullanıcıya sahip olan proje;
+                Coğrafi Bilgi Sistemleri, Kurumsal Kaynak Planlama ve Kurumsal Hizmet Envanteri ana
+                bileşenleri altında bulunan 41 adet bilgi sisteminden oluşmaktadır. OGM’nin 28 Bölge
+                Müdürlüğü, 250 İşletme Müdürlüğü ve yaklaşık 1400 İşletme Şefliğinde yürütülen 1002 adet
+                iş süreci ORBİS üzerinden gerçekleştirilmektedir.
+            </p>
+
+            <p>
+                İstanbul Teknik Üniversitesinin akademik danışmanlığı ve yönetiminde yürütülen proje,
+                Java ile web tabanlı olarak geliştirilmiştir. Tüm kurumsal verilerin yönetimi iş
+                süreçleri üzerinden yürütülmekte ve coğrafi bilgi sistemleri ile ilişkilendirilmektedir.
+                Saha verilerinin toplanması ve çevrimdışı çalışma zorunlulukları sebebiyle masaüstü ve
+                web tabanlı uygulamalar da geliştirilmiştir.
+            </p>
+
+            <p>
+                Ormancılık faaliyetlerinin yürütülmesine ilişkin modüller dışında tüm kurum ve
+                kuruluşlarca da kullanılabilecek ortak modüllerin geliştirildiği projenin servis
+                mimarisiyle geliştirilmiş olması, projeye yeni modüllerin eklenmesinde ve istenen
+                sistemlerle entegrasyonunun sağlanmasında büyük kolaylıklar sağlamaktadır.
+            </p>
+
+        </div>
+
+        <!-- Sağ: Görseller -->
+        <div class="space-y-6">
+            <img src="{% static 'images/proje-orman-1.jpg' %}"
+                 alt="Orman Bilgi Sistemi Görsel 1"
+                 class="w-full h-56 md:h-64 object-cover rounded shadow">
+            <img src="{% static 'images/proje-orman-2.jpg' %}"
+                 alt="Orman Bilgi Sistemi Görsel 2"
+                 class="w-full h-56 md:h-64 object-cover rounded shadow">
+        </div>
+    </div>
+</section>
+
+{% endblock %}
