@@ -9,33 +9,58 @@
 <body class="bg-slate-50 text-slate-900">
 
   <!-- ÜST İNCE ŞERİT (≈20px) -->
-  <div class="h-5 bg-[#00b7b1] w-full"></div>
+  <div class="h-5 bg-[#005b88] w-full"></div>
 
-  <!-- ANA NAVBAR (≈100px yükseklik) -->
-  <header class="bg-white">
-    <div class="max-w-6xl mx-auto px-4 md:px-6
-                flex items-center justify-between
-                min-h-[100px]">
-      <!-- LOGO -->
-      <a href="{% url 'home' %}" class="flex items-center">
-        <!-- 300x67 piksele yakın durur -->
-        <img src="{% static 'images/konumsal-logo-full.png' %}"
-             alt="Konumsal Bilgi Sistemleri"
-             class="h-[67px] md:h-[72px] w-auto" />
-      </a>
+    <!-- ANA NAVBAR (≈100px yükseklik) -->
+<header class="bg-white">
+  <div class="w-full px-6 md:px-12 flex items-center justify-between min-h-[100px]">
 
-      <!-- MENÜ - yazılar teal, büyük -->
-      <nav class="flex items-center gap-8 md:gap-12
-                  text-[#00b7b1] font-semibold
-                  text-[18px] md:text-[22px] leading-none">
-        <a href="{% url 'home' %}"      class="hover:text-slate-900">Ana Sayfa</a>
+    <!-- LOGO -->
+    <a href="{% url 'home' %}"
+       class="shrink-0 ml-2 md:ml-4">
+      <img src="{% static 'images/konumsal-logo-full.png' %}"
+           alt="Konumsal Bilgi Sistemleri"
+           class="h-14 md:h-12 w-auto object-contain">
+    </a>
+
+    <!-- MENÜ -->
+    <nav class="flex items-center gap-8 md:gap-10
+                text-[#00b7b1] font-semibold text-brand
+                text-[18px] md:text-[22px] leading-none w-full ml-10">
+
+      <!-- Sol taraftaki klasik menü -->
+      <div class="flex items-center gap-8 md:gap-10">
+        <a href="{% url 'home' %}"        class="hover:text-slate-900">Ana Sayfa</a>
         <a href="{% url 'hakkimizda' %}"  class="hover:text-slate-900">Hakkımızda</a>
-        <a href="{% url 'hizmetler' %}" class="hover:text-slate-900">Hizmetlerimiz</a>
-        <a href="{% url 'projeler' %}"  class="hover:text-slate-900">Projelerimiz</a>
-        <a href="{% url 'iletisim' %}"  class="hover:text-slate-900">İletişim</a>
-      </nav>
-    </div>
-  </header>
+        <a href="{% url 'hizmetler' %}"   class="hover:text-slate-900">Hizmetlerimiz</a>
+        <a href="{% url 'projeler' %}"    class="hover:text-slate-900">Projelerimiz</a>
+        <a href="{% url 'iletisim' %}"    class="hover:text-slate-900">İletişim</a>
+      </div>
+
+      <!-- Sağ tarafta giriş / çıkış -->
+      <div class="ml-auto flex items-center ">
+
+    {# Sadece personel (staff) için küçük yönetim linki #}
+    {% if user.is_authenticated and user.is_staff %}
+      <a href="/admin/"
+         class="text-sm md:text-[15px] text-slate-500 hover:text-slate-900">
+      </a>
+    {% endif %}
+
+    {# Herkes için ana giriş butonu #}
+    <a href="{% url 'login_select' %}"
+       class="inline-flex items-center px-4 py-1.5 md:px-5 md:py-2
+              rounded-full border border-teal-500 text-teal-600 text-sm md:text-base
+              shadow-sm hover:shadow-md hover:bg-teal-500 hover:text-white
+              transition-all duration-200">
+      Giriş
+    </a>
+  </div>
+</nav>
+</header>
+
+
+
 
   <!-- SAYFA İÇERİĞİ -->
   <main class="min-h-screen">
@@ -83,7 +108,7 @@
 
     <div class="border-t border-slate-800 mt-8 pt-4">
       <div class="max-w-6xl mx-auto px-4 flex items-center justify-between text-xs text-slate-500">
-        <p>©2025 <span class="text-[#00b7b1] font-semibold">Konumsal Bilgi Sistemleri</span> All Rights Reserved</p>
+        <p>©2025 <span class="text-[#00b7b1] font-semibold text-brand">Konumsal Bilgi Sistemleri</span> All Rights Reserved</p>
         <div class="flex items-center gap-3 text-sm">
           <span>🌐</span><span>in</span>
         </div>

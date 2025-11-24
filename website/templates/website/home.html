@@ -1,6 +1,121 @@
 {% extends 'website/base.html' %}
 {% load static %}
+
 {% block content %}
+
+<style>
+  /* Slider "DETAYLAR" butonu */
+  .slider-btn {
+      display: inline-block;
+      padding: 12px 32px;
+      border-radius: 9999px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: 14px;
+
+      /* Koyu arka plana uygun turkuaz-yeşil degrade */
+      background: linear-gradient(90deg, , #22c55e);
+      color: #ffffff;
+      border: none;
+
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+      text-decoration: none !important;
+
+      transition:
+          transform .2s ease,
+          box-shadow .2s ease,
+          background .2s ease;
+  }
+
+  .slider-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      background: linear-gradient(90deg, #22c55e, #005b88);
+  }
+  <style>
+  /* ÜRÜN & ÇÖZÜM KARTLARI  --------------------------------- */
+
+  .product-tile {
+    border-radius: 24px;
+    border: 3px solid #005b88;              /* mavi çerçeve */
+    background: #ffffff;
+    padding: 20px 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.10);
+    transition:
+      transform .22s ease,
+      box-shadow .22s ease,
+      border-color .22s ease,
+      background .22s ease;
+  }
+
+  .product-tile:hover {
+    transform: translateY(-6px);             /* kart yukarı kalksın */
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.22);
+    border-color: #00b7b1;                   /* turkuaz kenar */
+    background: #f8fafc;
+  }
+
+  .product-tile-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(0);
+    transition: transform .22s ease;
+  }
+
+  .product-tile:hover .product-tile-icon {
+    transform: translateY(-4px);             /* ikon hafif yukarı zıplasın */
+  }
+
+  .product-tile-title {
+    text-align: center;
+    line-height: 1.1;
+    font-weight: 600;
+    color: #0f172a;
+  }
+
+  .product-tile-title span:first-child {
+    display: block;
+    font-size: 0.80rem;
+    color: #6b7280;      /* gri küçük başlık (Mali, Personel...) */
+  }
+
+  .product-tile-title span:last-child {
+    display: block;
+    font-size: 0.95rem;
+    color: #005b88;      /* KONUMSAL yazısı */
+  }
+
+  .product-tile-sub {
+    font-size: 0.78rem;
+    text-align: center;
+    color: #4b5563;
+  }
+
+  @media (min-width: 768px) {
+    .product-tile {
+      padding: 22px 28px;
+    }
+    .product-tile-title span:last-child {
+      font-size: 1rem;
+    }
+    .product-tile-sub {
+      font-size: 0.82rem;
+    }
+  }
+</style>
+
+    
+</style>
 
 <!-- ========== HERO SLIDER ========== -->
 <section id="hero-slider"
@@ -20,10 +135,9 @@
         ve verileri kötü amaçlı yazılımlardan koruma uygulamasıdır. Geliştirdiğimiz güvenlik
         sistemleri ile kötü amaçlı yazılımların önüne geçmekteyiz.
       </p>
-      <a href="{% url 'hizmetler' %}"
-         class="inline-block bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-2 rounded">
-        DETAYLAR
-      </a>
+      <a href="{% url 'hizmet_siber' %}" class="slider-btn">
+    DETAYLAR
+</a>
     </div>
   </div>
 
@@ -41,10 +155,13 @@
         önemli yer tutmaktadır. Firmamız, sahip olduğu tecrübe ile servis tabanlı uygulama
         ve entegrasyonlar geliştirmektedir.
       </p>
-      <a href="{% url 'hizmetler' %}"
-         class="inline-block bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-2 rounded">
-        DETAYLAR
-      </a>
+      <a href="{% url 'hizmetler' %}" class="slider-btn">
+    DETAYLAR
+</a>
+
+
+
+
     </div>
   </div>
 
@@ -62,10 +179,10 @@
         modellenmesi, veritabanı oluşturulması ve karar destek sistemlerinin kurulması
         gibi birçok iş süreci için ERP çözümleri sunmaktayız.
       </p>
-      <a href="{% url 'hizmetler' %}"
-         class="inline-block bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-2 rounded">
-        DETAYLAR
-      </a>
+      <a href="{% url 'hizmet_erp' %}" class="slider-btn">
+    DETAYLAR
+</a>
+
     </div>
   </div>
 
@@ -83,10 +200,10 @@
         haritalar ve grafikleri birlikte görüntülememize, sorgulamamıza ve yorumlamamıza
         imkân sağlamaktadır.
       </p>
-      <a href="{% url 'hizmetler' %}"
-         class="inline-block bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-2 rounded">
-        DETAYLAR
-      </a>
+      <a href="{% url 'hizmet_cbs' %}" class="slider-btn">
+    DETAYLAR
+</a>
+
     </div>
   </div>
 
@@ -111,23 +228,329 @@
 <!-- ========== /HERO SLIDER ========== -->
 
 
+<!-- AYIRICI ÇİZGİ -->
+<div class="w-full h-[3px] bg-gradient-to-r from-slate-900 via-slate-300 to-slate-900"></div>
 
 
-<!-- ========== SLIDER / BİZ KİMİZ AYIRICI ========== -->
-<div class="h-3 bg-slate-100 border-y border-slate-300 shadow-[0_-4px_12px_rgba(0,0,0,0.25)]"></div>
+<!-- AYIRICI ÇİZGİ -->
+<div class="w-full h-[3px] bg-gradient-to-r from-slate-900 via-slate-300 to-slate-900"></div>
 
-<!-- ========== /AYIRICI ========== -->
+{# HİZMETLER BLOĞU – HERO ALTINA #}
+<style>
+  
+  .service-card{
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #e4f5ff;
+  box-shadow: 0 12px 30px rgba(15,23,42,.20);
+  outline: 1px solid rgba(148,163,184,.40);
+  transition:
+    transform .30s ease,
+    box-shadow .30s ease,
+    outline-color .30s ease;
+
+  /* BURASI ÖNEMLİ */
+  width: 100%;
+  max-width: 320px;      /* full width’i kaldırıp kartı sınırladık */
+  margin-inline: auto;   /* kolon içinde ortala */
+  }
+  .service-card:hover{
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 18px 45px rgba(15,23,42,.28);
+    outline-color: rgba(56,189,248,.55);
+  }
+  .service-card img{
+  width: 100%;
+  height: 12rem;         /* hafif dikdörtgen, çok uzun değil */
+  object-fit: cover;
+  transform-origin: center;
+  transition: transform .40s ease;
+  display: block;
+  }
+  .service-card:hover img{
+    transform: scale(1.03);
+  }
+  .service-overlay{
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  /* ... mevcut css ... */
+
+  /* HİZMETLER GRID BOŞLUK AYARI */
+  .services-grid{
+    column-gap: 3.5rem;  /* yatay boşluk */
+    row-gap: 3.5rem;     /* dikey boşluk */
+  }
+
+  @media (min-width: 1280px){
+    .services-grid{
+      column-gap: 4.5rem;  /* geniş ekranda biraz daha aç */
+    }
+  }
+  .service-card-title{
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+@media (min-width: 1024px){
+  .service-card-title{
+    font-size: 1.1rem;
+  }
+}
+
+</style>
+
+<section class="max-w-7xl mx-auto px-8 pt-6 pb-14">
+  <!-- BAŞLIK BLOĞU -->
+  <div class="text-center max-w-2xl mx-auto mb-6 -mt-4">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">
+      Hizmetlerimiz
+    </h2>
+    <p class="mt-2 text-sm md:text-base text-slate-600">
+      
+    </p>
+  </div>
+
+  <!-- KARTLAR BLOĞU -->
+  <div class="grid gap-10 md:grid-cols-4 mt-4">
+    {# buraya 8 hizmet kartının olduğu HTML’i aynen bırak #}
+  </div>
+</section>
+
+
+  {# 4 x 2 GRID #}
+ <div class="grid services-grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+
+
+
+    {# 1 – Coğrafi Bilgi Sistemleri #}
+    <article class="space-y-3">
+      <div id="cbs-home" class="service-card">
+        <img src="{% static 'images/solution-cbs.jpg' %}"
+             alt="Coğrafi Bilgi Sistemleri">
+        <div class="service-overlay bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+
+        <a href="/hizmetler/cografi-bilgi-sistemleri/"
+           class="absolute inset-0 flex items-center justify-center">
+          <div class="inline-block bg-black/70 rounded-full px-5 py-2">
+            <h3 class= "service-card-title text-white text-lg md:text-xl font-extrabold tracking-wide text-center"
+                style="text-shadow:
+                           -2px -2px 3px rgba(0,0,0,0.9),
+                            2px -2px 3px rgba(0,0,0,0.9),
+                           -2px  2px 3px rgba(0,0,0,0.9),
+                            2px  2px 3px rgba(0,0,0,0.9);">
+              Coğrafi Bilgi Sistemleri
+            </h3>
+          </div>
+        </a>
+      </div>
+
+      <p class="text-xs md:text-sm text-slate-600 text-center">
+        Harita tabanlı verilerle kurum süreçlerini akıllı hale getirir.
+      </p>
+    </article>
+
+    {# 2 – Kurumsal Kaynak Planlama #}
+    <article class="space-y-3">
+      <div id="erp-home" class="service-card">
+        <img src="{% static 'images/solution-erp.jpg' %}"
+             alt="Kurumsal Kaynak Planlama">
+        <div class="service-overlay bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+
+        <a href="/hizmetler/kurumsal-kaynak-planlama/"
+           class="absolute inset-0 flex items-center justify-center">
+          <div class="inline-block bg-black/70 rounded-full px-5 py-2">
+            <h3 class="service-card-title text-white text-lg md:text-xl font-extrabold tracking-wide text-center"
+                style="text-shadow:
+                           -2px -2px 3px rgba(0,0,0,0.9),
+                            2px -2px 3px rgba(0,0,0,0.9),
+                           -2px  2px 3px rgba(0,0,0,0.9),
+                            2px  2px 3px rgba(0,0,0,0.9);">
+              Kurumsal Kaynak Planlama
+            </h3>
+          </div>
+        </a>
+      </div>
+
+      <p class="text-xs md:text-sm text-slate-600 text-center">
+        Operasyon, stok ve finansı tek platformdan yönetmenizi sağlar.
+      </p>
+    </article>
+
+    {# 3 – Siber Güvenlik Sistemleri #}
+    <article class="space-y-3">
+      <div id="siber-home" class="service-card">
+        <img src="{% static 'images/solution-siber.jpg' %}"
+             alt="Siber Güvenlik Sistemleri">
+        <div class="service-overlay bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+
+        <a href="/hizmetler/siber-guvenlik-sistemleri/"
+           class="absolute inset-0 flex items-center justify-center">
+          <div class="inline-block bg-black/70 rounded-full px-5 py-2">
+            <h3 class="service-card-title text-white text-lg md:text-xl font-extrabold tracking-wide text-center"
+                style="text-shadow:
+                           -2px -2px 3px rgba(0,0,0,0.9),
+                            2px -2px 3px rgba(0,0,0,0.9),
+                           -2px  2px 3px rgba(0,0,0,0.9),
+                            2px  2px 3px rgba(0,0,0,0.9);">
+              Siber Güvenlik Sistemi
+            </h3>
+          </div>
+        </a>
+      </div>
+
+      <p class="text-xs md:text-sm text-slate-600 text-center">
+        Ağ, uygulama ve verilerinizi uçtan uca korur.
+      </p>
+    </article>
+
+    {# 4 – Üniversite Yönetim Sistemi #}
+    <article class="space-y-3">
+      <div id="uys-home" class="service-card">
+        <img src="{% static 'images/solution-universite.jpg' %}"
+             alt="Üniversite Yönetim Sistemi">
+        <div class="service-overlay bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+
+        <a href="/hizmetler/universite-yonetim-sistemi/"
+           class="absolute inset-0 flex items-center justify-center">
+          <div class="inline-block bg-black/70 rounded-full px-5 py-2">
+            <h3 class="service-card-title text-white text-lg md:text-xl font-extrabold tracking-wide text-center"
+                style="text-shadow:
+                           -2px -2px 3px rgba(0,0,0,0.9),
+                            2px -2px 3px rgba(0,0,0,0.9),
+                           -2px  2px 3px rgba(0,0,0,0.9),
+                            2px  2px 3px rgba(0,0,0,0.9);">
+              Üniversite Yönetim Sistemi
+            </h3>
+          </div>
+        </a>
+      </div>
+
+      <p class="text-xs md:text-sm text-slate-600 text-center">
+        Akademik ve idari süreçleri bütünleşik tek yapıda toplar.
+      </p>
+    </article>
+
+    {# 5 – Veri Sayısallaştırma #}
+    <article class="space-y-3">
+      <div id="veri-home" class="service-card">
+        <img src="{% static 'images/solution-veri.jpg' %}"
+             alt="Veri Sayısallaştırma">
+        <div class="service-overlay bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+
+        <a href="/hizmetler/veri-sayisallastirma/"
+           class="absolute inset-0 flex items-center justify-center">
+          <div class="inline-block bg-black/70 rounded-full px-5 py-2">
+            <h3 class="service-card-title text-white text-lg md:text-xl font-extrabold tracking-wide text-center"
+                style="text-shadow:
+                           -2px -2px 3px rgba(0,0,0,0.9),
+                            2px -2px 3px rgba(0,0,0,0.9),
+                           -2px  2px 3px rgba(0,0,0,0.9),
+                            2px  2px 3px rgba(0,0,0,0.9);">
+              Veri Sayısallaştırma
+            </h3>
+          </div>
+        </a>
+      </div>
+
+      <p class="text-xs md:text-sm text-slate-600 text-center">
+        Fiziksel doküman ve verileri dijital ortama taşır, erişilebilir kılar.
+      </p>
+    </article>
+
+    {# 6 – Mobil Uygulamalar #}
+    <article class="space-y-3">
+      <div id="mobil-home" class="service-card">
+        <img src="{% static 'images/solution-mobil.jpg' %}"
+             alt="Mobil Uygulamalar">
+        <div class="service-overlay bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+
+        <a href="/hizmetler/mobil-uygulamalar/"
+           class="absolute inset-0 flex items-center justify-center">
+          <div class="inline-block bg-black/70 rounded-full px-5 py-2">
+            <h3 class="service-card-title text-white text-lg md:text-xl font-extrabold tracking-wide text-center"
+                style="text-shadow:
+                           -2px -2px 3px rgba(0,0,0,0.9),
+                            2px -2px 3px rgba(0,0,0,0.9),
+                           -2px  2px 3px rgba(0,0,0,0.9),
+                            2px  2px 3px rgba(0,0,0,0.9);">
+              Mobil Uygulamalar
+            </h3>
+          </div>
+        </a>
+      </div>
+
+      <p class="text-xs md:text-sm text-slate-600 text-center">
+        Android ve iOS için kuruma özel mobil çözümler sunar.
+      </p>
+    </article>
+
+    {# 7 – Elektronik Doküman Yönetim Sistemi #}
+    <article class="space-y-3">
+      <div id="edys-home" class="service-card">
+        <img src="{% static 'images/solution-edys.jpg' %}"
+             alt="Elektronik Doküman Yönetim Sistemi">
+        <div class="service-overlay bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+
+        <a href="/hizmetler/elektronik-dokuman-yonetim-sistemi/"
+           class="absolute inset-0 flex items-center justify-center">
+          <div class="inline-block bg-black/70 rounded-full px-5 py-2">
+            <h3 class="service-card-title text-white text-lg md:text-xl font-extrabold tracking-wide text-center"
+                style="text-shadow:
+                           -2px -2px 3px rgba(0,0,0,0.9),
+                            2px -2px 3px rgba(0,0,0,0.9),
+                           -2px  2px 3px rgba(0,0,0,0.9),
+                            2px  2px 3px rgba(0,0,0,0.9);">
+              Elektronik Doküman Yönetim Sistemi
+            </h3>
+          </div>
+        </a>
+      </div>
+
+      <p class="text-xs md:text-sm text-slate-600 text-center">
+        Doküman yaşam döngüsünü güvenli ve izlenebilir şekilde yönetir.
+      </p>
+    </article>
+
+    {# 8 – Görev Yönetim Sistemi #}
+    <article class="space-y-3">
+      <div id="gorev-home" class="service-card">
+        <img src="{% static 'images/solution-gorev.jpg' %}"
+             alt="Görev Yönetim Sistemi">
+        <div class="service-overlay bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+
+        <a href="/hizmetler/gorev-yonetim-sistemi/"
+           class="absolute inset-0 flex items-center justify-center">
+          <div class="inline-block bg-black/70 rounded-full px-5 py-2">
+            <h3 class="service-card-title text-white text-lg md:text-xl font-extrabold tracking-wide text-center"
+                style="text-shadow:
+                           -2px -2px 3px rgba(0,0,0,0.9),
+                            2px -2px 3px rgba(0,0,0,0.9),
+                           -2px  2px 3px rgba(0,0,0,0.9),
+                            2px  2px 3px rgba(0,0,0,0.9);">
+              Görev Yönetim Sistemi
+            </h3>
+          </div>
+        </a>
+      </div>
+
+      <p class="text-xs md:text-sm text-slate-600 text-center">
+        İş akışlarını, görev atamalarını ve süreç takibini merkezileştirir.
+      </p>
+    </article>
+
+  </div>
+</section>
+<!-- AYIRICI ÇİZGİ -->
+<div class="w-full h-[3px] bg-gradient-to-r from-slate-900 via-slate-300 to-slate-900"></div>
 
 
 
 
-
-<!-- ========== SLIDER / BİZ KİMİZ AYIRICI ========== -->
-
-<div class="h-3 bg-slate-100 border-y border-slate-300 shadow-[0_-4px_12px_rgba(0,0,0,0.25)]"></div>
-
-<!-- ========== /AYIRICI ========== -->
-
+<!-- AYIRICI ÇİZGİ -->
+<div class="w-full h-[3px] bg-gradient-to-r from-slate-900 via-slate-300 to-slate-900"></div>
 
 <!-- ========== BİZ KİMİZ – FULL BLEED GÖRSEL ========== -->
 <section class="relative h-[420px] md:h-[460px] overflow-hidden">
@@ -141,10 +564,10 @@
   <div class="absolute inset-0 bg-slate-900/50"></div>
 
   <!-- İçerik (metin) -->
-  <div class="relative max-w-6xl mx-auto px-4 h-full">
-    <!-- Sağda kutu; yeşil şerit: -->
-    <div class="ml-auto md:w-1/2 h-full flex items-center">
-      <div class="bg-slate-800/65 text-white p-6 md:p-8 border-l-4 border-[#96c19f]">
+<div class="relative max-w-6xl mx-auto px-4 h-full">
+  <!-- Solda kutu; yeşil şerit: -->
+ <div class="md:w-1/2 h-full flex items-center md:-ml-4">
+     <div class="bg-slate-800/65 text-white p-6 md:p-8 border-l-4 border-[#04144e]">
         <p class="text-xs tracking-[0.25em] uppercase text-slate-300 mb-2">
           BİZ KİMİZ?
         </p>
@@ -174,499 +597,25 @@
     </div>
   </div>
 </section>
-<!-- ========== /BİZ KİMİZ ========== -->
 
-
-<!-- ========== SLIDER / BİZ KİMİZ AYIRICI ========== -->
-<div class="h-3 bg-slate-100 border-y border-slate-300 shadow-[0_-4px_12px_rgba(0,0,0,0.25)]"></div>
-
-<!-- ========== /AYIRICI ========== -->
 
 
  
 
-<section class="space-y-6">
-    <div class="text-center space-y-2">
-        <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase">Ürünlerimiz</p>
-        <h1 class="text-2xl md:text-3xl font-semibold text-slate-900">Ürün ve Çözümler</h1>
-    </div>
-
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-
-        <!-- 1: Mali Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/mali-konumsal.png' %}" alt="Mali Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Mali</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                Mali İşler Bilgi Sistemi
-            </div>
-        </div>
-
-        <!-- 2: Personel Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/personel-konumsal.png' %}" alt="Personel Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Personel</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                Personel Bilgi Sistemi
-            </div>
-        </div>
-
-        <!-- 3: Taşınmaz Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/tasinmaz-konumsal.png' %}" alt="Taşınmaz Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Taşınmaz</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                Taşınmaz Yönetimi
-            </div>
-        </div>
-
-        <!-- 4: Coğrafi Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/cografi-konumsal.png' %}" alt="Coğrafi Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Coğrafi</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                Coğrafi Veri Portalı
-            </div>
-        </div>
-
-        <!-- 5: Stratejik Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/stratejik-konumsal.png' %}" alt="Stratejik Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Stratejik</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                Stratejik Yönetim
-            </div>
-        </div>
-
-        <!-- 6: Belge Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/belge-konumsal.png' %}" alt="Belge Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Belge</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                Elektronik Belge Yönetim
-            </div>
-        </div>
-
-        <!-- 7: Hukuk Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/hukuk-konumsal.png' %}" alt="Hukuk Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Hukuk</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                E-Hukuk
-            </div>
-        </div>
-
-        <!-- 8: Eğitim Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/egitim-konumsal.png' %}" alt="Eğitim Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Eğitim</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                E-Eğitim
-            </div>
-        </div>
-
-        <!-- 9: Denetim Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/denetim-konumsal.png' %}" alt="Denetim Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Denetim</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                E-Denetim
-            </div>
-        </div>
-
-        <!-- 10: Dış İlişkiler Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/disiliskiler-konumsal.png' %}" alt="Dış İlişkiler Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Dış İlişkiler</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                E-Dış İlişkiler
-            </div>
-        </div>
-
-        <!-- 11: Satış Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/satis-konumsal.png' %}" alt="Satış Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Satış</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                E-Satış
-            </div>
-        </div>
-
-        <!-- 12: Satınalma Konumsal -->
-        <div class="bg-sky-50 border border-slate-200 flex flex-col">
-            <div class="flex items-center gap-3 px-4 py-4">
-                <img src="{% static 'images/satinalma-konumsal.png' %}" alt="Satınalma Konumsal"
-                     class="h-10 w-auto flex-shrink-0">
-                <div class="leading-tight text-sm md:text-base font-semibold">
-                    <div class="text-slate-800">Satınalma</div>
-                    <div class="text-sky-600">Konumsal</div>
-                </div>
-            </div>
-            <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2">
-                E-Satın Alma
-            </div>
-        </div>
-
-    </div>
-
-<!-- ========== SLIDER / BİZ KİMİZ AYIRICI ========== -->
-<div class="h-3 bg-slate-100 border-y border-slate-300 shadow-[0_-4px_12px_rgba(0,0,0,0.25)]"></div>
-
-<!-- ========== /AYIRICI ========== -->
-
-{% comment %} ÇÖZÜMLERİMİZ SLIDER {% endcomment %}
-<section class="py-14 bg-white">
-
-  <!-- Başlık kısmı -->
-  <div class="max-w-6xl mx-auto px-4 mb-8 text-center">
-    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-2">
-    
-    </h2>
-    <p class="text-sm md:text-base text-slate-500">
-      
-    </p>
-  </div>
-
-  <!-- Slider: tam genişlik -->
-  <div class="relative w-full overflow-hidden">
-
-    <!-- Sol / sağ oklar -->
-    <button id="solutions-prev"
-            class="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2
-                   w-10 h-10 rounded-full bg-black/40 text-white
-                   items-center justify-center text-2xl hover:bg-black/60 z-10">
-      ‹
-    </button>
-
-    <button id="solutions-next"
-            class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2
-                   w-10 h-10 rounded-full bg-black/40 text-white
-                   items-center justify-center text-2xl hover:bg-black/60 z-10">
-      ›
-    </button>
-
-    <!-- Kartların hepsi aynı satırda, kaydıracağız -->
-    <div id="solutions-track"
-         class="flex gap-6 px-6 pb-4 transition-transform duration-700 ease-out">
-
-      {# 1 – Coğrafi Bilgi Sistemleri #}
-      <a href="{% url 'hizmetler' %}#cografi-bilgi"
-         class="solution-card relative flex-shrink-0 w-[260px] md:w-[300px] lg:w-[330px]
-                h-[190px] overflow-hidden rounded shadow-lg cursor-pointer">
-        <img src="{% static 'images/solution-cbs.jpg' %}"
-             alt="Coğrafi Bilgi Sistemleri"
-             class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative z-10 flex items-center h-full px-5">
-          <p class="text-white text-lg font-semibold leading-snug">
-            Coğrafi Bilgi Sistemleri
-          </p>
-        </div>
-      </a>
-
-      {# 2 – Kurumsal Kaynak Planlama #}
-      <a href="{% url 'hizmetler' %}#erp"
-         class="solution-card relative flex-shrink-0 w-[260px] md:w-[300px] lg:w-[330px]
-                h-[190px] overflow-hidden rounded shadow-lg cursor-pointer">
-        <img src="{% static 'images/solution-erp.jpg' %}"
-             alt="Kurumsal Kaynak Planlama"
-             class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative z-10 flex items-center h-full px-5">
-          <p class="text-white text-lg font-semibold leading-snug">
-            Kurumsal Kaynak Planlama
-          </p>
-        </div>
-      </a>
-
-      {# 3 – Siber Güvenlik Sistemleri #}
-      <a href="{% url 'hizmetler' %}#siber-guvenlik"
-         class="solution-card relative flex-shrink-0 w-[260px] md:w-[300px] lg:w-[330px]
-                h-[190px] overflow-hidden rounded shadow-lg cursor-pointer">
-        <img src="{% static 'images/solution-siber.jpg' %}"
-             alt="Siber Güvenlik Sistemleri"
-             class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative z-10 flex items-center h-full px-5">
-          <p class="text-white text-lg font-semibold leading-snug">
-            Siber Güvenlik Sistemleri
-          </p>
-        </div>
-      </a>
-
-      {# 4 – Üniversite Yönetim Sistemi #}
-      <a href="{% url 'hizmetler' %}#universite-yonetim"
-         class="solution-card relative flex-shrink-0 w-[260px] md:w-[300px] lg:w-[330px]
-                h-[190px] overflow-hidden rounded shadow-lg cursor-pointer">
-        <img src="{% static 'images/solution-universite.jpg' %}"
-             alt="Üniversite Yönetim Sistemi"
-             class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative z-10 flex items-center h-full px-5">
-          <p class="text-white text-lg font-semibold leading-snug">
-            Üniversite Yönetim Sistemi
-          </p>
-        </div>
-      </a>
-
-      {# 5 – İnsan Kaynakları Yönetim Sistemi #}
-      <a href="{% url 'hizmetler' %}#ik-yonetim"
-         class="solution-card relative flex-shrink-0 w-[260px] md:w-[300px] lg:w-[330px]
-                h-[190px] overflow-hidden rounded shadow-lg cursor-pointer">
-        <img src="{% static 'images/solution-ik.jpg' %}"
-             alt="İnsan Kaynakları Yönetim Sistemi"
-             class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative z-10 flex items-center h-full px-5">
-          <p class="text-white text-lg font-semibold leading-snug">
-            İnsan Kaynakları Yönetim Sistemi
-          </p>
-        </div>
-      </a>
-
-      {# 6 – Veri Sayısallaştırma #}
-      <a href="{% url 'hizmetler' %}#veri-sayisallastirma"
-         class="solution-card relative flex-shrink-0 w-[260px] md:w-[300px] lg:w-[330px]
-                h-[190px] overflow-hidden rounded shadow-lg cursor-pointer">
-        <img src="{% static 'images/solution-veri.jpg' %}"
-             alt="Veri Sayısallaştırma"
-             class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative z-10 flex items-center h-full px-5">
-          <p class="text-white text-lg font-semibold leading-snug">
-            Veri Sayısallaştırma
-          </p>
-        </div>
-      </a>
-
-      {# 7 – Mobil Uygulamalar #}
-      <a href="{% url 'hizmetler' %}#mobil-uygulamalar"
-         class="solution-card relative flex-shrink-0 w-[260px] md:w-[300px] lg:w-[330px]
-                h-[190px] overflow-hidden rounded shadow-lg cursor-pointer">
-        <img src="{% static 'images/solution-mobil.jpg' %}"
-             alt="Mobil Uygulamalar"
-             class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative z-10 flex items-center h-full px-5">
-          <p class="text-white text-lg font-semibold leading-snug">
-            Mobil Uygulamalar
-          </p>
-        </div>
-      </a>
-
-      {# 8 – Elektronik Doküman Yönetim Sistemi #}
-      <a href="{% url 'hizmetler' %}#edys"
-         class="solution-card relative flex-shrink-0 w-[260px] md:w-[300px] lg:w-[330px]
-                h-[190px] overflow-hidden rounded shadow-lg cursor-pointer">
-        <img src="{% static 'images/solution-edys.jpg' %}"
-             alt="Elektronik Doküman Yönetim Sistemi"
-             class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative z-10 flex items-center h-full px-5">
-          <p class="text-white text-lg font-semibold leading-snug">
-            Elektronik Doküman Yönetim Sistemi
-          </p>
-        </div>
-      </a>
-
-      {# 9 – Görev Yönetim Sistemi #}
-      <a href="{% url 'hizmetler' %}#gorev-yonetim"
-         class="solution-card relative flex-shrink-0 w-[260px] md:w-[300px] lg:w-[330px]
-                h-[190px] overflow-hidden rounded shadow-lg cursor-pointer">
-        <img src="{% static 'images/solution-gorev.jpg' %}"
-             alt="Görev Yönetim Sistemi"
-             class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative z-10 flex items-center h-full px-5">
-          <p class="text-white text-lg font-semibold leading-snug">
-            Görev Yönetim Sistemi
-          </p>
-        </div>
-      </a>
-
-    </div>
-  </div>
-</section>
-   <script>
-(function () {
-  const track = document.getElementById('solutions-track');
-  if (!track) return;
-
-  let cards = Array.from(track.querySelectorAll('.solution-card'));
-  if (!cards.length) return;
-
-  const prevBtn = document.getElementById('solutions-prev');
-  const nextBtn = document.getElementById('solutions-next');
-
-  const originalCount = cards.length;   // 9 kartın asıl hali
-
-  // === 1) KARTLARI İKİ TARAFA DA KLONLA (sonsuz döngü için) ===
-  // Sağ tarafa klonlar
-  cards.forEach(card => track.appendChild(card.cloneNode(true)));
-  // Sol tarafa klonlar
-  cards.forEach(card => track.insertBefore(card.cloneNode(true), track.firstChild));
-
-  // Artık toplam 3 * originalCount kart var
-  cards = Array.from(track.querySelectorAll('.solution-card'));
-
-  // Ortadaki (orijinal) setten başlıyoruz
-  let index = originalCount;
-  let cardWidth = 0;
-
-  // gap-6 ≈ 24px, kart genişliğini hesapla
-  function measure() {
-    const rect = cards[0].getBoundingClientRect();
-    cardWidth = rect.width + 24;   // kart + kartlar arası boşluk
-    applyTransform(true);          // geçiş animasyonu olmadan hizala
-  }
-
-  function applyTransform(skipTransition) {
-    if (skipTransition) {
-      track.style.transition = 'none';
-    } else {
-      track.style.transition = 'transform 0.5s ease';
-    }
-    track.style.transform = `translateX(-${index * cardWidth}px)`;
-  }
-
-  function slideNext() {
-    index++;
-    applyTransform(false);   // animasyonlu kay
-  }
-
-  function slidePrev() {
-    index--;
-    applyTransform(false);
-  }
-
-  // === 2) SONA / BAŞA DAYANINCA GÖRÜNMEZ TELEPORT (JUMPSIZ DÖNGÜ) ===
-  track.addEventListener('transitionend', () => {
-    // Sağ tarafa çok gittiysek (sağdaki klonlar)
-    if (index >= originalCount * 2) {
-      index -= originalCount;   // aynı görüntünün ortadaki asıl kopyasına dön
-      applyTransform(true);     // animasyonsuz, kullanıcı fark etmiyor
-    }
-    // Sol tarafa çok gittiysek (soldaki klonlar)
-    else if (index < originalCount) {
-      index += originalCount;
-      applyTransform(true);
-    }
-  });
-
-  // === 3) OK BUTONLARI ===
-  if (prevBtn) prevBtn.addEventListener('click', () => {
-    slidePrev();
-    resetTimer();
-  });
-
-  if (nextBtn) nextBtn.addEventListener('click', () => {
-    slideNext();
-    resetTimer();
-  });
-
-  // === 4) OTOMATİK KAYDIRMA ===
-  let timer = null;
-
-  function startTimer() {
-    timer = setInterval(() => {
-      slideNext();
-    }, 4000); // 4 saniyede bir kay
-  }
-
-  function resetTimer() {
-    if (timer) clearInterval(timer);
-    startTimer();
-  }
-
-  // === 5) PENCERE BOYUTU DEĞİŞİNCE YENİDEN ÖLÇ ===
-  window.addEventListener('resize', () => {
-    measure();
-  });
-
-  // Başlat
-  measure();
-  startTimer();
-})();
-</script>
+<!-- ========== ÜRÜN VE ÇÖZÜMLERİMİZ ========== --> <section class="max-w-7xl mx-auto px-4 pt-16 pb-20"> <!-- Başlık --> <div class="text-center space-y-2 mb-10"> <p class="text-xs font-semibold tracking-[0.25em] text-slate-400 uppercase"> ÜRÜN & ÇÖZÜMLER </p> <h1 class="text-2xl md:text-3xl font-semibold text-slate-900"> Ürün ve Çözümlerimiz </h1> </div> <!-- Kartlar --> <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4"> <!-- 1: Mali Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <!-- İKON: buradaki src'yi istediğin görselle değiştirebilirsin --> <img src="{% static 'images/mali-konumsal.png' %}" alt="Mali Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600">  </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> Mali İşler Bilgi Sistemi </div> </div> <!-- 2: Personel Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/personel-konumsal.png' %}" alt="Personel Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600">  </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> Personel Bilgi Sistemi </div> </div> <!-- 3: Taşınmaz Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/tasinmaz-konumsal.png' %}" alt="Taşınmaz Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600">  </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> Taşınmaz Yönetimi </div> </div> <!-- 4: Coğrafi Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/cografi-konumsal.png' %}" alt="Coğrafi Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600">  </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> Coğrafi Veri Portalı </div> </div> <!-- 5: Stratejik Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/stratejik-konumsal.png' %}" alt="Stratejik Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600"> </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> Stratejik Yönetim </div> </div> <!-- 6: Belge Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/belge-konumsal.png' %}" alt="Belge Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900"> </div><div class="text-sm md:text-base font-semibold text-sky-600"> </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> Elektronik Belge Yönetim </div> </div> <!-- 7: Hukuk Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/hukuk-konumsal.png' %}" alt="Hukuk Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600">  </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> E-Hukuk </div> </div> <!-- 8: Eğitim Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/egitim-konumsal.png' %}" alt="Eğitim Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600">  </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> E-Eğitim </div> </div> <!-- 9: Denetim Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/denetim-konumsal.png' %}" alt="Denetim Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600">  </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> E-Denetim </div> </div> <!-- 10: Dış İlişkiler Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/disiliskiler-konumsal.png' %}" alt="Dış İlişkiler Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600">  </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> E-Dış İlişkiler </div> </div> <!-- 11: Satış Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/satis-konumsal.png' %}" alt="Satış Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600">  </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> E-Satış </div> </div> <!-- 12: Satınalma Konumsal --> <div class="group flex flex-col justify-between rounded-3xl border-2 border-[#0066b3] bg-sky-50/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200"> <div class="flex flex-col items-center gap-2 px-6 pt-7 pb-5"> <img src="{% static 'images/satinalma-konumsal.png' %}" alt="Satınalma Konumsal" class="h-14 w-auto mb-1 transition-transform duration-200 group-hover:scale-105"> <div class="text-center leading-tight"> <div class="text-sm md:text-base font-semibold text-slate-900">  </div> <div class="text-sm md:text-base font-semibold text-sky-600">  </div> </div> </div> <div class="bg-slate-500 text-xs md:text-sm text-white text-center py-2.5 rounded-b-3xl"> E-Satın Alma </div> </div> </div> </section> <!-- ========== /ÜRÜN VE ÇÖZÜMLERİMİZ ========== -->
 
 
 
 
 
-<!-- ========== SLIDER / BİZ KİMİZ AYIRICI ========== -->
-<div class="h-3 bg-slate-100 border-y border-slate-300 shadow-[0_-4px_12px_rgba(0,0,0,0.25)]"></div>
 
-<!-- ========== /AYIRICI ========== -->
+
+
+
 
 
 <!-- ========== PROJE ÖRNEKLERİ ========== -->
-<section class="max-w-6xl mx-auto px-4 py-16">
+<section class="max-w-7xl mx-auto px-4 py-16">
   <h2 class="text-center text-sm tracking-[0.3em] text-gray-400 mb-3">
     PROJELERİMİZ
   </h2>
@@ -674,46 +623,73 @@
     Proje Örneklerimiz
   </h3>
 
-  <div class="grid gap-8 md:grid-cols-3">
+  <div class="grid gap-10 md:grid-cols-3">
     <!-- Orman Bilgi Sistemi -->
-    <div class="bg-white shadow-md rounded-xl px-6 py-10 text-center">
-      <h4 class="font-semibold text-lg mb-6">Orman Bilgi Sistemi</h4>
+    <div
+      class="bg-white border border-black/70 rounded-2xl shadow-lg
+             px-10 py-10 text-center
+             flex flex-col items-center justify-between
+             h-[340px]
+             transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl">
+      <h4 class="font-semibold text-lg md:text-xl mb-4">
+        Orman Bilgi Sistemi
+      </h4>
       <img src="{% static 'images/projeler/orman-logo.png' %}"
            alt="Orman Bilgi Sistemi"
-           class="mx-auto mb-6 h-40 object-contain">
+           class="mx-auto mb-4 h-44 md:h-48 object-contain">
       <a href="{% url 'proje_orman' %}"
-         class="inline-block bg-[#00b7b1] hover:bg-[#009b96] text-white text-xs md:text-sm font-semibold px-5 py-2 rounded">
+         class="inline-block bg-[#00b7b1] hover:bg-[#009b96]
+                text-white text-xs md:text-sm font-semibold
+                px-6 py-2 rounded-md">
         Detaylar
       </a>
     </div>
 
     <!-- Milli Emlak Otomasyon Sistemi -->
-    <div class="bg-white shadow-md rounded-xl px-6 py-10 text-center">
-      <h4 class="font-semibold text-lg mb-6">Milli Emlak Otomasyon Sistemi</h4>
-      <img src="{% static 'images/projeler/meop-logo.png' %}"
+    <div
+      class="bg-white border border-black/70 rounded-2xl shadow-lg
+             px-10 py-10 text-center
+             flex flex-col items-center justify-between
+             h-[340px]
+             transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl">
+      <h4 class="font-semibold text-lg md:text-xl mb-4">
+        Milli Emlak Otomasyon Sistemi
+      </h4>
+      <img src="{% static 'images/proje-milli-emlak.png' %}"
            alt="Milli Emlak Otomasyon Sistemi"
-           class="mx-auto mb-6 h-40 object-contain">
+           class="mx-auto mb-4 h-44 md:h-48 object-contain">
       <a href="{% url 'proje_meop' %}"
-         class="inline-block bg-[#00b7b1] hover:bg-[#009b96] text-white text-xs md:text-sm font-semibold px-5 py-2 rounded">
+         class="inline-block bg-[#00b7b1] hover:bg-[#009b96]
+                text-white text-xs md:text-sm font-semibold
+                px-6 py-2 rounded-md">
         Detaylar
       </a>
     </div>
 
     <!-- HEY Portalı -->
-    <div class="bg-white shadow-md rounded-xl px-6 py-10 text-center">
-      <h4 class="font-semibold text-lg mb-6">Hava Emisyon Yönetim Portalı (HEY)</h4>
+    <div
+      class="bg-white border border-black/70 rounded-2xl shadow-lg
+             px-10 py-10 text-center
+             flex flex-col items-center justify-between
+             h-[340px]
+             transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl">
+      <h4 class="font-semibold text-lg md:text-xl mb-4">
+        Hava Emisyon Yönetim Portalı (HEY)
+      </h4>
       <img src="{% static 'images/hey-logo.png' %}"
            alt="Hava Emisyon Yönetim Portalı"
-           class="mx-auto mb-6 h-40 object-contain">
+           class="mx-auto mb-4 h-44 md:h-48 object-contain">
       <a href="{% url 'proje_hey' %}"
-         class="inline-block bg-[#00b7b1] hover:bg-[#009b96] text-white text-xs md:text-sm font-semibold px-5 py-2 rounded">
+         class="inline-block bg-[#00b7b1] hover:bg-[#009b96]
+                text-white text-xs md:text-sm font-semibold
+                px-6 py-2 rounded-md">
         Detaylar
       </a>
     </div>
   </div>
 </section>
-
 <!-- ========== /PROJE ÖRNEKLERİ ========== -->
+
 
 
 <!-- ========== SLIDER SCRIPT ========== -->
@@ -771,5 +747,6 @@
     if (nextBtn) nextBtn.onclick = () => scrollByAmount(1);
   })();
 </script>
+
 
 {% endblock %}

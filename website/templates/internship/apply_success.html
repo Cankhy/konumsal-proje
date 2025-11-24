@@ -1,0 +1,19 @@
+{% extends 'website/base.html' %}
+
+{% block content %}
+<section class="max-w-xl mx-auto px-4 py-12 text-center">
+  <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+    Başvurunuz Alındı
+  </h1>
+  <p class="text-slate-600 mb-6">
+    Teşekkürler {{ application.first_name }} {{ application.last_name }}.
+    Başvurunuz incelemeye alınmıştır. Durumu daha sonra
+    <strong>TC Kimlik + Telefon</strong> bilgileriyle sorgulayabilirsiniz.
+  </p>
+  <a href="{% url 'intern_query' %}"
+     class="inline-flex items-center px-6 py-2 rounded-full
+            bg-[#00b7b1] text-white font-semibold hover:bg-[#009c97]">
+    Başvurumu Sorgula
+  </a>
+</section>
+{% endblock %}

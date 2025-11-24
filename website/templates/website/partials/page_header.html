@@ -1,18 +1,23 @@
 {% load static %}
 
-<section
-    class="relative h-[220px] md:h-[260px] flex items-center justify-center text-center text-white"
-    style="
-        background-image: url('{% static 'images/bg-header-triangles.jpg' %}');
-        background-size: cover;
-        background-position: center;
-    "
->
-    <div class="absolute inset-0 bg-black/25"></div>
+<section class="relative h-52 md:h-64 lg:h-72 overflow-hidden">
+  <!-- Arka plan görseli -->
+  <div class="absolute inset-0">
+    <img src="{% static bg_image %}"
+         alt="{{ title }}"
+         class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-slate-900/60"></div>
+  </div>
 
-    <div class="relative z-10">
-        <h1 class="text-3xl md:text-4xl font-extrabold drop-shadow-lg">
-            {{ title }}
-        </h1>
-    </div>
+  <!-- Metin alanı -->
+  <div class="relative max-w-6xl mx-auto px-4 h-full flex flex-col justify-center">
+    {% if subtitle %}
+      <p class="text-xs tracking-[0.3em] uppercase text-teal-300 mb-2">
+        {{ subtitle }}
+      </p>
+    {% endif %}
+    <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white">
+      {{ title }}
+    </h1>
+  </div>
 </section>

@@ -1,3 +1,17 @@
+/* HEADER MENÜ LİNKLERİ */
+
+/* Normal ve ziyaret edilmiş hal – koyu mavi */
+header nav a,
+header nav a:visited {
+  color: var(--konumsal-blue); /* :root'ta tanımladığımız logodaki mavi */
+  text-decoration: none;       /* Alt çizgi olmasın */
+}
+
+/* Üzerine gelince – biraz daha açık mavi */
+header nav a:hover,
+header nav a:focus {
+  color: var(--konumsal-blue-light);
+}
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -1859,4 +1873,16 @@ video {
     font-size: 3rem;
     line-height: 1;
   }
+}
+
+
+/* ==== Konumsal brand overrides (manual) ==== */
+.text-brand{
+  color:#005b88 !important;
+}
+.bg-brand{
+  background-color:#005b88 !important;
+}
+.border-brand{
+  border-color:#005b88 !important;
 }

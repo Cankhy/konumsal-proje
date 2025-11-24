@@ -77,3 +77,7 @@ def hizmet_edys(request):
 
 def hizmet_gorev(request):
     return render(request, 'website/hizmet_gorev.html')
+
+def login_select(request):
+    return render(request, "auth/login_select.html")
+

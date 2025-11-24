@@ -1,26 +1,138 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}Görev Yönetim Sistemi | Konumsal{% endblock %}
+{% block title %}Görev Yönetim Sistemi{% endblock %}
 
 {% block content %}
-{% include 'website/partials/page_header.html' with title='Görev Yönetim Sistemi' %}
 
-<section class="max-w-6xl mx-auto px-4 py-12 space-y-10">
-  <div class="space-y-4 text-slate-700 leading-relaxed">
-    <p>İş emri, talep ve süreç akışlarını merkezi olarak yönetin. Kanban, takvim ve liste görünümleriyle ekip iş yükünü dengeler; SLA takip ve bildirimler gecikmeleri engeller.</p>
-    <p>Roller, otomasyon kuralları ve entegrasyonlar (e-posta, LDAP/AD, üçüncü parti API) ile operasyon kesintisiz hale gelir.</p>
-  </div>
+<style>
+  /* Diğer hizmet sayfalarıyla aynı tipografi */
+  .svc-typo p,
+  .svc-typo li { font-size:18px; line-height:40px; }
+  .svc-typo p + p { margin-top:6px; }
+  .svc-typo ul { margin-top:6px; }
+  .svc-typo li + li { margin-top:2px; }
+  .svc-typo a, .svc-typo h1, .svc-typo h2, .svc-typo h3, .svc-typo p {
+    text-decoration: none !important;
+  }
 
-  <div class="grid gap-6 md:grid-cols-2">
-    <div class="h-64 rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center border border-dashed border-slate-300">
-      <span class="text-slate-400 text-sm text-center px-4">Görsel 1 – Kanban/iş emri</span>
-      {# <img src="{% static 'images/hizmetler/gorev-1.jpg' %}" alt="Kanban" class="w-full h-full object-cover"> #}
-    </div>
-    <div class="h-64 rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center border border-dashed border-slate-300">
-      <span class="text-slate-400 text-sm text-center px-4">Görsel 2 – SLA/pano</span>
-      {# <img src="{% static 'images/hizmetler/gorev-2.jpg' %}" alt="SLA Panosu" class="w-full h-full object-cover"> #}
-    </div>
-  </div>
+  /* Başlık efekti (gradient + sol neon şerit) – tüm sayfalarla aynı */
+  .svc-title{
+    position:relative; font-weight:800; font-size:28px; line-height:1.15;
+    color:#0f172a; margin:0 0 6px;
+  }
+  .svc-title .flash{
+    background:linear-gradient(90deg,#0ea5e9,#22d3ee,#34d399);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    text-shadow:0 2px 24px rgba(34,211,238,.35);
+  }
+  .svc-title::before{
+    content:""; position:absolute; left:-14px; top:50%; transform:translateY(-50%);
+    width:6px; height:70%; border-radius:9999px;
+    background:linear-gradient(#22d3ee,#14b8a6);
+    box-shadow:0 0 16px rgba(14,165,233,.55);
+  }
+
+  .svc-sub{ font-weight:800; font-size:20px; margin:18px 0 6px; color:#0f172a; }
+
+  /* Görsel kartı – aynı efekt */
+  .svc-img{
+    width:560px; max-width:100%; border-radius:20px;
+    box-shadow:0 20px 60px rgba(2,132,199,.35);
+    outline:2px solid rgba(56,189,248,.22);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  @media (min-width:1024px){ .svc-img{ width:640px; } }
+  .svc-img:hover{ transform:scale(1.02); box-shadow:0 28px 80px rgba(2,132,199,.45); }
+
+  .svc-section{ margin-top:18px; }
+</style>
+
+{# ÜST BANNER – Görev Yönetim Sistemi için hero görseli #}
+<section class="relative w-full h-80 md:h-96">
+  <div class="absolute inset-0 bg-cover bg-center"
+       style="background-image:url('{% static "images/gorev/hero.jpg" %}');"></div>
+  <div class="absolute inset-0 bg-black/35"></div>
 </section>
+
+<section class="max-w-6xl mx-auto px-4 py-10 svc-typo">
+
+  {# Sayfa başlığı #}
+  <div class="text-center mb-10">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide text-slate-900"
+        style="text-shadow:0 4px 10px rgba(15,23,42,.45);">
+      Görev Yönetim Sistemi
+    </h1>
+  </div>
+
+  {# 1. BLOK — Sol metin, sağ görsel #}
+  <div class="grid gap-10 md:grid-cols-2 items-start">
+    <div class="md:pr-6">
+      <div class="svc-section">
+        <h2 class="svc-title">
+          <span class="flash">Görev Yönetim Sistemi Nedir?</span>
+        </h2>
+        <p>
+          Görev Yönetim Sistemi; iş süreçlerinizde yaşadığınız aksaklıkları,
+          gecikmeleri ve iletişim kopukluklarını tek ekrandan takip edebileceğiniz
+          bir yapı sunar. Tanımladığınız görevleri ilgili kullanıcılara atar,
+          sürelerini izler ve gerçekleşen her adımı kayıt altına alır.
+        </p>
+        <p>
+          Modüler mimarisi sayesinde birimlerinizin ihtiyaçlarına göre
+          özelleştirilebilir, yetkiye bağlı olarak kullanıcılar arasında
+          paylaşılabilir. Böylece herkes sadece yetkili olduğu görev ve
+          bölümlere erişir, kritik iş adımlarının kaçırılması engellenir.
+        </p>
+
+        <h3 class="svc-sub">Neler Yapar?</h3>
+        <ul class="list-disc pl-6">
+          <li>
+            Kullanıcı veya birim bazlı günlük, haftalık, aylık ve yıllık durum
+            raporları üreterek tamamlanan, devam eden ve geciken görevleri
+            görünür hâle getirir.
+          </li>
+          <li>
+            Görevlerin başlangıç ve bitiş tarihlerini takip eder, gecikme
+            risklerinde ilgili kullanıcılara uyarı göndererek zamanında
+            tamamlanmasını hedefler.
+          </li>
+          <li>
+            Görev atamalarını sorumlu kişilerle ilişkilendirir; istenirse e-posta
+            ve SMS bildirimleriyle kullanıcıları bilgilendirir.
+          </li>
+          <li>
+            Görevlerle ilgili belge, doküman, görsel ve diğer medya içeriklerini
+            ilişkilendirerek yetkili kişilerin tek ekrandan erişmesini sağlar.
+          </li>
+          <li>
+            Üst ve alt görev ilişkilerini tanımlamanıza imkân verir; alt
+            görevlendirmelerin hangi kullanıcı tarafından, hangi sürede
+            tamamlandığını izleyebilmenizi sağlar.
+          </li>
+          <li>
+            Gelen–giden evraklar ile görevleri ilişkilendirerek, cevap bekleyen
+            yazıların takibini ve arşivlenmesini kolaylaştırır.
+          </li>
+          <li>
+            Süreli işler için (örneğin hatırlatma, gecikme bildirimi gibi)
+            otomatik uyarılar üretir ve operasyonel riskleri azaltır.
+          </li>
+          <li>
+            Duyuru ve ilanlarınızı ilgili kullanıcılara sistem üzerinden iletir,
+            e-posta/SMS bildirimleriyle bilgilendirme sürecini destekler.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex justify-center">
+      <img src="{% static 'images/gorev/section1.jpg' %}" 
+           alt="Görev Yönetim Sistemi ekran görüntüsü" 
+           class="svc-img">
+    </div>
+  </div>
+
+</section>
+
 {% endblock %}

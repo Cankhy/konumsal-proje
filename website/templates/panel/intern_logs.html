@@ -1,0 +1,35 @@
+{% extends "website/base.html" %}
+{% block content %}
+<section class="max-w-4xl mx-auto px-6 py-10">
+  <h1 class="text-2xl md:text-3xl font-bold mb-4">Günlüklerim</h1>
+
+  <form method="post" class="space-y-3 mb-8">
+    {% csrf_token %}
+    <textarea name="content"
+              rows="4"
+              class="w-full border border-slate-300 rounded-md px-3 py-2 text-sm"
+              placeholder="Bugün neler yaptın?"></textarea>
+    <button type="submit"
+            class="px-4 py-2 rounded-md bg-teal-600 text-white text-sm hover:bg-teal-700">
+      Günlüğü Kaydet
+    </button>
+  </form>
+
+  <h2 class="text-lg font-semibold mb-2">Önceki Günlükler</h2>
+  <div class="space-y-3">
+    {% for log in logs %}
+    <div class="border border-slate-200 rounded-md p-3 bg-white shadow-sm">
+      <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+        <span>{{ log.date }}</span>
+        {% if log.score %}
+          <span>Puan: <strong>{{ log.score }}</strong></span>
+        {% endif %}
+      </div>
+      <p class="text-sm whitespace-pre-line">{{ log.content }}</p>
+    </div>
+    {% empty %}
+      <p class="text-sm text-slate-500">Henüz günlük girmediniz.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -42,14 +42,14 @@
 
   /* ---- Görsel kartı – daha büyük + vurgu ---- */
   .erp-img{
-    width:560px;            /* masaüstü için daha büyük */
+    width:560px;
     max-width:100%;
     border-radius:20px;
     box-shadow:0 20px 60px rgba(2,132,199,.35);
     outline:2px solid rgba(56,189,248,.22);
     transition:transform .35s ease, box-shadow .35s ease;
   }
-  @media (min-width:1024px){ .erp-img{ width:640px; } }  /* geniş ekranlarda daha büyük */
+  @media (min-width:1024px){ .erp-img{ width:640px; } }
   .erp-img:hover{
     transform:scale(1.02);
     box-shadow:0 28px 80px rgba(2,132,199,.45);
@@ -79,61 +79,64 @@
     </p>
   </div>
 
-  {# Sol metin – sağ büyük görsel #}
+  {# BLOK 1 – Sol metin / sağ görsel #}
   <div class="grid gap-10 md:grid-cols-2 items-start">
     <div class="md:pr-6">
 
       <div class="erp-section">
-        
         <h2 class="erp-title"><span class="flash">ERP Nedir?</span></h2>
-
         <p>
-         Kurumsal Kaynak Planlama Sistemleri (ERP), adından da anlaşılacağı üzere bir organizasyonun elinde bulunan kaynakları en etkili şekilde planlaması ve yönetmesi anlamını taşır. Bir organizasyonun elinde bulunan kaynakları etkin kullanımı ise işletmenin verimliliği ile doğrudan ilgilidir. İşletmeler, faaliyetlerini başlatmak ve idame ettirmek amacıyla yaptıkları yatırımları etkin kullandıklarında, hedeflerini gerçekleştirmeleri daha kolay hale gelmektedir. Aksi durumda ise yapılan yatırımlardan beklenen verimi tam anlamıyla alamama ihtimali ortaya çıkmaktadır.
+          Kurumsal Kaynak Planlama Sistemleri (ERP), adından da anlaşılacağı üzere bir organizasyonun elinde bulunan kaynakları en etkili şekilde planlaması ve yönetmesi anlamını taşır. Bir organizasyonun elinde bulunan kaynakları etkin kullanımı ise işletmenin verimliliği ile doğrudan ilgilidir. İşletmeler, faaliyetlerini başlatmak ve idame ettirmek amacıyla yaptıkları yatırımları etkin kullandıklarında, hedeflerini gerçekleştirmeleri daha kolay hale gelmektedir. Aksi durumda ise yapılan yatırımlardan beklenen verimi tam anlamıyla alamama ihtimali ortaya çıkmaktadır.
         </p>
       </div>
 
       <div class="erp-section">
-        
         <h3 class="erp-title"><span class="flash">Neyi Amaçlar?</span></h3>
-
         <p>
-         Günümüzde yazılım teknolojisinin işletmeler için olmazsa olmaz yatırımlar arasına girmesiyle, Kurumsal Kaynak Planlama sistemleri çok önemli bir yere sahip olmuştur. İşletmelerin bu sistemler ile elinde bulunan kaynaklara hükmetmesi ve bu kaynakları takip etmesi kolaylaşmıştır. Aynı zamanda böyle bir sistemin varlığı işletmedeki süreçleri standart hale getirmekte ve yeni alınan personellerin oryantasyonunda büyük faydalar sağlanmaktadır.
-
-Kurumsal Kaynak Planlama Sistemleri içerisinde barındırdığı özellik ve ürettiği sonuçlarla, hem işletmelerin faaliyetlerini gerçekleştirirken bir başvuru kaynağı olur hem de yöneticilerin ileriye dönük karar almalarında yol gösterir. Düşünün ki bir işletmenin elinde bulunan kaynakların kapasitesi ve veriminin istenilen anda öğlenilebilecek olması, bir yöneticinin işine yarar mı? Eğer cevabınız evet ise ERP sistemleri bu verileri üretebilmek amacıyla oluşturulmuştur.
+          Günümüzde yazılım teknolojisinin işletmeler için olmazsa olmaz yatırımlar arasına girmesiyle, Kurumsal Kaynak Planlama sistemleri çok önemli bir yere sahip olmuştur. İşletmelerin bu sistemler ile elinde bulunan kaynaklara hükmetmesi ve bu kaynakları takip etmesi kolaylaşmıştır. Aynı zamanda böyle bir sistemin varlığı işletmedeki süreçleri standart hale getirmekte ve yeni alınan personellerin oryantasyonunda büyük faydalar sağlanmaktadır.
+          <br><br>
+          Kurumsal Kaynak Planlama Sistemleri içerisinde barındırdığı özellik ve ürettiği sonuçlarla, hem işletmelerin faaliyetlerini gerçekleştirirken bir başvuru kaynağı olur hem de yöneticilerin ileriye dönük karar almalarında yol gösterir. Düşünün ki bir işletmenin elinde bulunan kaynakların kapasitesi ve veriminin istenilen anda öğlenilebilecek olması, bir yöneticinin işine yarar mı? Eğer cevabınız evet ise ERP sistemleri bu verileri üretebilmek amacıyla oluşturulmuştur.
         </p>
       </div>
 
     </div>
 
     <div class="flex justify-center">
-      <img src="{% static 'images/erp-section1.jpg' %}" alt="ERP çalışma ekranı" class="erp-img">
+      <img src="{% static 'images/erp/section1.jpg' %}" alt="ERP çalışma ekranı" class="erp-img">
     </div>
   </div>
 
-  {# Neden İhtiyaç Duyulur? #}
-  <div class="erp-section">
-    
-    <h2 class="erp-title"><span class="flash">Neden İhtiyaç Duyulur?</span></h2>
+  {# BLOK 2 – Sol görsel / sağ metin (Neden İhtiyaç Duyulur?) #}
+  <div class="grid gap-10 md:grid-cols-2 items-start erp-section mt-12">
+    {# Sol: görsel #}
+    <div class="flex justify-center md:justify-start">
+      <img src="{% static 'images/erp/section2.jpg' %}" alt="ERP ihtiyaçları ve süreçler" class="erp-img">
+    </div>
 
-    <p>
-      Büyük küçük tüm işletmeler, büyüyen ihtiyaçlarını karşılayabilmek, sağlıklı öngörüler ve olasılıkları göz önüne alarak simülasyon yapabilmek ve ortaya çıkan sonuçlara göre doğru karar verebilmek için ERP'ye ihtiyaç duyuyor. Bunun temel nedenlerini aşağıda sıralayabiliriz;
-    </p>
+    {# Sağ: metin #}
+    <div class="md:pl-6">
+      <h2 class="erp-title"><span class="flash">Neden İhtiyaç Duyulur?</span></h2>
 
-    <ul class="list-disc pl-6">
-      <li>Daha az maliyetle aynı ürünü veya hizmeti nasıl üretebilirim?</li>
-      <li>Daha iyi planlama yaparak üretimi nasıl dengeleyebilirim?</li>
-      <li>Stoklarımı ve maliyetlerimi anlık ve doğru olarak nasıl görebilirim?</li>
-      <li>Mevcut ve doğru stoklarımla daha iyi malzeme ihtiyaç planlaması nasıl yapabilirim?</li>
-      <li>İş süreç ve onaylarımı dijital ortamda nasıl yönetebilirim?</li>
-      <li>Sevkiyatı iyi planlayarak termin tarihlerine nasıl uyabilirim?</li>
-      <li>Tedarik zincirimi daha verimli nasıl yönetebilirim?</li>
-      <li>Nakit akışını nasıl etkin yönetebilirim?</li>
-      <li>Gelir–gider analizleri ile bütçemi nasıl planlar, gerçekleşeni nasıl izleyebilirim?</li>
-      <li>Projelerimi nasıl planlar ve yönetirim?</li>
-      <li>Çalışanlarımın iş birliğini nasıl artırabilirim?</li>
-      <li>“Müşteri Kraldır” anlayışı ile müşteri ilişkilerini; satış öncesi ve sonrası hizmetleri nasıl takip ederim?</li>
-      <li>Belgelerimi raflarda, dosyalarda değil dijital ortamda nasıl saklayabilirim?</li>
-    </ul>
+      <p>
+        Büyük küçük tüm işletmeler, büyüyen ihtiyaçlarını karşılayabilmek, sağlıklı öngörüler ve olasılıkları göz önüne alarak simülasyon yapabilmek ve ortaya çıkan sonuçlara göre doğru karar verebilmek için ERP'ye ihtiyaç duyuyor. Bunun temel nedenlerini aşağıda sıralayabiliriz;
+      </p>
+
+      <ul class="list-disc pl-6 mt-3">
+        <li>Daha az maliyetle aynı ürünü veya hizmeti nasıl üretebilirim?</li>
+        <li>Daha iyi planlama yaparak üretimi nasıl dengeleyebilirim?</li>
+        <li>Stoklarımı ve maliyetlerimi anlık ve doğru olarak nasıl görebilirim?</li>
+        <li>Mevcut ve doğru stoklarımla daha iyi malzeme ihtiyaç planlaması nasıl yapabilirim?</li>
+        <li>İş süreç ve onaylarımı dijital ortamda nasıl yönetebilirim?</li>
+        <li>Sevkiyatı iyi planlayarak termin tarihlerine nasıl uyabilirim?</li>
+        <li>Tedarik zincirimi daha verimli nasıl yönetebilirim?</li>
+        <li>Nakit akışını nasıl etkin yönetebilirim?</li>
+        <li>Gelir–gider analizleri ile bütçemi nasıl planlar, gerçekleşeni nasıl izleyebilirim?</li>
+        <li>Projelerimi nasıl planlar ve yönetirim?</li>
+        <li>Çalışanlarımın iş birliğini nasıl artırabilirim?</li>
+        <li>“Müşteri Kraldır” anlayışı ile müşteri ilişkilerini; satış öncesi ve sonrası hizmetleri nasıl takip ederim?</li>
+        <li>Belgelerimi raflarda, dosyalarda değil dijital ortamda nasıl saklayabilirim?</li>
+      </ul>
+    </div>
   </div>
 
 </section>

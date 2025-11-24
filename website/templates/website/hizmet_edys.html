@@ -1,0 +1,173 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Elektronik Doküman Yönetim Sistemi{% endblock %}
+
+{% block content %}
+
+<style>
+  /* Diğer hizmet sayfalarıyla aynı tipografi */
+  .svc-typo p,
+  .svc-typo li { font-size:18px; line-height:40px; }
+  .svc-typo p + p { margin-top:6px; }
+  .svc-typo ul { margin-top:6px; }
+  .svc-typo li + li { margin-top:2px; }
+  .svc-typo a, .svc-typo h1, .svc-typo h2, .svc-typo h3, .svc-typo p {
+    text-decoration: none !important;
+  }
+
+  /* Başlık efekti (gradient + sol neon şerit) – Siber ile birebir */
+  .svc-title{
+    position:relative; font-weight:800; font-size:28px; line-height:1.15;
+    color:#0f172a; margin:0 0 6px;
+  }
+  .svc-title .flash{
+    background:linear-gradient(90deg,#0ea5e9,#22d3ee,#34d399);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    text-shadow:0 2px 24px rgba(34,211,238,.35);
+  }
+  .svc-title::before{
+    content:""; position:absolute; left:-14px; top:50%; transform:translateY(-50%);
+    width:6px; height:70%; border-radius:9999px;
+    background:linear-gradient(#22d3ee,#14b8a6);
+    box-shadow:0 0 16px rgba(14,165,233,.55);
+  }
+
+  .svc-sub{ font-weight:800; font-size:20px; margin:18px 0 6px; color:#0f172a; }
+
+  /* Görsel kartı */
+  .svc-img{
+    width:560px; max-width:100%; border-radius:20px;
+    box-shadow:0 20px 60px rgba(2,132,199,.35);
+    outline:2px solid rgba(56,189,248,.22);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  @media (min-width:1024px){ .svc-img{ width:640px; } }
+  .svc-img:hover{ transform:scale(1.02); box-shadow:0 28px 80px rgba(2,132,199,.45); }
+
+  .svc-section{ margin-top:18px; }
+</style>
+
+{# ÜST BANNER – EDYS için hero görseli #}
+<section class="relative w-full h-80 md:h-96">
+  <div class="absolute inset-0 bg-cover bg-center"
+       style="background-image:url('{% static "images/edys/hero.jpg" %}');"></div>
+  <div class="absolute inset-0 bg-black/35"></div>
+</section>
+
+<section class="max-w-6xl mx-auto px-4 py-10 svc-typo">
+
+  {# Sayfa başlığı #}
+  <div class="text-center mb-10">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide text-slate-900"
+        style="text-shadow:0 4px 10px rgba(15,23,42,.45);">
+      Elektronik Doküman Yönetim Sistemi
+    </h1>
+  </div>
+
+  {# 1. BLOK — EDYS Nedir? + Avantajlar (sağda görsel) #}
+  <div class="grid gap-10 md:grid-cols-2 items-start">
+    <div class="md:pr-6">
+      <div class="svc-section">
+        <h2 class="svc-title">
+          <span class="flash">EDYS Nedir?</span>
+        </h2>
+        <p>
+          Belge yönetimi, “kağıtsız ofis” yaklaşımı ile kurum veya organizasyon
+          içinde üretilen ve farklı kullanıcılar tarafından kullanılan tüm
+          belgelerin yaşam döngüsü boyunca elektronik ortamda saklanması ve
+          etkin şekilde yönetilmesini sağlar.
+        </p>
+        <p>
+          EDYS ile belgeler kayıt altına alınır, sınıflandırılır, yetkilendirilir,
+          iş akışlarına bağlanır ve süreç boyunca izlenebilir hale gelir. Böylece
+          hem operasyonel verimlilik artar hem de mevzuata uyum sağlanır.
+        </p>
+
+        <h3 class="svc-sub">Avantajlar</h3>
+        <ul class="list-disc pl-6">
+          <li>Belge oluşturma ve saklama maliyetlerinin azalmasını sağlar.</li>
+          <li>Belge akışını hızlı ve doğru şekilde sonuçlandırır.</li>
+          <li>Süreçlerde tıkanan noktaları raporlayarak görünür hale getirir.</li>
+          <li>Birden fazla kullanıcının aynı anda aynı bilgiye erişmesini sağlar.</li>
+          <li>Yetkisiz kişilerin dokümanlara erişimini engeller.</li>
+          <li>Kırtasiye giderlerini azaltır, iş gücü maliyetini düşürür.</li>
+          <li>Güvenli ve mekandan bağımsız erişim imkânı sunar.</li>
+          <li>Süreç ve dokümanlarda standardizasyon oluşturur.</li>
+          <li>Saklanan belgeyi, yönetilen bilgiye dönüştürür.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex justify-center">
+      <img src="{% static 'images/edys/section1.jpg' %}" alt="EDYS ekranları"
+           class="svc-img">
+    </div>
+  </div>
+
+  {# 2. BLOK — Amacımız (full width metin) #}
+  <div class="svc-section">
+    <h2 class="svc-title">
+      <span class="flash">Amacımız</span>
+    </h2>
+    <p>
+      EDYS, kâğıt ortamındaki belgeleri elektronik belge hâline dönüştürmek,
+      dönüştürülen belgelerin ve yeni oluşturulan dokümanların iş akışlarını
+      ve dolaşımını yönetmek, belgeleri güvenli dijital ambarlarda saklamak
+      ve ihtiyaç duyulduğunda ilgili kullanıcıların hızlı bir şekilde erişmesini
+      sağlamak amacıyla tasarlanmıştır.
+    </p>
+    <p>
+      Sistem, belge oluşturma, izleme, depolama, erişim, dağıtım ve arşivleme
+      gibi süreçlerde kullanılan kaynakları minimuma indirir; kurum genelinde
+      süreç ve dokümanlarda standart bir yapı oluşturur.
+    </p>
+  </div>
+
+  {# 3. BLOK — Evrak Yönetim Sistemi #}
+  <div class="svc-section">
+    <h2 class="svc-title">
+      <span class="flash">Evrak Yönetim Sistemi</span>
+    </h2>
+    <p>
+      Kurum içinde evrakların kaydı, havalesi, aranması, yetkilendirilmesi ve
+      raporlanması gibi işlemler için kullanılır. Evraklar sisteme kaydedildikten
+      sonra iş akışına göre ilgili birimlere otomatik olarak yönlendirilir.
+    </p>
+    <ul class="list-disc pl-6">
+      <li>T.C. mevzuatına uygunluk</li>
+      <li>Otomatik evrak numarası</li>
+      <li>Tanımlı şablonları kullanma</li>
+      <li>Vekalet tanımlama</li>
+      <li>Evraklara ilgi bağlama</li>
+      <li>Süreli evraklarda uyarma</li>
+      <li>E-imza entegrasyonu</li>
+      <li>Mobil imza entegrasyonu</li>
+      <li>KEP entegrasyonu</li>
+    </ul>
+  </div>
+
+  {# 4. BLOK — Arşiv Yönetim Sistemi #}
+  <div class="svc-section">
+    <h2 class="svc-title">
+      <span class="flash">Arşiv Yönetim Sistemi</span>
+    </h2>
+    <p>
+      Kurumların evraklar dışında kalan diğer belgelerini güvenli ve erişilebilir
+      şekilde arşivlemelerini sağlar. Farklı belge türleri ve veri alanları
+      için esnek tanımlamalar yapılabilir.
+    </p>
+    <ul class="list-disc pl-6">
+      <li>Versiyon kontrolü</li>
+      <li>Tam metin arama</li>
+      <li>Eş anlama göre sorgulama</li>
+      <li>Tanımlanabilir veri alanları</li>
+      <li>Doküman kilitleme</li>
+      <li>Grup ve kullanıcı bazlı yetkilendirme</li>
+      <li>Elektronik zımbalama</li>
+    </ul>
+  </div>
+
+</section>
+
+{% endblock %}

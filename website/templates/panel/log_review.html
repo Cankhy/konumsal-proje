@@ -1,0 +1,28 @@
+{% extends "website/base.html" %}
+{% block content %}
+<section class="max-w-xl mx-auto px-6 py-10">
+  <h1 class="text-2xl font-bold mb-4">Günlük Değerlendirme</h1>
+
+  <div class="mb-4 border border-slate-200 rounded-md p-3 bg-white shadow-sm">
+    <p class="text-xs text-slate-400 mb-1">
+      {{ log.intern.get_full_name|default:log.intern.username }} – {{ log.date }}
+    </p>
+    <p class="text-sm whitespace-pre-line">{{ log.content }}</p>
+  </div>
+
+  <form method="post" class="space-y-3">
+    {% csrf_token %}
+    <label class="block text-sm font-medium text-slate-700">
+      Puan (1–10)
+    </label>
+    <input type="number" name="score" min="1" max="10"
+           value="{{ log.score|default_if_none:'' }}"
+           class="border border-slate-300 rounded-md px-3 py-2 w-32 text-sm">
+
+    <button type="submit"
+            class="ml-2 px-4 py-2 rounded-md bg-teal-600 text-white text-sm hover:bg-teal-700">
+      Kaydet
+    </button>
+  </form>
+</section>
+{% endblock %}

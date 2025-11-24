@@ -1,33 +1,127 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}Veri Sayısallaştırma | Konumsal{% endblock %}
+{% block title %}Veri Sayısallaştırma Hizmetleri{% endblock %}
 
 {% block content %}
 
-{% include 'website/partials/page_header.html' with title='Veri Sayısallaştırma' %}
+<style>
+  /* Siber/UYS ile aynı tipografi */
+  .svc-typo p,
+  .svc-typo li { font-size:18px; line-height:40px; }
+  .svc-typo p + p { margin-top:6px; }
+  .svc-typo ul { margin-top:6px; }
+  .svc-typo li + li { margin-top:2px; }
+  .svc-typo a, .svc-typo h1, .svc-typo h2, .svc-typo h3, .svc-typo p {
+    text-decoration: none !important;
+  }
 
-<section class="max-w-6xl mx-auto px-4 py-12 space-y-10">
+  /* Başlık efekti (gradient + sol neon şerit) – Siber ile birebir aynı */
+  .svc-title{
+    position:relative; font-weight:800; font-size:28px; line-height:1.15;
+    color:#0f172a; margin:0 0 6px;
+  }
+  .svc-title .flash{
+    background:linear-gradient(90deg,#0ea5e9,#22d3ee,#34d399);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    text-shadow:0 2px 24px rgba(34,211,238,.35);
+  }
+  .svc-title::before{
+    content:""; position:absolute; left:-14px; top:50%; transform:translateY(-50%);
+    width:6px; height:70%; border-radius:9999px;
+    background:linear-gradient(#22d3ee,#14b8a6);
+    box-shadow:0 0 16px rgba(14,165,233,.55);
+  }
 
-  <div class="space-y-4 text-slate-700 leading-relaxed">
-    <p>
-      Analog/dijital karma veri varlıklarınızı kurumsal standartlara uygun hale getiriyoruz.
-      Tarama, OCR/ICR, indeksleme, doğrulama ve arşivleme süreçlerini otomasyon ile entegre ederek
-      arama bulunurluğunu ve süreç hızını artırıyoruz.
-    </p>
-    <p>
-      Doküman yaşam döngüsü yönetimi, veri kalite kuralları ve erişim politikaları ile sürdürülebilir
-      bir bilgi mimarisi tesis ediyoruz.
-    </p>
+  /* Alt başlık (madde başlıkları) */
+  .svc-sub{ font-weight:800; font-size:20px; margin:18px 0 6px; color:#0f172a; }
+
+  /* Görsel kartı – Siber’deki kart ile aynı */
+  .svc-img{
+    width:560px; max-width:100%; border-radius:20px;
+    box-shadow:0 20px 60px rgba(2,132,199,.35);
+    outline:2px solid rgba(56,189,248,.22);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  @media (min-width:1024px){ .svc-img{ width:640px; } }
+  .svc-img:hover{ transform:scale(1.02); box-shadow:0 28px 80px rgba(2,132,199,.45); }
+
+  .svc-section{ margin-top:18px; }
+</style>
+
+{# ÜST BANNER – Veri sayfana özel hero görseli #}
+<section class="relative w-full h-80 md:h-96">
+  <div class="absolute inset-0 bg-cover bg-center"
+       style="background-image:url('{% static "images/veri/hero.jpg" %}');"></div>
+  <div class="absolute inset-0 bg-black/35"></div>
+</section>
+
+<section class="max-w-6xl mx-auto px-4 py-10 svc-typo">
+
+  {# Sayfa başlığı #}
+  <div class="text-center mb-10">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide text-slate-900"
+        style="text-shadow:0 4px 10px rgba(15,23,42,.45);">
+      Veri Sayısallaştırma Hizmetleri
+    </h1>
   </div>
 
-  <div class="grid gap-6 md:grid-cols-2">
-    <div class="h-64 rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center border border-dashed border-slate-300">
-      <span class="text-slate-400 text-sm text-center px-4">Görsel 1 – OCR/indeksleme iş akışı</span>
+  {# 1. BLOK — Sol metin, sağ görsel (Veri Sayısallaştırma Nedir?) #}
+  <div class="grid gap-10 md:grid-cols-2 items-start">
+    <div class="md:pr-6">
+      <div class="svc-section">
+        <h2 class="svc-title">
+          <span class="flash">Veri Sayısallaştırma Nedir?</span>
+        </h2>
+        <p>
+          Kurumların arşivlerinde birikmiş fiziksel belgelerin, deneyimli ekipler ve uygun
+          donanım ile hızlı ve güvenli şekilde dijital ortama aktarılması sürecidir. Amaç;
+          evraklara sadece saklama değil, <strong>erişilebilirlik, raporlanabilirlik ve güvenlik</strong>
+          kazandırmaktır.
+        </p>
+        <p>
+          Bu süreçte dokümanlar tasnif edilir, uygun çözünürlük ve formatta taranır, kalite
+          kontrol aşamalarından geçirilir ve içerik bilgileri indekslenerek kurumsal
+          belgeleme/arsiv sistemlerine entegre edilir. Böylece kurum, geçmişe yönelik
+          binlerce belgesine birkaç tık ile ulaşabilir hale gelir.
+        </p>
+      </div>
     </div>
-    <div class="h-64 rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center border border-dashed border-slate-300">
-      <span class="text-slate-400 text-sm text-center px-4">Görsel 2 – Arşiv mimarisi / kalite kontrol paneli</span>
+
+    <div class="flex justify-center">
+      <img src="{% static 'images/veri/section1.jpg' %}" alt="Veri sayısallaştırma süreci"
+           class="svc-img">
     </div>
+  </div>
+
+  {# 2. BLOK — Hizmet kapsamı listesi #}
+  <div class="svc-section">
+    <h2 class="svc-title">
+      <span class="flash">Hizmet Kapsamında Yapılan Çalışmalar</span>
+    </h2>
+    <ul class="list-disc pl-6">
+      <li>Fiziksel dokümanların taramaya uygun şekilde sınıflandırılması ve hazırlanması,</li>
+      <li>Belge türüne ve boyutuna göre uygun tarayıcılarla yüksek kaliteli görüntü alınması,</li>
+      <li>Tarama sonrası görüntü iyileştirme, kırpma ve netleştirme işlemlerinin yapılması,</li>
+      <li>Belgelere ait indeks alanlarının tanımlanması ve veri girişinin gerçekleştirilmesi,</li>
+      <li>Kalite kontrol adımları ile hem görüntü hem de veri doğruluğunun teyit edilmesi,</li>
+      <li>Onaylanan dokümanların kurumsal belge/arsiv yönetim sistemine aktarılması.</li>
+    </ul>
+  </div>
+
+  {# 3. BLOK — Neden Veri Sayısallaştırma? #}
+  <div class="svc-section">
+    <h2 class="svc-title">
+      <span class="flash">Neden Veri Sayısallaştırma?</span>
+    </h2>
+    <ul class="list-disc pl-6">
+      <li>Yüksek hacimli fiziksel arşivler için ek personel ve alan ihtiyacını azaltır,</li>
+      <li>Profesyonel tarama donanımı ve yazılımlar ile operasyon maliyetlerini düşürür,</li>
+      <li>Dokümanlara hızlı erişim sağlayarak karar alma ve iş süreçlerini hızlandırır,</li>
+      <li>Yetkilendirme ve izleme mekanizmaları ile bilgi güvenliği seviyesini yükseltir,</li>
+      <li>Diğer kurumsal sistemlerle entegrasyon sayesinde tekil ve güncel veri yapısı sağlar,</li>
+      <li>Olası afet, kayıp veya hasar durumlarında kritik kurumsal bilginin korunmasına yardımcı olur.</li>
+    </ul>
   </div>
 
 </section>
