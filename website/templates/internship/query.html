@@ -1,39 +1,89 @@
-{% extends 'website/base.html' %}
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Başvuru Sorgulama{% endblock %}
 
 {% block content %}
-<section class="max-w-3xl mx-auto px-4 py-12">
-  <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-    Başvuru Sorgulama
-  </h1>
-
-  <form method="post" class="space-y-4 bg-white rounded-2xl shadow p-6 mb-8">
-    {% csrf_token %}
-    {% for field in form %}
-      <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1">
-          {{ field.label }}
-        </label>
-        {{ field }}
-        {% if field.errors %}
-          <p class="text-xs text-red-600 mt-1">{{ field.errors|striptags }}</p>
-        {% endif %}
+<section class="portal-page mx-auto w-full max-w-6xl py-8">
+  <div class="portal-hero form-hero mb-8">
+    <div class="portal-hero-copy">
+      <p class="portal-kicker">BAŞVURU SORGULAMA</p>
+      <h1>Başvuru Durumunu Kontrol Et</h1>
+      <p class="portal-subline">TC kimlik numaran ve başvuruda kullandığın telefon bilgisiyle güncel süreci birkaç saniyede görüntüle.</p>
+      <div class="portal-identity-grid">
+        <article class="portal-mini-card">
+          <span>Bilgi</span>
+          <strong>TC Kimlik No</strong>
+          <small>11 haneli başvuru bilgisi</small>
+        </article>
+        <article class="portal-mini-card">
+          <span>Doğrulama</span>
+          <strong>Telefon Bilgisi</strong>
+          <small>Başvuruda verdiğin numara</small>
+        </article>
+        <article class="portal-mini-card">
+          <span>Sonuç</span>
+          <strong>Anlık Durum</strong>
+          <small>Onay, bekleme veya ret</small>
+        </article>
       </div>
-    {% endfor %}
-    <button type="submit"
-            class="mt-4 inline-flex items-center px-6 py-2 rounded-full
-                   bg-slate-800 text-white font-semibold hover:bg-slate-900">
-      Sorgula
-    </button>
-  </form>
-
-  {% if result %}
-    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-      <h2 class="text-xl font-semibold mb-2">Başvuru Bilgileri</h2>
-      <p><strong>Ad Soyad:</strong> {{ result.first_name }} {{ result.last_name }}</p>
-      <p><strong>Okul / Bölüm:</strong> {{ result.school }} / {{ result.department }}</p>
-      <p><strong>Durum:</strong> {{ result.get_status_display }}</p>
-      <p><strong>Başvuru Tarihi:</strong> {{ result.created_at|date:"d.m.Y" }}</p>
     </div>
-  {% endif %}
+    <div class="portal-hero-actions">
+      <a href="{% url 'internship:intern_apply' %}" class="portal-secondary-btn">Yeni Başvuru</a>
+    </div>
+  </div>
+
+  <div class="query-layout">
+    <div class="query-card">
+      <p class="portal-kicker">SORGULAMA FORMU</p>
+      <h2>Bilgilerini gir</h2>
+      <p class="query-help">Başvuruda kullandığın TC kimlik numarası ve telefon bilgisi ile kayıt durumunu kontrol edebilirsin.</p>
+      <form method="post" class="space-y-5">
+        {% csrf_token %}
+        {% for field in form %}
+          <div>
+            <label class="mb-2 block text-sm font-semibold text-slate-700">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <p class="mt-2 text-xs font-medium text-rose-700">{{ field.errors|striptags }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="portal-primary-btn w-full justify-center">Durumu Sorgula</button>
+      </form>
+    </div>
+
+    <div class="query-card">
+      {% if result %}
+        <p class="text-xs font-semibold tracking-[0.35em] text-emerald-500 uppercase">Sonuç</p>
+        <h2 class="mt-3 text-2xl font-semibold text-slate-900">{{ result.first_name }} {{ result.last_name }}</h2>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            <p class="text-sm text-slate-500">Durum</p>
+            <p class="mt-2 text-base font-semibold text-slate-900">{{ result.get_status_display }}</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            <p class="text-sm text-slate-500">Başvuru Tarihi</p>
+            <p class="mt-2 text-base font-semibold text-slate-900">{{ result.created_at|date:"d.m.Y" }}</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:col-span-2">
+            <p class="text-sm text-slate-500">Okul / Bölüm</p>
+            <p class="mt-2 text-base font-semibold text-slate-900">{{ result.school }} / {{ result.department }}</p>
+          </div>
+        </div>
+      {% else %}
+        <div class="portal-empty-state query-empty">
+          <span>?</span>
+          <h3>Henüz sorgulama yapılmadı</h3>
+          <p>Bilgilerinizi girip sorgulama yaptığınızda başvuru durumunuz burada görünecek.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="process-grid">
+    <article><span>01</span><h3>Başvuru Alındı</h3><p>Form ve CV sisteme kaydedilir.</p></article>
+    <article><span>02</span><h3>Değerlendirme Süreci</h3><p>Personel ekibi bilgileri ve uygunluğu kontrol eder.</p></article>
+    <article><span>03</span><h3>Onay / Ret Bildirimi</h3><p>Sonuç durum ekranından takip edilebilir.</p></article>
+  </div>
 </section>
 {% endblock %}

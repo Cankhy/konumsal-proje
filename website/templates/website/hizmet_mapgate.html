@@ -1,0 +1,159 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Coğrafi Veri Servis Yönetim Sistemi - MapGate{% endblock %}
+
+{% block content %}
+
+<style>
+  .svc-typo p,
+  .svc-typo li { font-size: 18px; line-height: 40px; }
+  .svc-typo p + p { margin-top: 6px; }
+  .svc-typo ul { margin-top: 6px; }
+  .svc-typo li + li { margin-top: 2px; }
+  .svc-typo a, .svc-typo h1, .svc-typo h2, .svc-typo h3, .svc-typo p {
+    text-decoration: none !important;
+  }
+  .service-hero {
+    position: relative;
+    min-height: 340px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .service-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.52);
+  }
+</style>
+
+<section class="service-hero flex items-center justify-center text-white"
+         style="background-image: url('{% static 'images/slider/slide-mapgate.jpg' %}');">
+  <div class="relative z-10 max-w-5xl mx-auto px-4 py-20 text-center">
+    <h1 class="text-3xl md:text-5xl font-extrabold tracking-wide">
+      Coğrafi Veri Servis Yönetim Sistemi - MapGate
+    </h1>
+    <p class="mt-4 max-w-4xl mx-auto text-sm md:text-lg leading-7 md:leading-8">
+      GeoServer, GDAL ve açık standartlara dayalı WMS/WFS servis mimarileri ile mekânsal veri servislerinin yönetimi, PostGIS altyapısı ve kurumsal coğrafi veri entegrasyonu.
+    </p>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-4 py-10 svc-typo">
+
+  <header class="hidden">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide text-slate-900"
+        style="text-shadow: 0 4px 10px rgba(15,23,42,.45);">
+      Coğrafi Veri Servis Yönetim Sistemi - MapGate
+    </h1>
+  </header>
+
+  <div class="rounded-3xl bg-white p-7 md:p-10">
+
+    <p class="text-base md:text-lg text-slate-700 leading-relaxed">
+      Coğrafi Veri Servis Yönetim Sistemi; kurumların mekânsal verilerini standart web servisleri üzerinden yayımlamasını, farklı kaynaklardan gelen harita ve katman verilerinin tek bir platformda yönetilmesini ve açık standartlara (WMS, WFS, WMTS) uyumlu servis mimarilerinin kurulmasını sağlar.
+    </p>
+
+    <h2 class="mt-10 text-xl md:text-2xl font-extrabold text-slate-900">
+      Neler Sunuyoruz?
+    </h2>
+
+    <ul class="mt-4 space-y-4 text-slate-700">
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>GeoServer tabanlı harita servisleri:</b> Açık kaynak coğrafi sunucu yazılımı ile WMS (Web Map Service) ve WFS (Web Feature Service) servislerinin kurulması, mevcut veri kaynaklarının (PostGIS, shapefile, GeoPackage) yayına alınması.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>GDAL ile veri dönüşümü ve işleme:</b> Farklı formatlardaki mekânsal verilerin dönüştürülmesi, koordinat sistemleri uyumluluğu ve toplu veri işleme süreçleri.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>PostGIS altyapısı:</b> Mekânsal veritabanı tasarımı, indeksleme ve performans optimizasyonu; kurumsal coğrafi veri deposunun açık kaynak teknolojilerle yönetimi.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>Entegrasyon ve API yönetimi:</b> Üçüncü parti CBS yazılımları, web ve mobil uygulamalarla entegrasyon; tek noktadan servis yayını ve erişim kontrolü.</span>
+      </li>
+    </ul>
+
+    <p class="mt-10 text-base md:text-lg text-slate-700 leading-relaxed">
+      Bu sistem sayesinde kurumlar, lisans maliyetlerini düşürerek coğrafi veri servislerini merkezi ve ölçeklenebilir bir yapıda sunabilir; açık standartlara dayalı mimari ile gelecekteki entegrasyonlara hazır bir altyapı oluşturabilir.
+    </p>
+
+    <section id="goruseme" class="mt-14">
+      <div class="rounded-3xl bg-white p-7 md:p-10">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+          Görüşme Talep Ediniz
+        </h2>
+        <p class="mt-2 text-sm md:text-base text-slate-600">
+          İhtiyacınızı iletin, ekibimiz dönüş yapsın.
+        </p>
+
+        <form method="post" action="#" class="mt-8 grid gap-5">
+          {% csrf_token %}
+
+          <div class="grid gap-5 md:grid-cols-2">
+            <div>
+              <label class="text-sm font-semibold text-slate-700">Ad Soyad *</label>
+              <input type="text" required
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-sky-200" />
+            </div>
+
+            <div>
+              <label class="text-sm font-semibold text-slate-700">E-posta *</label>
+              <input type="email" required
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-sky-200" />
+            </div>
+          </div>
+
+          <div class="grid gap-5 md:grid-cols-2">
+            <div>
+              <label class="text-sm font-semibold text-slate-700">Telefon *</label>
+              <input type="text" required
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-sky-200" />
+            </div>
+
+            <div>
+              <label class="text-sm font-semibold text-slate-700">Konu</label>
+              <input type="text"
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-sky-200" />
+            </div>
+          </div>
+
+          <div>
+            <label class="text-sm font-semibold text-slate-700">Açıklama / Talep Detayı</label>
+            <textarea rows="5"
+              class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-sky-200"></textarea>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="submit"
+              class="inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-semibold
+                     bg-emerald-500 text-white shadow-sm hover:bg-emerald-600 transition hover:shadow-md">
+              Görüşme Talep Ediniz
+            </button>
+
+            <a href="{% url 'website:iletisim' %}"
+               class="text-sm font-semibold text-sky-700 hover:text-sky-900">
+              İletişim bilgileri →
+            </a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </div>
+</section>
+
+{% endblock %}

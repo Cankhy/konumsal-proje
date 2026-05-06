@@ -5,24 +5,20 @@
 
 {% block content %}
 
-  <section class="relative h-[260px] md:h-[280px] flex items-center justify-center text-center">
+<section class="relative h-[260px] md:h-[280px] flex items-center justify-center text-center">
   <div class="absolute inset-0">
     <img src="{% static 'images/headers/projects-header.jpg' %}"
-        
+         alt="Projelerimiz"
          class="w-full h-full object-cover">
     <div class="absolute inset-0 bg-slate-900/70"></div>
   </div>
 
   <div class="relative z-10 max-w-3xl mx-auto px-4">
-    <p class="text-xs md:text-sm tracking-[0.35em] text-teal-400 uppercase mb-3">
-     
-    </p>
     <h1 class="text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg">
       PROJELERİMİZ
     </h1>
   </div>
 </section>
-
 
 <section class="max-w-6xl mx-auto px-4 py-16">
   <p class="text-center text-teal-600 font-semibold tracking-widest">PROJELERİMİZ</p>
@@ -31,31 +27,33 @@
   <div class="grid md:grid-cols-3 gap-8 mt-12">
 
     <!-- Orman -->
-    <div class="bg-white rounded-xl shadow p-8 text-center">
-      <h3 class="text-xl font-semibold mb-6">Orman Bilgi Sistemi</h3>
-      <a href="{% url 'proje_orman' %}">
-        <img src="{% static 'images/orman.png' %}" alt="Orman Bilgi Sistemi"
-     class="mx-auto object-contain"
-     style="height: 280px;">
+    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition p-8 text-center border border-slate-200">
+      <h3 class="text-xl font-semibold mb-6 text-slate-900">Orman Bilgi Sistemi</h3>
+      <a href="{% url 'website:proje_orman' %}">
+        <img src="{% static 'images/orman.png' %}"
+             alt="Orman Bilgi Sistemi"
+             class="mx-auto object-contain"
+             style="height: 280px;">
       </a>
       <div class="mt-8">
-        <a href="{% url 'proje_orman' %}"
+        <a href="{% url 'website:proje_orman' %}"
            class="inline-block bg-[#00b7b1] hover:bg-[#009b96] text-white text-xs md:text-sm font-semibold px-5 py-2 rounded">
-         Detaylar
+          Detaylar
         </a>
       </div>
     </div>
 
     <!-- MEOP -->
-    <div class="bg-white rounded-xl shadow p-8 text-center">
-      <h3 class="text-xl font-semibold mb-6">Milli Emlak Otomasyon Sistemi</h3>
-      <a href="{% url 'proje_meop' %}">
-        <img src="{% static 'images/meop.png' %}" alt="MEOP"
-     class="mx-auto object-contain"
-     style="height: 280px;">
+    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition p-8 text-center border border-slate-200">
+      <h3 class="text-xl font-semibold mb-6 text-slate-900">Milli Emlak Otomasyon Sistemi</h3>
+      <a href="{% url 'website:proje_meop' %}">
+        <img src="{% static 'images/meop.png' %}"
+             alt="MEOP"
+             class="mx-auto object-contain"
+             style="height: 280px;">
       </a>
       <div class="mt-8">
-        <a href="{% url 'proje_meop' %}"
+        <a href="{% url 'website:proje_meop' %}"
            class="inline-block bg-[#00b7b1] hover:bg-[#009b96] text-white text-xs md:text-sm font-semibold px-5 py-2 rounded">
           Detaylar
         </a>
@@ -63,24 +61,23 @@
     </div>
 
     <!-- HEY -->
-    <div class="bg-white rounded-xl shadow p-8 text-center">
-      <h3 class="text-xl font-semibold mb-6">Hava Emisyon Yönetim Portalı (HEY)</h3>
-      <a href="{% url 'proje_hey' %}">
-        <img src="{% static 'images/hey.png' %}" alt="HEY"
-     class="mx-auto object-contain"
-     style="height: 280px;">
+    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition p-8 text-center border border-slate-200">
+        <h3 class="text-xl font-semibold mb-6 text-slate-900">Hava Emisyon Yönetim Portalı</h3>
+      <a href="{% url 'website:proje_hey' %}">
+        <img src="{% static 'images/hey.png' %}"
+             alt="HEY"
+             class="mx-auto object-contain"
+             style="height: 280px;">
       </a>
       <div class="mt-8">
-        <a href="{% url 'proje_hey' %}"
+        <a href="{% url 'website:proje_hey' %}"
            class="inline-block bg-[#00b7b1] hover:bg-[#009b96] text-white text-xs md:text-sm font-semibold px-5 py-2 rounded">
-         Detaylar
+          Detaylar
         </a>
       </div>
     </div>
 
   </div>
 </section>
-
-
 
 {% endblock %}

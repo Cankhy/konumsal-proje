@@ -1,0 +1,175 @@
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Personel Portalı{% endblock %}
+
+{% block content %}
+<section class="portal-page mx-auto w-full max-w-7xl py-8">
+  <div class="portal-hero portal-hero-compact">
+    <div class="portal-hero-copy">
+      <p class="portal-kicker">PERSONEL PORTALI</p>
+      <h1>Personel Kontrol Merkezi</h1>
+      <p class="portal-subline">Başvurular, günlük takibi, eşleşen stajyerler ve ekip içi iletişim aynı akışta toplandı.</p>
+      <div class="portal-identity-grid">
+        <article class="portal-mini-card">
+          <span>Kullanıcı</span>
+          <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+          <small>Aktif personel hesabı</small>
+        </article>
+        <article class="portal-mini-card">
+          <span>Eşleşen Stajyer</span>
+          <strong>{{ stats.approved_applications }}</strong>
+          <small>Sorumluluğundaki aktif kayıt</small>
+        </article>
+        <article class="portal-mini-card">
+          <span>Bekleyen Kontrol</span>
+          <strong>{{ stats.daily_logs }}</strong>
+          <small>İncelenecek günlük ve akış</small>
+        </article>
+      </div>
+    </div>
+    <div class="portal-hero-actions">
+      <a href="{% url 'internship:panel_applications' %}">Başvurular</a>
+      <a href="{% url 'internship:panel_logs_list' %}">Günlükler</a>
+    </div>
+  </div>
+
+  <div class="portal-command">
+    <aside class="portal-rail">
+      <p class="portal-kicker">MENÜ</p>
+      <a href="{% url 'internship:panel_applications' %}" class="is-active"><span>01</span><strong>Başvurular</strong></a>
+      <a href="{% url 'internship:panel_logs_list' %}"><span>02</span><strong>Günlükler</strong></a>
+      <a href="#matched-interns"><span>03</span><strong>Stajyerler</strong></a>
+      <a href="#live-logs"><span>04</span><strong>Canlı Akış</strong></a>
+      <a href="#personnel-flow"><span>05</span><strong>Kontrol</strong></a>
+    </aside>
+
+    <div class="portal-main">
+      <div class="portal-summary-strip">
+        <div class="portal-stat-card"><span class="portal-stat-icon">01</span><p>Başvuru Havuzu</p><strong>{{ stats.total_applications }}</strong><small>Toplam başvuru</small></div>
+        <div class="portal-stat-card"><span class="portal-stat-icon">02</span><p>Sorumluluğumda</p><strong>{{ stats.approved_applications }}</strong><small>Eşleşen stajyer</small></div>
+        <div class="portal-stat-card"><span class="portal-stat-icon">03</span><p>Günlük Takibi</p><strong>{{ stats.daily_logs }}</strong><small>İzlenen kayıt</small></div>
+        <div class="portal-stat-card"><span class="portal-stat-icon">04</span><p>Okunmamış Mesaj</p><strong>{{ stats.unread_messages }}</strong><small>Yeni bildirim</small></div>
+      </div>
+
+      <div class="portal-grid">
+        <div class="portal-panel portal-panel-main" id="matched-interns">
+          <div class="portal-panel-head">
+            <div>
+              <p class="portal-kicker">EŞLEŞEN STAJYERLER</p>
+              <h2>Takip masası</h2>
+            </div>
+            <a href="{% url 'internship:panel_applications' %}">Yönet</a>
+          </div>
+
+          <div class="intern-track-list">
+            {% for app in assigned_applications %}
+              <article class="intern-track-card">
+                <div>
+                  <h3>{{ app.first_name }} {{ app.last_name }}</h3>
+                  <p>{{ app.school }} / {{ app.department }}</p>
+                </div>
+                <div class="intern-track-meta">
+                  <span>{{ app.log_count }} günlük</span>
+                  <strong>{% if app.supervisor %}Eşleşti{% else %}Atanmadı{% endif %}</strong>
+                  {% if app.supervisor %}
+                    <a href="{% url 'internship:panel_conversation' app.pk %}" class="chat-mini-link">Mesaj</a>
+                    {% if app.unread_count %}
+                      <span class="unread-badge">{{ app.unread_count }} yeni</span>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              </article>
+            {% empty %}
+              <div class="portal-empty-state">
+                <span>○</span>
+                <h3>Henüz eşleşen stajyer yok</h3>
+                <p>Başvuruyu onayladığında stajyer takip masasına otomatik eklenir.</p>
+                <a href="{% url 'internship:panel_applications' %}">Başvuruları aç</a>
+              </div>
+            {% endfor %}
+          </div>
+
+          {% if unassigned_applications %}
+            <div class="portal-note">
+              <strong>Atanmayı bekleyenler:</strong>
+              {% for app in unassigned_applications %}
+                <span>{{ app.first_name }} {{ app.last_name }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <aside class="portal-panel" id="live-logs">
+          <div class="portal-panel-head">
+            <div>
+              <p class="portal-kicker">CANLI GÜNLÜK</p>
+              <h2>Bugün ne yapıldı?</h2>
+            </div>
+          </div>
+
+          <div class="activity-stream">
+            {% for log in latest_logs %}
+              <article>
+                <div>
+                  <strong>{{ log.application.first_name }} {{ log.application.last_name }}</strong>
+                  <span>{{ log.date|date:"d.m.Y" }}</span>
+                </div>
+                {% if log.task_focus %}<p class="activity-task">{{ log.task_focus }}</p>{% endif %}
+                <p>{{ log.summary|truncatechars:130 }}</p>
+                {% if log.tomorrow_plan %}
+                  <em>Yarın: {{ log.tomorrow_plan|truncatechars:90 }}</em>
+                {% endif %}
+              </article>
+            {% empty %}
+              <div class="portal-empty-state">
+                <span>↗</span>
+                <h3>Canlı günlük bekleniyor</h3>
+                <p>Sorumluluğundaki stajyerler günlük yazdığında son kayıtlar burada akış olarak görünecek.</p>
+              </div>
+            {% endfor %}
+          </div>
+        </aside>
+      </div>
+
+      <div class="portal-grid portal-grid-lower">
+        <div class="portal-panel" id="personnel-flow">
+          <div class="portal-panel-head">
+            <div>
+              <p class="portal-kicker">AKIŞ</p>
+              <h2>Personel kontrol listesi</h2>
+            </div>
+          </div>
+          <div class="timeline-list">
+            <div><span>01</span><p>Başvuruyu onayla ve stajyeri kendi sorumluluğuna al.</p></div>
+            <div><span>02</span><p>Günlük kayıtlarında yapılan iş ve yarın planını kontrol et.</p></div>
+            <div><span>03</span><p>Her hafta puan ve kısa yorumla ilerlemeyi netleştir.</p></div>
+          </div>
+        </div>
+
+        <aside class="portal-panel">
+          <div class="portal-panel-head">
+            <div>
+              <p class="portal-kicker">DUYURULAR</p>
+              <h2>Güncel bilgiler</h2>
+            </div>
+          </div>
+          <div class="activity-stream">
+            {% for announcement in recent_announcements %}
+              <article>
+                <div><strong>{{ announcement.title }}</strong><span>{{ announcement.created_at|date:"d.m.Y" }}</span></div>
+                <p>{{ announcement.message|truncatechars:120 }}</p>
+              </article>
+            {% empty %}
+              <div class="portal-empty-state">
+                <span>i</span>
+                <h3>Duyuru bulunmuyor</h3>
+                <p>Yayımlanan kurumsal notlar ve bilgilendirmeler bu alanda listelenecek.</p>
+              </div>
+            {% endfor %}
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

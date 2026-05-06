@@ -1,41 +1,45 @@
-{% extends "website/base.html" %}
+{% extends "auth/base_auth.html" %}
 {% load static %}
 
+{% block title %}Stajyer Başvuru Formu{% endblock %}
+
 {% block content %}
-<section class="max-w-xl mx-auto px-4 py-12">
-  <h1 class="text-2xl md:text-3xl font-bold mb-6 text-center">Stajyer Başvuru Formu</h1>
-
-  {% if messages %}
-    <div class="mb-4 space-y-2">
-      {% for message in messages %}
-        <div class="rounded-md px-4 py-2 text-sm
-                    {% if message.tags == 'success' %}bg-green-50 text-green-700
-                    {% else %}bg-red-50 text-red-700{% endif %}">
-          {{ message }}
-        </div>
-      {% endfor %}
+<section class="portal-page mx-auto w-full max-w-6xl py-8">
+  <div class="portal-hero form-hero mb-8">
+    <div class="portal-hero-copy">
+      <p class="portal-kicker">BAŞVURU</p>
+      <h1>Staj Başvuru Formu</h1>
+      <p class="portal-subline">Bilgilerini sade adımlarla doldur, CV dosyanı ekle ve başvurunu değerlendirme sürecine hazır şekilde gönder.</p>
     </div>
-  {% endif %}
+    <div class="portal-hero-actions">
+      <a href="{% url 'internship:intern_query' %}" class="portal-secondary-btn">Başvuru Sorgula</a>
+    </div>
+  </div>
 
-  <form method="post" class="space-y-4 bg-white shadow-md rounded-2xl p-6">
+  <form method="post" enctype="multipart/form-data" class="application-combo-card">
     {% csrf_token %}
+
+    {% if messages %}
+      <div class="space-y-2">
+        {% for message in messages %}
+          <div class="rounded-2xl px-4 py-3 text-sm {% if message.tags == 'success' %}border border-emerald-200 bg-emerald-50 text-emerald-800{% else %}border border-rose-200 bg-rose-50 text-rose-800{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     {% for field in form %}
       <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1">
-          {{ field.label }}
-        </label>
-        {{ field|add_class:"w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" }}
+        <label class="mb-2 block text-sm font-semibold text-slate-700">{{ field.label }}</label>
+        {{ field }}
         {% if field.errors %}
-          <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+          <p class="mt-2 text-xs font-medium text-rose-700">{{ field.errors|striptags }}</p>
         {% endif %}
       </div>
     {% endfor %}
 
-    <button
-      type="submit"
-      class="w-full rounded-full bg-[#00b7b1] text-white font-semibold py-2.5 mt-2 hover:bg-[#00928f] transition">
-      Başvuruyu Gönder
-    </button>
+    <button type="submit" class="portal-primary-btn">Başvuruyu Gönder</button>
   </form>
 </section>
 {% endblock %}

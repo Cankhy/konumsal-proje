@@ -1,0 +1,36 @@
+{% load static %}
+
+<div class="h-5 bg-[#005b88] w-full"></div>
+
+<header class="bg-white">
+  <div class="w-full px-6 md:px-12 min-h-[100px] flex items-center">
+
+    <a href="{% url 'website:home' %}" class="shrink-0">
+      <img src="{% static 'images/konumsal-logo-full.png' %}"
+           alt="Konumsal Bilgi Sistemleri"
+           class="h-16 md:h-14 w-auto object-contain">
+    </a>
+
+    <nav class="flex-1 flex justify-center ml-0 md:ml-2">
+      <div class="flex items-center gap-8 md:gap-10 text-sky-700 font-semibold text-brand text-[18px] md:text-[22px] leading-none">
+        <a href="{% url 'website:home' %}" class="hover:text-sky-900 transition-colors duration-200">Ana Sayfa</a>
+        <a href="{% url 'website:hakkimizda' %}" class="hover:text-sky-900 transition-colors duration-200">Hakkımızda</a>
+        <a href="{% url 'website:projeler' %}" class="hover:text-sky-900 transition-colors duration-200">Projelerimiz</a>
+        <a href="{% url 'website:iletisim' %}" class="hover:text-sky-900 transition-colors duration-200">İletişim</a>
+      </div>
+    </nav>
+
+    <div class="shrink-0 flex items-center gap-4">
+      <a href="{% url 'internship:intern_portal' %}"
+         class="text-sm font-semibold text-sky-700 hover:text-sky-900">
+        Staj İşlemleri
+      </a>
+
+      <a href="{% url 'website:login_select' %}"
+         class="inline-flex items-center px-5 py-2 rounded-full border border-slate-200 bg-white text-sky-700 text-sm font-semibold shadow-sm hover:border-sky-300 hover:text-sky-900 transition">
+        Giriş
+      </a>
+    </div>
+
+  </div>
+</header>

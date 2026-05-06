@@ -1,65 +1,63 @@
-{% extends "website/base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giriş - Konumsal Bilgi Sistemleri</title>
+  <link rel="stylesheet" href="{% static 'css/output.css' %}?v=20260506-ui-refresh2">
+</head>
+<body class="min-h-screen bg-slate-950">
+  <main class="auth-cyber-page auth-choice-page" style="background-image: linear-gradient(120deg, rgba(2,12,23,0.76), rgba(0,91,136,0.28)), url('{% static "images/slider/slide-1-siber.jpg" %}');">
+    <form method="post" class="auth-choice-card">
+      {% csrf_token %}
+      <a href="{% url 'website:home' %}" class="auth-logo-link" aria-label="Ana sayfaya dön">
+        <img src="{% static 'images/konumsal-logo-white.png' %}" alt="Konumsal Bilgi Sistemleri" class="mx-auto mb-9 h-14 w-auto">
+      </a>
 
-{% block content %}
-<section class="max-w-4xl mx-auto px-4 py-16">
-  <div class="text-center mb-10">
-    <p class="text-xs font-semibold tracking-[0.25em] text-slate-400 uppercase">
-      GİRİŞ
-    </p>
-    <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2">
-      Giriş Türünü Seçin
-    </h1>
-    <p class="mt-3 text-sm md:text-base text-slate-600">
-      Kurum personeli veya stajyer olarak sisteme giriş yapabilirsiniz.
-    </p>
-  </div>
-
-  <div class="grid gap-8 md:grid-cols-2">
-    <!-- PERSONEL -->
-    <a href="{% url 'staff_login' %}"
-       class="group block rounded-3xl border border-sky-200 bg-white/90
-              shadow-lg hover:shadow-2xl hover:-translate-y-1
-              transition-all duration-200">
-      <div class="p-8 text-center">
-        <p class="text-xs font-semibold tracking-[0.25em] text-sky-500 mb-2">
-          PERSONEL
-        </p>
-        <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-3">
-          Personel Girişi
-        </h2>
-        <p class="text-sm text-slate-600 mb-6">
-          Yönetim paneline erişimi olan kurum çalışanları için.
-        </p>
-        <span class="inline-flex items-center px-6 py-2 rounded-full
-                     bg-sky-500 text-white text-sm font-semibold
-                     shadow-md group-hover:bg-sky-600">
-          Panele Git
-        </span>
+      <div class="auth-role-tabs" data-selected="{{ selected_role|default:'intern' }}">
+        <button type="button" class="auth-role-tab" data-role="staff">Personel</button>
+        <button type="button" class="auth-role-tab" data-role="intern">Stajyer</button>
       </div>
-    </a>
 
-    <!-- STAJYER -->
-    <a href="{% url 'intern_login' %}"
-       class="group block rounded-3xl border border-emerald-200 bg-white/90
-              shadow-lg hover:shadow-2xl hover:-translate-y-1
-              transition-all duration-200">
-      <div class="p-8 text-center">
-        <p class="text-xs font-semibold tracking-[0.25em] text-emerald-500 mb-2">
-          STAJYER
-        </p>
-        <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-3">
-          Stajyer Girişi
-        </h2>
-        <p class="text-sm text-slate-600 mb-6">
-          Staj başvurusu yapan ve günlük girişleri için sisteme bağlanan stajyerler.
-        </p>
-        <span class="inline-flex items-center px-6 py-2 rounded-full
-                     bg-emerald-500 text-white text-sm font-semibold
-                     shadow-md group-hover:bg-emerald-600">
-          Giriş Yap
-        </span>
+      <input id="auth-role-input" type="hidden" name="role" value="{{ selected_role|default:'intern' }}">
+
+      <h1 id="auth-title" class="mt-8 text-center text-3xl font-bold text-white">Stajyer Girişi</h1>
+      <p id="auth-subtitle" class="mt-3 text-center text-sm leading-6 text-white/75">Hesabınla giriş yap, paneline güvenli şekilde geç ve günlük işlemlerini kaldığın yerden sürdür.</p>
+
+      {% if error %}
+        <div class="mt-6 rounded-2xl border border-rose-300/50 bg-rose-500/15 px-4 py-3 text-sm font-semibold text-rose-100">
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <div class="mt-7 space-y-4">
+        <input type="text" name="username" placeholder="Kullanıcı adı" class="auth-choice-input" required autofocus>
+        <input type="password" name="password" placeholder="Şifre" class="auth-choice-input" required>
       </div>
-    </a>
-  </div>
-</section>
-{% endblock %}
+
+      <button type="submit" class="auth-choice-submit">Giriş Yap</button>
+    </form>
+  </main>
+
+  <script>
+    const roleInput = document.getElementById("auth-role-input");
+    const title = document.getElementById("auth-title");
+    const subtitle = document.getElementById("auth-subtitle");
+    const tabs = Array.from(document.querySelectorAll(".auth-role-tab"));
+
+    function setRole(role) {
+      roleInput.value = role;
+      const isStaff = role === "staff";
+      title.textContent = isStaff ? "Personel Girişi" : "Stajyer Girişi";
+      subtitle.textContent = isStaff
+        ? "Başvuruları, günlük akışını ve stajyer iletişimini tek merkezden yönet."
+        : "Günlüklerini yaz, belgelerini takip et ve personelinle aynı ekranda ilerle.";
+      tabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.role === role));
+    }
+
+    tabs.forEach((tab) => tab.addEventListener("click", () => setRole(tab.dataset.role)));
+    setRole(roleInput.value || "intern");
+  </script>
+</body>
+</html>

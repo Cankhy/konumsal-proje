@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Giriş{% endblock %} - Konumsal Bilgi Sistemleri</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}?v=20260506-ui-refresh1">
+</head>
+
+<body class="portal-surface min-h-screen text-slate-900">
+
+  {% include "partials/site_header.html" %}
+
+  <main class="portal-main-shell min-h-screen px-4 py-10">
+    <div class="mx-auto max-w-7xl">
+      {% if messages %}
+        <div class="mb-6 space-y-3">
+          {% for message in messages %}
+            <div class="rounded-2xl border px-4 py-3 text-sm shadow-sm
+              {% if message.tags == 'success' %}border-emerald-200 bg-emerald-50 text-emerald-800
+              {% elif message.tags == 'error' %}border-rose-200 bg-rose-50 text-rose-800
+              {% elif message.tags == 'warning' %}border-amber-200 bg-amber-50 text-amber-800
+              {% else %}border-sky-200 bg-sky-50 text-sky-800{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="bg-black text-slate-100 pt-10 pb-6 mt-10">
+    <div class="max-w-6xl mx-auto px-4 grid gap-8 md:grid-cols-3">
+      <div class="space-y-4">
+        <img src="{% static 'images/konumsal-logo-white.png' %}"
+             alt="Konumsal Logo"
+             class="h-12 w-auto">
+
+        <p class="text-sm leading-relaxed text-slate-300 max-w-md">
+          Konumsal BS, yazılım geliştirme alanında faaliyet gösteren ve uzman kadrosuyla
+          Türkiye'nin önde gelen kurumsal çözümlerini üreten bilgi sistemleri şirketidir.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="text-sm font-semibold text-white tracking-wide uppercase">Bize Ulaşın</h3>
+        <div class="space-y-2 text-sm text-slate-300">
+          <p>Cyberpark Tepe Binası No:19-31<br/>Bilkent / ANKARA</p>
+          <p>Tel: (0312) 266 39 39</p>
+          <p>E-posta: <a href="mailto:bilgi@konumsal.com.tr" class="text-[#00b7b1]">bilgi@konumsal.com.tr</a></p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="text-sm font-semibold text-white tracking-wide uppercase">Bilgilendirmeler</h3>
+        <ul class="space-y-1 text-sm text-slate-300">
+          <li><a href="#" class="hover:text-[#00b7b1]">Kalite Politikamız</a></li>
+          <li><a href="#" class="hover:text-[#00b7b1]">Gizlilik Sözleşmesi</a></li>
+          <li><a href="#" class="hover:text-[#00b7b1]">Kullanım Koşulları</a></li>
+          <li><a href="#" class="hover:text-[#00b7b1]">Kişisel Veriler ve Çerez Politikası</a></li>
+          <li><a href="#" class="hover:text-[#00b7b1]">KVKK Bilgilendirme Metni</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-800 mt-8 pt-4">
+      <div class="max-w-6xl mx-auto px-4 flex items-center justify-between text-xs text-slate-500">
+        <p>©2025 <span class="text-[#00b7b1] font-semibold text-brand">Konumsal Bilgi Sistemleri</span> All Rights Reserved</p>
+        <div class="flex items-center gap-3 text-sm">
+          <span>🌐</span><span>in</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

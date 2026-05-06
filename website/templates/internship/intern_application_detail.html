@@ -1,0 +1,98 @@
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Başvuru Detayı{% endblock %}
+
+{% block content %}
+<section class="portal-page w-full max-w-6xl mx-auto py-8">
+  <div class="portal-hero portal-hero-compact mb-6">
+    <div class="portal-hero-copy">
+      <p class="portal-kicker">BAŞVURU DETAYI</p>
+      <h1>Başvuru Kaydım</h1>
+      <p class="portal-subline">Kimlik, okul, dönem ve durum bilgilerinin tamamı daha düzenli kartlar halinde burada yer alır.</p>
+    </div>
+    <div class="portal-hero-actions">
+      <a href="{% url 'internship:intern_dashboard' %}">Panele Dön</a>
+    </div>
+  </div>
+
+  {% if application %}
+    <div class="portal-table-shell overflow-hidden">
+      <div class="flex flex-col gap-6 border-b border-slate-200 p-8 md:flex-row md:items-start md:justify-between md:p-10">
+        <div>
+          <h2 class="text-2xl font-semibold text-slate-900">{{ application.first_name }} {{ application.last_name }}</h2>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <span class="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold
+            {% if application.status == 'approved' %}border border-emerald-200 bg-emerald-50 text-emerald-700
+            {% elif application.status == 'rejected' %}border border-rose-200 bg-rose-50 text-rose-700
+            {% else %}border border-amber-200 bg-amber-50 text-amber-700{% endif %}">
+            {{ application.get_status_display }}
+          </span>
+          {% if application.credentials_sent %}
+            <span class="inline-flex items-center rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-700">
+              Giriş bilgileri iletildi
+            </span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="grid gap-4 p-8 md:grid-cols-2 md:p-10">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <p class="text-sm text-slate-500">Ad Soyad</p>
+          <p class="mt-2 text-base font-semibold text-slate-900">{{ application.first_name }} {{ application.last_name }}</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <p class="text-sm text-slate-500">TC Kimlik No</p>
+          <p class="mt-2 text-base font-semibold text-slate-900">{{ application.tc_no }}</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <p class="text-sm text-slate-500">Telefon</p>
+          <p class="mt-2 text-base font-semibold text-slate-900">{{ application.phone }}</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <p class="text-sm text-slate-500">E-posta</p>
+          <p class="mt-2 text-base font-semibold text-slate-900">{{ application.email|default:"Belirtilmedi" }}</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <p class="text-sm text-slate-500">Okul</p>
+          <p class="mt-2 text-base font-semibold text-slate-900">{{ application.school }}</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <p class="text-sm text-slate-500">Bölüm / Sınıf</p>
+          <p class="mt-2 text-base font-semibold text-slate-900">{{ application.department }}{% if application.grade %} / {{ application.grade }}{% endif %}</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 md:col-span-2">
+          <p class="text-sm text-slate-500">Planlanan Staj Tarihi</p>
+          <p class="mt-2 text-base font-semibold text-slate-900">
+            {% if application.start_date and application.end_date %}
+              {{ application.start_date|date:"d.m.Y" }} - {{ application.end_date|date:"d.m.Y" }}
+            {% else %}
+              Tarih bilgisi henüz netleşmedi
+            {% endif %}
+          </p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 md:col-span-2">
+          <p class="text-sm text-slate-500">Başvuru Tarihi</p>
+          <p class="mt-2 text-base font-semibold text-slate-900">{{ application.created_at|date:"d.m.Y H:i" }}</p>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="portal-panel">
+      <h2 class="text-xl font-semibold text-slate-900">Başvuru kaydı bulunamadı</h2>
+      <a href="{% url 'internship:intern_query' %}" class="mt-6 inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
+        Başvuru Sorgula
+      </a>
+    </div>
+  {% endif %}
+
+  <div class="mt-8 flex flex-wrap gap-4">
+    <a href="{% url 'internship:intern_dashboard' %}" class="inline-flex items-center text-sm font-semibold text-sky-600 hover:underline">
+      ← Stajyer paneline dön
+    </a>
+    <a href="{% url 'website:intern_password_change' %}" class="inline-flex items-center text-sm font-semibold text-slate-700 hover:underline">
+      Şifremi değiştir
+    </a>
+  </div>
+</section>
+{% endblock %}

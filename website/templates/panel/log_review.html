@@ -1,28 +1,72 @@
-{% extends "website/base.html" %}
-{% block content %}
-<section class="max-w-xl mx-auto px-6 py-10">
-  <h1 class="text-2xl font-bold mb-4">Günlük Değerlendirme</h1>
+{% extends "auth/base_auth.html" %}
 
-  <div class="mb-4 border border-slate-200 rounded-md p-3 bg-white shadow-sm">
-    <p class="text-xs text-slate-400 mb-1">
-      {{ log.intern.get_full_name|default:log.intern.username }} – {{ log.date }}
-    </p>
-    <p class="text-sm whitespace-pre-line">{{ log.content }}</p>
+{% block title %}Günlük Değerlendirme{% endblock %}
+
+{% block content %}
+<section class="portal-page mx-auto w-full max-w-7xl py-8">
+  <div class="portal-hero">
+    <div>
+      <p class="portal-kicker">GÜNLÜK İNCELEME</p>
+      <h1>{{ log.application.first_name }} {{ log.application.last_name }}</h1>
+      <p class="portal-subline">{{ log.date|date:"d.m.Y" }} / {{ log.application.school }} / {{ log.application.department }}</p>
+    </div>
+    <div class="portal-hero-actions">
+      <a href="{% url 'internship:panel_conversation' log.application.pk %}">Mesaj</a>
+      <a href="{% url 'internship:panel_logs_list' %}">Liste</a>
+    </div>
   </div>
 
-  <form method="post" class="space-y-3">
-    {% csrf_token %}
-    <label class="block text-sm font-medium text-slate-700">
-      Puan (1–10)
-    </label>
-    <input type="number" name="score" min="1" max="10"
-           value="{{ log.score|default_if_none:'' }}"
-           class="border border-slate-300 rounded-md px-3 py-2 w-32 text-sm">
+  <div class="review-workspace">
+    <article class="log-detail-card">
+      <div class="log-detail-head">
+        <div>
+          <p class="portal-kicker">STAJYER GÜNLÜĞÜ</p>
+          <h2>Bugün ne yaptı?</h2>
+        </div>
+        {% if existing_review %}
+          <span class="status-pill is-success">{{ existing_review.score }}/10</span>
+        {% else %}
+          <span class="status-pill is-waiting">Bekliyor</span>
+        {% endif %}
+      </div>
 
-    <button type="submit"
-            class="ml-2 px-4 py-2 rounded-md bg-teal-600 text-white text-sm hover:bg-teal-700">
-      Kaydet
-    </button>
-  </form>
+      <div class="log-detail-grid">
+        <section>
+          <span class="mini-label">Odak görev</span>
+          <strong>{{ log.task_focus|default:"Görev seçilmedi" }}</strong>
+        </section>
+        <section>
+          <span class="mini-label">Günlük özeti</span>
+          <p>{{ log.summary|linebreaksbr }}</p>
+        </section>
+        <section>
+          <span class="mini-label">Yarınki plan</span>
+          <p>{{ log.tomorrow_plan|default:"Plan yazılmadı."|linebreaksbr }}</p>
+        </section>
+      </div>
+    </article>
+
+    <form method="post" class="daily-form-card">
+      {% csrf_token %}
+      <p class="portal-kicker">DEĞERLENDİRME</p>
+      <h2 class="mt-2 text-2xl font-black text-slate-900">Puan ve not</h2>
+      <div class="mt-6 space-y-5">
+        <div>
+          <label class="mb-2 block text-sm font-bold text-slate-700">Puan (1-10)</label>
+          <input type="number" name="score" min="1" max="10"
+                 value="{% if existing_review %}{{ existing_review.score }}{% endif %}"
+                 class="form-input">
+        </div>
+        <div>
+          <label class="mb-2 block text-sm font-bold text-slate-700">Personel Notu</label>
+          <textarea name="comment" rows="8" class="form-textarea" placeholder="Eksik noktalar, güçlü taraflar ve sonraki adımlar...">{% if existing_review %}{{ existing_review.comment }}{% endif %}</textarea>
+        </div>
+      </div>
+      <div class="mt-6 flex flex-wrap gap-4">
+        <button type="submit" class="portal-primary-btn">Kaydet</button>
+        <a href="{% url 'internship:panel_logs_list' %}" class="portal-secondary-btn">Listeye Dön</a>
+      </div>
+    </form>
+  </div>
 </section>
 {% endblock %}

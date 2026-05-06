@@ -1,0 +1,48 @@
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Staj Belgeleri{% endblock %}
+
+{% block content %}
+<section class="portal-page mx-auto w-full max-w-7xl py-8">
+  <div class="portal-hero intern-hero">
+    <div>
+      <p class="portal-kicker">BELGE MERKEZİ</p>
+      <h1>Staj Belgeleri</h1>
+      <p class="portal-subline">Sözleşme, günlük formu ve teslim dosyalarını daha temiz bir kart düzeninde tek yerden aç.</p>
+    </div>
+    <div class="portal-hero-actions">
+      <a href="{% url 'internship:intern_daily_log' %}">Günlük Yaz</a>
+      <a href="{% url 'internship:intern_dashboard' %}">Panel</a>
+    </div>
+  </div>
+
+  <div class="document-board">
+    {% for doc in documents %}
+      <a href="{{ doc.url }}" class="document-card" target="_blank">
+        <span>PDF</span>
+        <strong>{{ doc.title }}</strong>
+        <p>{{ doc.description }}</p>
+        <em>Belgeyi Aç</em>
+      </a>
+    {% empty %}
+      <div class="portal-panel">
+        <div class="portal-empty">Belge bulunamadı.</div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="portal-panel mt-5">
+    <div class="portal-panel-head">
+      <div>
+        <p class="portal-kicker">TESLİM KONTROLÜ</p>
+        <h2>Eksik kalmasın</h2>
+      </div>
+    </div>
+    <div class="timeline-list">
+      <div><span>01</span><p>Staj sözleşmesini indir, okul ve kurum onaylarını tamamla.</p></div>
+      <div><span>02</span><p>Günlük kayıtlarını sistemde doldur, gerekiyorsa çıktı formuyla eşleştir.</p></div>
+      <div><span>03</span><p>Teslimden önce sorumlu personelinle mesajlaşma alanından kontrol et.</p></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

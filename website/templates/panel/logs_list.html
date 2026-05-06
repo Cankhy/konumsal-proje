@@ -1,48 +1,71 @@
-{% extends "website/base.html" %}
-{% block content %}
-<section class="max-w-6xl mx-auto px-6 py-10">
-  <h1 class="text-2xl md:text-3xl font-bold mb-6">Stajyer Günlükleri</h1>
+{% extends "auth/base_auth.html" %}
 
-  <table class="w-full text-sm border border-slate-200 bg-white shadow-sm">
-    <thead class="bg-slate-100">
-      <tr>
-        <th class="px-4 py-2 text-left">Stajyer</th>
-        <th class="px-4 py-2 text-left">Tarih</th>
-        <th class="px-4 py-2 text-left">Özet</th>
-        <th class="px-4 py-2 text-left">Puan</th>
-        <th class="px-4 py-2 text-right">İşlem</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for log in logs %}
-      <tr class="border-t border-slate-200">
-        <td class="px-4 py-2">{{ log.intern.get_full_name|default:log.intern.username }}</td>
-        <td class="px-4 py-2">{{ log.date }}</td>
-        <td class="px-4 py-2">
-          {{ log.content|truncatechars:60 }}
-        </td>
-        <td class="px-4 py-2">
-          {% if log.score %}
-            <span class="font-semibold text-emerald-600">{{ log.score }}</span>
-          {% else %}
-            <span class="text-slate-400">—</span>
-          {% endif %}
-        </td>
-        <td class="px-4 py-2 text-right">
-          <a href="{% url 'panel_log_review' log.pk %}"
-             class="inline-block px-3 py-1 rounded bg-teal-600 text-white text-xs hover:bg-teal-700">
-            Değerlendir
-          </a>
-        </td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="5" class="px-4 py-4 text-center text-slate-500">
-          Henüz günlük bulunamadı.
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+{% block title %}Stajyer Günlükleri{% endblock %}
+
+{% block content %}
+<section class="portal-page mx-auto w-full max-w-7xl py-8">
+  <div class="portal-hero">
+    <div>
+      <p class="portal-kicker">GÜNLÜK İNCELEME</p>
+      <h1>Stajyer Günlükleri</h1>
+      <p class="portal-subline">Sorumlu olduğun stajyerlerin günlüklerini okunur kartlar halinde incele, puanla ve mesajla destek ver.</p>
+    </div>
+    <div class="portal-hero-actions">
+      <a href="{% url 'website:personnel_home' %}">Personel Paneli</a>
+    </div>
+  </div>
+
+  <div class="portal-metrics">
+    <div><span>Toplam Kayıt</span><strong>{{ stats.total }}</strong></div>
+    <div><span>Bekleyen</span><strong>{{ stats.pending }}</strong></div>
+    <div><span>Değerlendirilen</span><strong>{{ stats.reviewed }}</strong></div>
+    <div><span>Akış</span><strong>Günlük</strong></div>
+  </div>
+
+  <div class="log-review-board">
+    {% for log in logs %}
+      <article class="review-list-card">
+        <div class="review-list-main">
+          <div class="review-list-head">
+            <div>
+              <p class="portal-kicker">{{ log.date|date:"d.m.Y" }}</p>
+              <h2>{{ log.application.first_name }} {{ log.application.last_name }}</h2>
+              <p>{{ log.application.school }} / {{ log.application.department }}</p>
+            </div>
+            {% with review=log.reviews.first %}
+              {% if review %}
+                <span class="status-pill is-success">{{ review.score }}/10</span>
+              {% else %}
+                <span class="status-pill is-waiting">Bekliyor</span>
+              {% endif %}
+            {% endwith %}
+          </div>
+
+          <div class="review-preview-grid">
+            <section>
+              <span class="mini-label">Görev</span>
+              <strong>{{ log.task_focus|default:"Belirtilmedi" }}</strong>
+            </section>
+            <section>
+              <span class="mini-label">Bugün</span>
+              <p>{{ log.summary|truncatechars:220 }}</p>
+            </section>
+            <section>
+              <span class="mini-label">Yarın</span>
+              <p>{{ log.tomorrow_plan|default:"Plan yazılmadı."|truncatechars:140 }}</p>
+            </section>
+          </div>
+        </div>
+        <div class="review-list-actions">
+          <a href="{% url 'internship:panel_log_review' log.pk %}" class="portal-primary-btn">İncele</a>
+          <a href="{% url 'internship:panel_conversation' log.application.pk %}" class="portal-secondary-btn">Mesaj</a>
+        </div>
+      </article>
+    {% empty %}
+      <div class="portal-panel">
+        <div class="portal-empty">Henüz günlük kaydı bulunmuyor.</div>
+      </div>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

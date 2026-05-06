@@ -1,0 +1,71 @@
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Günlüklerim{% endblock %}
+
+{% block content %}
+<section class="portal-page mx-auto w-full max-w-7xl py-8">
+  <div class="portal-hero intern-hero">
+    <div>
+      <p class="portal-kicker">GÜNLÜK ARŞİVİ</p>
+      <h1>Günlüklerim</h1>
+      <p class="portal-subline">Yazdığın günlükler, görev odakların ve personel değerlendirmeleri tek görünümde listelenir.</p>
+    </div>
+    <div class="portal-hero-actions">
+      <a href="{% url 'internship:intern_daily_log' %}">Yeni Günlük</a>
+      <a href="{% url 'internship:intern_dashboard' %}">Panel</a>
+    </div>
+  </div>
+
+  {% if not application %}
+    <div class="portal-panel mt-5">
+      <div class="portal-empty">Başvuru kaydı bulunamadı.</div>
+    </div>
+  {% elif logs %}
+    <div class="log-board">
+      {% for log in logs %}
+        <article class="log-detail-card">
+          <div class="log-detail-head">
+            <div>
+              <p class="portal-kicker">GÜNLÜK KAYDI</p>
+              <h2>{{ log.date|date:"d.m.Y" }}</h2>
+            </div>
+            {% with review=log.reviews.first %}
+              {% if review %}
+                <span class="status-pill is-success">{{ review.score }}/10 Değerlendirildi</span>
+              {% else %}
+                <span class="status-pill is-waiting">Değerlendirme Bekliyor</span>
+              {% endif %}
+            {% endwith %}
+          </div>
+
+          <div class="log-detail-grid">
+            <section>
+              <span class="mini-label">Bugünkü görev</span>
+              <strong>{{ log.task_focus|default:"Görev seçilmedi" }}</strong>
+            </section>
+            <section>
+              <span class="mini-label">Özet</span>
+              <p>{{ log.summary|linebreaksbr }}</p>
+            </section>
+            <section>
+              <span class="mini-label">Yarınki plan</span>
+              <p>{{ log.tomorrow_plan|default:"Plan yazılmadı."|linebreaksbr }}</p>
+            </section>
+            {% with review=log.reviews.first %}
+              <section>
+                <span class="mini-label">Personel notu</span>
+                <p>{% if review and review.comment %}{{ review.comment|linebreaksbr }}{% else %}Henüz not eklenmedi.{% endif %}</p>
+              </section>
+            {% endwith %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="portal-panel mt-5">
+      <div class="portal-empty">Henüz günlük kaydı yok. İlk kaydı bugün oluştur.</div>
+      <a href="{% url 'internship:intern_daily_log' %}" class="portal-primary-btn mt-5">Günlük Ekle</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

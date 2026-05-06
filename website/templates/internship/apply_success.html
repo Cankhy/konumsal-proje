@@ -1,19 +1,29 @@
-{% extends 'website/base.html' %}
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Başvuru Alındı{% endblock %}
 
 {% block content %}
-<section class="max-w-xl mx-auto px-4 py-12 text-center">
-  <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
-    Başvurunuz Alındı
-  </h1>
-  <p class="text-slate-600 mb-6">
-    Teşekkürler {{ application.first_name }} {{ application.last_name }}.
-    Başvurunuz incelemeye alınmıştır. Durumu daha sonra
-    <strong>TC Kimlik + Telefon</strong> bilgileriyle sorgulayabilirsiniz.
-  </p>
-  <a href="{% url 'intern_query' %}"
-     class="inline-flex items-center px-6 py-2 rounded-full
-            bg-[#00b7b1] text-white font-semibold hover:bg-[#009c97]">
-    Başvurumu Sorgula
-  </a>
+<section class="portal-page mx-auto max-w-3xl py-8">
+  <div class="portal-panel text-center">
+    <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 border border-emerald-200">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+
+    <p class="text-xs font-semibold tracking-[0.35em] text-emerald-500 uppercase">BAŞVURU TAMAMLANDI</p>
+
+    <h1 class="mt-3 text-2xl md:text-3xl font-bold text-slate-900">Başvurunuz Alındı</h1>
+
+    <p class="mt-4 text-slate-600 leading-7">
+      Teşekkürler <strong>{{ application.first_name }} {{ application.last_name }}</strong>.
+      Başvurunuz incelemeye alınmıştır. Başvuru durumunuzu daha sonra
+      <strong>TC Kimlik</strong> ve <strong>Telefon</strong> bilgileriniz ile sorgulayabilirsiniz.
+    </p>
+
+    <div class="mt-8">
+      <a href="{% url 'internship:intern_query' %}" class="portal-primary-btn inline-flex">Başvurumu Sorgula</a>
+    </div>
+  </div>
 </section>
 {% endblock %}

@@ -1,4 +1,63 @@
-<!-- Stajyer kartı içinde örnek -->
-<a href="{% url 'intern_apply' %}" class="btn-primary">Başvuru Yap</a>
-<a href="{% url 'intern_query' %}" class="btn-secondary">Başvurumu Sorgula</a>
-<a href="{% url 'intern_daily_log' %}" class="btn-secondary">Günlük Girişi</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staj İşlemleri - Konumsal Bilgi Sistemleri</title>
+  <link rel="stylesheet" href="{% static 'css/output.css' %}?v=20260505-staj-system3">
+</head>
+<body class="min-h-screen bg-slate-950">
+  <main class="internship-landing internship-landing-cyber relative min-h-screen overflow-hidden bg-slate-950">
+    <div class="internship-landing-bg absolute inset-0 bg-cover bg-center" style="background-image:url('{% static "images/staj-portal-map.jpeg" %}');"></div>
+    <div class="absolute inset-0 bg-slate-950/54"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(20,184,166,0.24),transparent_32%),linear-gradient(120deg,rgba(2,12,23,0.82),rgba(0,91,136,0.30))]"></div>
+
+    <div class="relative mx-auto flex min-h-screen max-w-6xl items-center justify-center px-6 py-10 md:px-12">
+      <div class="internship-hero-panel">
+        <a href="{% url 'website:home' %}" class="internship-logo-link" aria-label="Ana sayfaya dön">
+          <img src="{% static 'images/konumsal-logo-white.png' %}" alt="Konumsal Bilgi Sistemleri" class="internship-panel-logo">
+        </a>
+        <h1>Staj İşlemleri</h1>
+        <p class="internship-panel-note">Staj başvurunu oluştur, mevcut durumunu takip et veya onay sonrası paneline güvenli şekilde giriş yap.</p>
+
+        <div class="internship-actions">
+          <a href="{% url 'internship:intern_apply' %}" class="internship-action-btn">
+            <span class="internship-action-number">01</span>
+            <span class="internship-action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>
+            </span>
+            <span class="internship-action-copy">
+              <strong>Başvuru</strong>
+              <small>Bilgilerini doldur, CV yükle ve staj başvurunu sisteme gönder.</small>
+            </span>
+            <em>Formu Aç</em>
+          </a>
+          <a href="{% url 'internship:intern_query' %}" class="internship-action-btn">
+            <span class="internship-action-number">02</span>
+            <span class="internship-action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/><path d="M8.5 11h5"/></svg>
+            </span>
+            <span class="internship-action-copy">
+              <strong>Sorgulama</strong>
+              <small>TC ve telefon bilgisiyle başvurunun güncel durumunu görüntüle.</small>
+            </span>
+            <em>Durumu Gör</em>
+          </a>
+          <a href="{% url 'website:login_select' %}" class="internship-action-btn">
+            <span class="internship-action-number">03</span>
+            <span class="internship-action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 5h16v10H4V5Z"/><path d="M9 19h6"/><path d="M12 15v4"/></svg>
+            </span>
+            <span class="internship-action-copy">
+              <strong>Panel</strong>
+              <small>Onaylanan hesabınla staj paneline veya personel alanına giriş yap.</small>
+            </span>
+            <em>Giriş Yap</em>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

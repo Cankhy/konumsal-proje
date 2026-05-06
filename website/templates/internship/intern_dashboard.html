@@ -1,0 +1,128 @@
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Stajyer Paneli{% endblock %}
+
+{% block content %}
+<section class="portal-page mx-auto w-full max-w-7xl py-8">
+  <div class="portal-hero intern-hero portal-hero-compact">
+    <div class="portal-hero-copy">
+      <p class="portal-kicker">STAJYER PANELİ</p>
+      <h1>Stajyer Çalışma Alanı</h1>
+      {% if application and application.supervisor %}
+        <p class="portal-subline">Günlükler, görev planı, belgeler ve personel iletişimi daha sade bir akışta burada.</p>
+      {% else %}
+        <p class="portal-subline">Başvurun kayıtlı. Sorumlu personel ataması tamamlandığında mesaj ve takip alanları aktifleşecek.</p>
+      {% endif %}
+      <div class="portal-identity-grid">
+        <article class="portal-mini-card">
+          <span>Kullanıcı</span>
+          <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+          <small>Aktif stajyer hesabı</small>
+        </article>
+        <article class="portal-mini-card">
+          <span>Başvuru Durumu</span>
+          <strong>{% if application %}{{ application.get_status_display }}{% else %}Bekleniyor{% endif %}</strong>
+          <small>Staj kayıt sürecin</small>
+        </article>
+        <article class="portal-mini-card">
+          <span>Sorumlu Personel</span>
+          <strong>{% if application and application.supervisor %}{{ application.supervisor }}{% else %}Atama Bekleniyor{% endif %}</strong>
+          <small>Günlük kontrol sorumlusu</small>
+        </article>
+      </div>
+    </div>
+    <div class="portal-hero-actions">
+      <a href="{% url 'internship:intern_daily_log' %}">Günlük Yaz</a>
+      <a href="{% url 'internship:intern_daily_logs' %}">Kayıtlarım</a>
+    </div>
+  </div>
+
+  <div class="portal-command">
+    <aside class="portal-rail">
+      <p class="portal-kicker">MENÜ</p>
+      <a href="{% url 'internship:intern_daily_log' %}" class="is-active"><span>01</span><strong>Günlük Yaz</strong></a>
+      <a href="#intern-roadmap"><span>02</span><strong>Program</strong></a>
+      <a href="{% url 'internship:intern_daily_logs' %}"><span>03</span><strong>Günlüklerim</strong></a>
+      <a href="{% url 'internship:intern_documents' %}"><span>04</span><strong>Belgeler</strong></a>
+      {% if application and application.supervisor %}
+        <a href="{% url 'internship:intern_conversation' %}">
+          <span>05</span><strong>Mesajlar</strong>
+          {% if unread_messages_count %}<em>{{ unread_messages_count }}</em>{% endif %}
+        </a>
+      {% endif %}
+    </aside>
+
+    <div class="portal-main">
+      <div class="portal-summary-strip">
+        <div class="portal-stat-card"><span class="portal-stat-icon">01</span><p>Toplam Günlük</p><strong>{{ logs_count|default:"0" }}</strong><small>Gönderilen kayıt</small></div>
+        <div class="portal-stat-card"><span class="portal-stat-icon">02</span><p>Değerlendirilen</p><strong>{{ reviewed_logs_count|default:"0" }}</strong><small>Puanlanan günlük</small></div>
+        <div class="portal-stat-card"><span class="portal-stat-icon">03</span><p>Başvuru Durumu</p><strong>{% if application %}{{ application.get_status_display }}{% else %}Yok{% endif %}</strong><small>Güncel staj kaydı</small></div>
+        <div class="portal-stat-card"><span class="portal-stat-icon">04</span><p>Okunmamış Mesaj</p><strong>{{ unread_messages_count }}</strong><small>Personel yanıtları</small></div>
+      </div>
+
+      <div class="portal-grid">
+        <div class="portal-panel portal-panel-main" id="intern-roadmap">
+          <div class="portal-panel-head">
+            <div>
+              <p class="portal-kicker">STAJ PROGRAMI</p>
+              <h2>1 aylık görev akışı</h2>
+            </div>
+            <a href="{% url 'internship:intern_daily_log' %}">Bugünü Yaz</a>
+          </div>
+          <div class="task-roadmap">
+            {% for task in internship_tasks %}
+              <article>
+                <span>{{ task.week }}</span>
+                <h3>{{ task.title }}</h3>
+                <strong>{{ task.duration }}</strong>
+                <p>{{ task.detail }}</p>
+              </article>
+            {% endfor %}
+          </div>
+        </div>
+
+        <aside class="portal-panel">
+          <div class="portal-panel-head">
+            <div>
+              <p class="portal-kicker">SON KAYITLAR</p>
+              <h2>Günlük özeti</h2>
+            </div>
+          </div>
+          <div class="activity-stream">
+            {% for log in last_logs %}
+              <article>
+                <div>
+                  <strong>{{ log.date|date:"d.m.Y" }}</strong>
+                  {% with review=log.reviews.first %}
+                    {% if review %}<span>{{ review.score }}/10</span>{% else %}<span>Bekliyor</span>{% endif %}
+                  {% endwith %}
+                </div>
+                {% if log.task_focus %}<p class="activity-task">{{ log.task_focus }}</p>{% endif %}
+                <p>{{ log.summary|truncatechars:120 }}</p>
+                {% if log.tomorrow_plan %}<em>Yarın: {{ log.tomorrow_plan|truncatechars:80 }}</em>{% endif %}
+              </article>
+            {% empty %}
+              <div class="portal-empty-state">
+                <span>+</span>
+                <h3>Henüz günlük kaydı yok</h3>
+                <p>İlk günlük kaydını oluşturduğunda özet ve değerlendirme bilgileri burada görünecek.</p>
+                <a href="{% url 'internship:intern_daily_log' %}">İlk günlüğünü oluştur</a>
+              </div>
+            {% endfor %}
+          </div>
+        </aside>
+      </div>
+
+      <div class="quick-action-grid">
+        <a href="{% url 'internship:intern_application_detail' %}"><span>Başvuru</span><strong>Başvuru Detayı</strong></a>
+        <a href="{% url 'internship:intern_daily_logs' %}"><span>Arşiv</span><strong>Günlüklerim</strong></a>
+        <a href="{% url 'internship:intern_daily_log' %}"><span>Yeni</span><strong>Günlük Oluştur</strong></a>
+        <a href="{% url 'internship:intern_documents' %}"><span>Evrak</span><strong>Belgeler</strong></a>
+        {% if application and application.supervisor %}
+          <a href="{% url 'internship:intern_conversation' %}"><span>Mesaj</span><strong>Personelimle Konuş</strong></a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,226 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Açık Kaynak Teknolojileri Laboratuvarı{% endblock %}
+
+{% block content %}
+
+<style>
+  /* ERP ile aynı tipografi */
+  .svc-typo p,
+  .svc-typo li { font-size:18px; line-height:40px; }
+  .svc-typo p + p { margin-top:6px; }
+  .svc-typo ul { margin-top:6px; }
+  .svc-typo li + li { margin-top:2px; }
+  .svc-typo a, .svc-typo h1, .svc-typo h2, .svc-typo h3, .svc-typo p {
+    text-decoration: none !important;
+  }
+
+  /* Başlık (gradient + sol neon şerit) */
+  .svc-title{
+    position:relative; font-weight:800; font-size:28px; line-height:1.15;
+    color:#0f172a; margin:0 0 6px;
+  }
+  .svc-title .flash{
+    background:linear-gradient(90deg,#0ea5e9,#22d3ee,#34d399);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    text-shadow:0 2px 24px rgba(34,211,238,.35);
+  }
+  .svc-title::before{
+    content:""; position:absolute; left:-14px; top:50%; transform:translateY(-50%);
+    width:6px; height:70%; border-radius:9999px;
+    background:linear-gradient(#22d3ee,#14b8a6);
+    box-shadow:0 0 16px rgba(14,165,233,.55);
+  }
+
+  /* Kısa etiket */
+  .svc-kicker{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    font-weight:700; color:#0ea5e9; background:rgba(56,189,248,.10);
+    padding:4px 10px; border-radius:9999px; margin-bottom:8px;
+    border:1px solid rgba(56,189,248,.25);
+  }
+
+  /* Alt başlık (madde başlıkları) */
+  .svc-sub{ font-weight:800; font-size:20px; margin:18px 0 6px; color:#0f172a; }
+
+  /* Görsel kartı */
+  .svc-img{
+    width:560px; max-width:100%; border-radius:20px;
+    box-shadow:0 20px 60px rgba(2,132,199,.35);
+    outline:2px solid rgba(56,189,248,.22);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  @media (min-width:1024px){ .svc-img{ width:640px; } }
+  .svc-img:hover{ transform:scale(1.02); box-shadow:0 28px 80px rgba(2,132,199,.45); }
+
+  .svc-section{ margin-top:18px; }
+  .service-hero{
+    position:relative;
+    min-height:340px;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+  }
+  .service-hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(15,23,42,.56);
+  }
+</style>
+
+<section class="service-hero flex items-center justify-center text-white"
+         style="background-image:url('{% static 'images/slider/slide-5-edevlet.jpg' %}');">
+  <div class="relative z-10 max-w-5xl mx-auto px-4 py-20 text-center">
+    <h1 class="text-3xl md:text-5xl font-extrabold tracking-wide">
+      Açık Kaynak Teknolojileri Laboratuvarı
+    </h1>
+    <p class="mt-4 max-w-4xl mx-auto text-sm md:text-lg leading-7 md:leading-8">
+      Lisans maliyeti yüksek ticari yazılım, veri tabanı ve altyapı çözümlerinin açık kaynak alternatiflerine dönüştürülmesi; PostgreSQL, PostGIS, GeoServer, Keycloak, Kubernetes ve açık standartlara dayalı sürdürülebilir bir teknoloji altyapısı.
+    </p>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-4 py-10 svc-typo">
+
+  <!-- BAŞLIK -->
+  <header class="hidden">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide text-slate-900"
+        style="text-shadow:0 4px 10px rgba(15,23,42,.45);">
+      Açık Kaynak Teknolojileri Laboratuvarı
+    </h1>
+  </header>
+
+  <!-- METİN -->
+  <div class="rounded-3xl bg-white p-7 md:p-10">
+
+    <p class="text-base md:text-lg text-slate-700 leading-relaxed">
+      Açık Kaynak Teknolojileri Laboratuvarımız kapsamında, lisans maliyeti yüksek ticari yazılım, veri tabanı ve altyapı çözümlerinin açık kaynak alternatiflerine dönüştürülmesi amaçlanmaktadır. Laboratuvar ortamında yürütülen çalışmalar ile mevcut sistemler analiz edilmekte, uygun açık kaynak karşılıkları belirlenmekte ve geçiş süreçleri performans, güvenlik ve veri bütünlüğü korunarak gerçekleştirilmektedir. Bu yaklaşım sayesinde kurumların lisans bağımlılığı azaltılmakta, operasyonel maliyetler düşürülmekte ve sürdürülebilir, ölçeklenebilir ve üretici bağımsız (vendor-independent) bir teknoloji altyapısı oluşturulmaktadır.
+    </p>
+
+    <h2 class="mt-10 text-xl md:text-2xl font-extrabold text-slate-900">
+      Açık Kaynak Dönüşüm Faaliyetleri
+    </h2>
+
+    <ul class="mt-4 space-y-4 text-slate-700">
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>Veri Tabanı Dönüşümü:</b> Oracle ve benzeri lisanslı veri tabanı sistemlerinin analiz edilerek PostgreSQL ve PostGIS altyapılarına taşınması, veri modeli uyumluluğu, performans optimizasyonu ve sorgu dönüşümlerinin gerçekleştirilmesi.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>İşletim Sistemi Modernizasyonu:</b> Lisanslı sunucu işletim sistemlerinin yerine Linux tabanlı açık kaynak sunucu ortamlarının kurulması ve merkezi sistem yönetiminin sağlanması.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>Uygulama Sunucusu ve Web Servisleri:</b> Kapalı kaynak uygulama barındırma çözümlerinin açık kaynak web sunucuları ve servis mimarileri ile yeniden yapılandırılması.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>Coğrafi Bilgi Sistemleri (GIS) Dönüşümü:</b> Lisanslı CBS çözümlerinin yerine GeoServer, GDAL ve açık standartlara dayalı WMS/WFS servis mimarilerinin kurulması ve mekânsal veri servislerinin açık kaynak platformlara aktarılması.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>Kimlik ve Erişim Yönetimi:</b> Ticari kimlik doğrulama sistemlerinin yerine Keycloak tabanlı merkezi kimlik yönetimi, Single Sign-On (SSO) ve yetkilendirme altyapılarının oluşturulması.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>Uygulama Modernizasyonu:</b> Monolitik veya lisans bağımlı uygulamaların Java Spring Boot ve .NET Core tabanlı mikroservis mimarilerine dönüştürülmesi.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>Container ve Orkestrasyon Altyapısı:</b> Uygulamaların konteyner mimarisine taşınarak Kubernetes platformu üzerinde çalıştırılması ve Rancher ile merkezi cluster yönetiminin sağlanması.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>Veri Akışı ve Entegrasyon Sistemleri:</b> Kurumsal entegrasyon ve yüksek hacimli veri iletişimi için Apache Kafka tabanlı mesajlaşma altyapılarının kurulması.</span>
+      </li>
+
+      <li class="flex gap-3">
+        <span class="mt-2 w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0"></span>
+        <span><b>Versiyonlama ve İş Birliği Araçları:</b> Yazılım geliştirme süreçlerinde Git tabanlı versiyon kontrol, dokümantasyon ve bilgi paylaşımı için Wiki altyapılarının kullanılması.</span>
+      </li>
+    </ul>
+
+    <p class="mt-10 text-base md:text-lg text-slate-700 leading-relaxed">
+      Bu çalışmalar sayesinde Açık Kaynak Teknolojileri Laboratuvarımız; mevcut sistemleri yalnızca dönüştüren değil, aynı zamanda kurumların gelecekteki dijital ihtiyaçlarına uyum sağlayabilecek esnek, güvenli ve sürdürülebilir bir teknoloji ekosistemi oluşturmayı hedeflemektedir.
+    </p>
+
+    <!-- GÖRÜŞME FORMU -->
+  <section id="goruseme" class="mt-14">
+    <div class="rounded-3xl bg-white p-7 md:p-10">
+      <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+        Görüşme Talep Ediniz
+      </h2>
+      <p class="mt-2 text-sm md:text-base text-slate-600">
+        İhtiyacınızı iletin, ekibimiz dönüş yapsın.
+      </p>
+
+      <form method="post" action="#" class="mt-8 grid gap-5">
+        {% csrf_token %}
+
+        <div class="grid gap-5 md:grid-cols-2">
+          <div>
+            <label class="text-sm font-semibold text-slate-700">Ad Soyad *</label>
+            <input type="text" required
+              class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-sky-200" />
+          </div>
+
+          <div>
+            <label class="text-sm font-semibold text-slate-700">E-posta *</label>
+            <input type="email" required
+              class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-sky-200" />
+          </div>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2">
+          <div>
+            <label class="text-sm font-semibold text-slate-700">Telefon *</label>
+            <input type="text" required
+              class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-sky-200" />
+          </div>
+
+          <div>
+            <label class="text-sm font-semibold text-slate-700">Konu</label>
+            <input type="text"
+              class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-sky-200" />
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold text-slate-700">Açıklama / Talep Detayı</label>
+          <textarea rows="5"
+            class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-sky-200"></textarea>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button type="submit"
+            class="inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-semibold
+                   bg-emerald-500 text-white shadow-sm hover:bg-emerald-600 transition hover:shadow-md">
+            Görüşme Talep Ediniz
+          </button>
+
+          <a href="{% url 'website:iletisim' %}"
+             class="text-sm font-semibold text-sky-700 hover:text-sky-900">
+            İletişim bilgileri →
+          </a>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</section>
+{% endblock %}

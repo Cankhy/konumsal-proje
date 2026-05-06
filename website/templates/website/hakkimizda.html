@@ -30,12 +30,6 @@
   <style>
     /* Sayfa genel reset */
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
-      color:#0b2239;
-      background:#f6f9fb;
-    }
     a{color:inherit;text-decoration:none}
 
     /* Genel layout */
@@ -100,14 +94,7 @@
     .cert-item:hover{transform:translateY(-6px) scale(1.02); box-shadow:0 24px 60px rgba(2,35,51,.15)}
     .cert-caption{font-size:13px; color:#0f172a; text-align:center; margin-top:8px; opacity:.8}
   </style>
-</head>
-<body>
 
-  <!-- Üst menünüz varsa gelecek -->
-  <header id="site-header"></header>
-
-  <main id="content">
-   
     <!-- BİZ KİMİZ -->
     <section class="py-section">
       <div class="container">
@@ -178,10 +165,6 @@
         </p>
       </div>
     </section>
-  </main>
-
-  <!-- Altbilgi alanınız varsa -->
-  <footer id="site-footer"></footer>
 
   <script>
     /*
@@ -228,9 +211,5 @@
     const two = buildStripContent(CERTS);
     [...one, ...two].forEach(el => strip.appendChild(el));
   </script>
-</body>
-</html>
-
-
 
 {% endblock %}

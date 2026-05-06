@@ -46,27 +46,27 @@
   .svc-img:hover{ transform:scale(1.02); box-shadow:0 28px 80px rgba(2,132,199,.45); }
 
   .svc-section{ margin-top:18px; }
+  .svc-hero{
+    min-height:340px; display:flex; align-items:center; justify-content:center;
+    background-size:cover; background-position:center; position:relative; overflow:hidden;
+  }
+  .svc-hero::before{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(90deg,rgba(2,6,23,.82),rgba(15,23,42,.42),rgba(2,6,23,.72));
+  }
+  .svc-hero-content{ position:relative; z-index:1; text-align:center; color:white; padding:44px 20px; }
+  .svc-hero-content h1{ font-size:clamp(38px,5vw,64px); font-weight:900; line-height:1.05; text-shadow:0 8px 24px rgba(0,0,0,.55); }
+  .svc-hero-content p{ margin-top:16px; font-size:19px; font-weight:700; color:#d9fffb; }
 </style>
 
-{# ÜST BANNER – mobil için ayrı hero görseli #}
-<section class="relative w-full h-80 md:h-96">
-  <div class="absolute inset-0 bg-cover bg-center"
-       style="background-image:url('{% static "images/mobil/hero.jpg" %}');"></div>
-  <div class="absolute inset-0 bg-black/35"></div>
+<section class="svc-hero" style="background-image:url('{% static "images/solution-mobil.jpg" %}');">
+  <div class="svc-hero-content">
+    <h1>Mobil Uygulamalar</h1>
+    <p>Android ve iOS platformlarında kuruma özel mobil çözümler.</p>
+  </div>
 </section>
 
 <section class="max-w-6xl mx-auto px-4 py-10 svc-typo">
-
-  {# Sayfa başlığı #}
-  <div class="text-center mb-10">
-    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide text-slate-900"
-        style="text-shadow:0 4px 10px rgba(15,23,42,.45);">
-      Mobil Uygulamalar
-    </h1>
-    <p class="mt-2 font-semibold text-teal-700" style="font-size:18px; line-height:28px;">
-      Android ve iOS platformlarında kurumunuza özel mobil çözümler
-    </p>
-  </div>
 
   {# 1. BLOK — ANDROID (sol metin, sağ 1. görsel) #}
   <div class="grid gap-10 md:grid-cols-2 items-start">

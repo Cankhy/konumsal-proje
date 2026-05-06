@@ -1,0 +1,114 @@
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Staj Mesajlaşma{% endblock %}
+
+{% block content %}
+<section class="portal-page mx-auto w-full max-w-7xl py-8">
+  <div class="portal-hero intern-hero">
+    <div>
+      <p class="portal-kicker">EŞLEŞME KANALI</p>
+      <h1>Mesajlaşma</h1>
+      <p class="portal-subline">
+        {{ application.first_name }} {{ application.last_name }}
+        {% if application.supervisor %} / {{ application.supervisor }}{% endif %}
+      </p>
+    </div>
+    <div class="portal-hero-actions">
+      {% if mode == "personnel" %}
+        <a href="{% url 'internship:panel_logs_list' %}">Günlükler</a>
+        <a href="{% url 'website:personnel_home' %}">Panel</a>
+      {% else %}
+        <a href="{% url 'internship:intern_daily_log' %}">Günlük Yaz</a>
+        <a href="{% url 'internship:intern_dashboard' %}">Panel</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="chat-shell">
+    <aside class="chat-profile-card">
+      <p class="portal-kicker">AKTİF EŞLEŞME</p>
+      <h2>{{ application.first_name }} {{ application.last_name }}</h2>
+      <div class="chat-profile-list">
+        <div><span>Okul</span><strong>{{ application.school }}</strong></div>
+        <div><span>Bölüm</span><strong>{{ application.department }}</strong></div>
+        <div><span>Sorumlu</span><strong>{{ application.supervisor|default:"Atama bekleniyor" }}</strong></div>
+      </div>
+      <div class="chat-hint">
+        Sorun, ekran görüntüsü, görev dosyası veya kısa notları buradan paylaşabilirsiniz.
+      </div>
+    </aside>
+
+    <div class="chat-panel">
+      <div class="chat-panel-head">
+        <div>
+          <p class="portal-kicker">KONUŞMA</p>
+          <h2>Ortak çalışma alanı</h2>
+        </div>
+      </div>
+
+      <div class="chat-thread">
+        {% for item in conversations %}
+          <article class="chat-message {% if item.sender_id == request.user.id %}is-mine{% endif %}">
+            <div class="chat-bubble">
+              <div class="chat-meta">
+                <strong>{{ item.sender.get_full_name|default:item.sender.username }}</strong>
+                <span>{{ item.created_at|date:"d.m.Y H:i" }}</span>
+              </div>
+              {% if item.message %}
+                <p>{{ item.message|linebreaksbr }}</p>
+              {% endif %}
+              {% if item.attachment %}
+                {% if item.is_image %}
+                  <a href="{{ item.attachment.url }}" target="_blank" class="chat-image-link">
+                    <img src="{{ item.attachment.url }}" alt="Gönderilen görsel">
+                  </a>
+                {% else %}
+                  <a href="{{ item.attachment.url }}" target="_blank" class="chat-file-link">Dosyayı Aç</a>
+                {% endif %}
+              {% endif %}
+              {% if item.sender_id == request.user.id %}
+                <div class="message-state {% if item.read_at %}is-read{% endif %}">
+                  <span>✓✓</span>
+                  <em>{% if item.read_at %}Okundu{% else %}Gönderildi{% endif %}</em>
+                </div>
+              {% endif %}
+            </div>
+          </article>
+        {% empty %}
+          <div class="portal-empty">Henüz mesaj yok. İlk mesajı yazarak konuşmayı başlat.</div>
+        {% endfor %}
+      </div>
+
+      <form method="post" enctype="multipart/form-data" class="chat-compose">
+        {% csrf_token %}
+        <textarea name="message" rows="3" placeholder="Mesaj yazın..." class="form-textarea"></textarea>
+        <div class="chat-compose-actions">
+          <label class="chat-upload" id="chat-upload-label">
+            <input type="file" name="attachment" accept="image/*,.pdf,.doc,.docx,.zip">
+            Görsel / Dosya Ekle
+          </label>
+          <button type="submit" class="portal-primary-btn">Gönder</button>
+        </div>
+        <p class="file-feedback" id="chat-file-feedback">Henüz dosya seçilmedi.</p>
+      </form>
+    </div>
+  </div>
+</section>
+<script>
+  const chatFileInput = document.querySelector('.chat-upload input[type="file"]');
+  const chatFileLabel = document.getElementById('chat-upload-label');
+  const chatFileFeedback = document.getElementById('chat-file-feedback');
+
+  if (chatFileInput && chatFileLabel && chatFileFeedback) {
+    const syncChatFileState = () => {
+      const hasFile = chatFileInput.files && chatFileInput.files.length;
+      chatFileLabel.classList.toggle('has-file', !!hasFile);
+      chatFileFeedback.textContent = hasFile ? `Seçilen dosya: ${chatFileInput.files[0].name}` : 'Henüz dosya seçilmedi.';
+      chatFileFeedback.classList.add('is-visible');
+    };
+
+    chatFileInput.addEventListener('change', syncChatFileState);
+    syncChatFileState();
+  }
+</script>
+{% endblock %}
