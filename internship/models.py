@@ -1,12 +1,11 @@
-from django.db import models
 from django.conf import settings
 from django.core.validators import RegexValidator
+from django.db import models
 from django.utils import timezone
 
-User = settings.AUTH_USER_MODEL  # ForeignKey'lerde bunu kullanıyoruz
+User = settings.AUTH_USER_MODEL
 
 
-# TC kimlik ve telefon için validator'lar
 tc_kimlik_validator = RegexValidator(
     regex=r"^\d{11}$",
     message="TC Kimlik numarası 11 haneli ve sadece rakamlardan oluşmalıdır.",
@@ -21,16 +20,8 @@ phone_validator = RegexValidator(
 class Application(models.Model):
     first_name = models.CharField("Ad", max_length=50)
     last_name = models.CharField("Soyad", max_length=50)
-    tc_kimlik = models.CharField(
-        "TC Kimlik No",
-        max_length=11,
-        validators=[tc_kimlik_validator],
-    )
-    phone = models.CharField(
-        "Telefon",
-        max_length=11,
-        validators=[phone_validator],
-    )
+    tc_kimlik = models.CharField("TC Kimlik No", max_length=11, validators=[tc_kimlik_validator])
+    phone = models.CharField("Telefon", max_length=11, validators=[phone_validator])
     email = models.EmailField("E-posta", blank=True, null=True)
     school = models.CharField("Okul", max_length=150)
     department = models.CharField("Bölüm", max_length=150, blank=True)
@@ -41,13 +32,7 @@ class Application(models.Model):
         APPROVED = "APPROVED", "Onaylandı"
         REJECTED = "REJECTED", "Reddedildi"
 
-    status = models.CharField(
-        "Durum",
-        max_length=20,
-        choices=Status.choices,
-        default=Status.PENDING,
-    )
-
+    status = models.CharField("Durum", max_length=20, choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -59,19 +44,10 @@ class Application(models.Model):
 
 
 class InternLog(models.Model):
-    application = models.ForeignKey(
-        Application,
-        on_delete=models.CASCADE,
-        related_name="logs",
-    )
+    application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name="logs")
     date = models.DateField()
     content = models.TextField("Günlük Özeti")
-    created_by = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -79,11 +55,7 @@ class InternLog(models.Model):
 
 
 class LogReview(models.Model):
-    log = models.OneToOneField(
-        InternLog,
-        on_delete=models.CASCADE,
-        related_name="review",
-    )
+    log = models.OneToOneField(InternLog, on_delete=models.CASCADE, related_name="review")
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
     score = models.PositiveSmallIntegerField("Puan", default=0)
     comment = models.TextField("Yorum", blank=True)
@@ -94,26 +66,40 @@ class LogReview(models.Model):
 
 
 class Log(models.Model):
-    intern = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="intern_logs",
-    )
+    intern = models.ForeignKey(User, on_delete=models.CASCADE, related_name="intern_logs")
     date = models.DateField(auto_now_add=True)
     content = models.TextField()
-
     score = models.PositiveSmallIntegerField(null=True, blank=True)
-    reviewer = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="reviewed_logs",
-    )
+    reviewer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="reviewed_logs")
 
     def __str__(self):
-        # User modelinde username alanı olduğunu varsayıyoruz
         return f"{self.intern} - {self.date}"
+
+
+class PersonnelProfile(models.Model):
+    first_name = models.CharField("Ad", max_length=50)
+    last_name = models.CharField("Soyad", max_length=50)
+    email = models.EmailField("E-posta", blank=True)
+    phone = models.CharField("Telefon", max_length=15, blank=True)
+    title = models.CharField("Görev / Ünvan", max_length=80, blank=True)
+    is_active = models.BooleanField("Aktif", default=True)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="personnel_profile",
+        verbose_name="Oluşturulan Kullanıcı",
+    )
+    account_created_at = models.DateTimeField("Hesap Oluşturulma", null=True, blank=True)
+
+    class Meta:
+        ordering = ["first_name", "last_name"]
+        verbose_name = "Personel Hesabı"
+        verbose_name_plural = "Personel Hesapları"
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class InternApplication(models.Model):
@@ -125,12 +111,7 @@ class InternApplication(models.Model):
 
     first_name = models.CharField("Ad", max_length=30)
     last_name = models.CharField("Soyad", max_length=30)
-    tc_no = models.CharField(
-        "TC Kimlik No",
-        max_length=11,
-        unique=True,
-        validators=[tc_kimlik_validator],
-    )
+    tc_no = models.CharField("TC Kimlik No", max_length=11, unique=True, validators=[tc_kimlik_validator])
     phone = models.CharField("Telefon", max_length=15)
     email = models.EmailField("E-posta", blank=True)
     school = models.CharField("Okul", max_length=100)
@@ -139,16 +120,8 @@ class InternApplication(models.Model):
     start_date = models.DateField("Başlangıç Tarihi", null=True, blank=True)
     end_date = models.DateField("Bitiş Tarihi", null=True, blank=True)
     cv_file = models.FileField("CV", upload_to="intern_cvs/", null=True, blank=True)
-
-    status = models.CharField(
-        "Durum",
-        max_length=10,
-        choices=STATUS_CHOICES,
-        default="pending",
-    )
+    status = models.CharField("Durum", max_length=10, choices=STATUS_CHOICES, default="pending")
     created_at = models.DateTimeField("Başvuru Tarihi", auto_now_add=True)
-
-    # ✅ Otomatik hesap alanları
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         null=True,
@@ -160,8 +133,10 @@ class InternApplication(models.Model):
     account_created_at = models.DateTimeField("Hesap Oluşturulma", null=True, blank=True)
     credentials_sent = models.BooleanField("Bilgiler iletildi", default=False)
     must_change_password = models.BooleanField("İlk girişte şifre değişimi zorunlu", default=False)
+    rejection_reason = models.TextField("Red Nedeni", blank=True)
+    status_updated_at = models.DateTimeField("Durum Güncelleme", auto_now=True)
     supervisor = models.ForeignKey(
-        "PersonnelProfile",
+        PersonnelProfile,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -194,13 +169,60 @@ class DailyLog(models.Model):
         return f"{self.application.tc_no} - {self.date}"
 
 
-class Review(models.Model):
-    log = models.ForeignKey(
-        DailyLog,
+class PersonnelTask(models.Model):
+    class Priority(models.TextChoices):
+        LOW = "low", "Düşük"
+        MEDIUM = "medium", "Orta"
+        HIGH = "high", "Yüksek"
+
+    application = models.ForeignKey(
+        InternApplication,
         on_delete=models.CASCADE,
-        related_name="reviews",
-        verbose_name="Günlük",
+        related_name="personnel_tasks",
+        verbose_name="Stajyer Eşleşmesi",
     )
+    personnel = models.ForeignKey(
+        PersonnelProfile,
+        on_delete=models.CASCADE,
+        related_name="assigned_tasks",
+        verbose_name="Görevi Veren Personel",
+    )
+    title = models.CharField("Görev Başlığı", max_length=140)
+    details = models.TextField("Görev Açıklaması", blank=True)
+    task_date = models.DateField("Görev Günü", default=timezone.localdate)
+    due_date = models.DateField("Teslim Tarihi", null=True, blank=True)
+    priority = models.CharField("Öncelik", max_length=10, choices=Priority.choices, default=Priority.MEDIUM)
+    is_active = models.BooleanField("Aktif", default=True)
+    is_completed = models.BooleanField("Tamamlandı", default=False)
+    completed_at = models.DateTimeField("Tamamlanma", null=True, blank=True)
+    created_at = models.DateTimeField("Oluşturulma", auto_now_add=True)
+
+    class Meta:
+        ordering = ["task_date", "-created_at"]
+        verbose_name = "Personel Görevi"
+        verbose_name_plural = "Personel Görevleri"
+
+    def __str__(self):
+        return f"{self.application} - {self.title}"
+
+
+class PersonnelTaskComment(models.Model):
+    task = models.ForeignKey(PersonnelTask, on_delete=models.CASCADE, related_name="comments", verbose_name="Görev")
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="task_comments", verbose_name="Yazan")
+    comment = models.TextField("Yorum")
+    created_at = models.DateTimeField("Oluşturulma", auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
+        verbose_name = "Görev Yorumu"
+        verbose_name_plural = "Görev Yorumları"
+
+    def __str__(self):
+        return f"{self.task} - {self.author}"
+
+
+class Review(models.Model):
+    log = models.ForeignKey(DailyLog, on_delete=models.CASCADE, related_name="reviews", verbose_name="Günlük")
     reviewer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -216,32 +238,6 @@ class Review(models.Model):
         return f"{self.log} - {self.score}"
 
 
-class PersonnelProfile(models.Model):
-    first_name = models.CharField("Ad", max_length=50)
-    last_name = models.CharField("Soyad", max_length=50)
-    email = models.EmailField("E-posta", blank=True)
-    phone = models.CharField("Telefon", max_length=15, blank=True)
-    title = models.CharField("Görev / Ünvan", max_length=80, blank=True)
-    is_active = models.BooleanField("Aktif", default=True)
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="personnel_profile",
-        verbose_name="Oluşturulan Kullanıcı",
-    )
-    account_created_at = models.DateTimeField("Hesap Oluşturulma", null=True, blank=True)
-
-    class Meta:
-        ordering = ["first_name", "last_name"]
-        verbose_name = "Personel Hesabı"
-        verbose_name_plural = "Personel Hesapları"
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
-
 class Announcement(models.Model):
     class Target(models.TextChoices):
         ALL = "ALL", "Tüm kullanıcılar"
@@ -250,12 +246,7 @@ class Announcement(models.Model):
 
     title = models.CharField("Başlık", max_length=150)
     message = models.TextField("Mesaj")
-    target = models.CharField(
-        "Hedef Kitle",
-        max_length=10,
-        choices=Target.choices,
-        default=Target.ALL,
-    )
+    target = models.CharField("Hedef Kitle", max_length=10, choices=Target.choices, default=Target.ALL)
     is_active = models.BooleanField("Aktif", default=True)
     start_date = models.DateField("Yayın Başlangıç Tarihi", null=True, blank=True)
     end_date = models.DateField("Yayın Bitiş Tarihi", null=True, blank=True)
@@ -280,6 +271,70 @@ class Announcement(models.Model):
         return True
 
 
+class InternDocument(models.Model):
+    class Category(models.TextChoices):
+        INTERN_AGREEMENT = "intern_agreement", "Staj Sözleşmesi"
+        DAILY_FORM = "daily_form", "İmzalı Günlük Formu"
+        REPORT = "report", "Staj Raporu"
+        PRESENTATION = "presentation", "Sunum Dosyası"
+
+    class Status(models.TextChoices):
+        PENDING = "pending", "Bekliyor"
+        APPROVED = "approved", "Onaylandı"
+        MISSING = "missing", "Eksik"
+
+    application = models.ForeignKey(
+        InternApplication,
+        on_delete=models.CASCADE,
+        related_name="documents",
+        verbose_name="Staj Başvurusu",
+    )
+    category = models.CharField("Belge Türü", max_length=30, choices=Category.choices)
+    file = models.FileField("Belge Dosyası", upload_to="intern_documents/")
+    status = models.CharField("Durum", max_length=10, choices=Status.choices, default=Status.PENDING)
+    personnel_note = models.TextField("Personel Notu", blank=True)
+    reupload_requested = models.BooleanField("Tekrar Yükleme İstendi", default=False)
+    uploaded_at = models.DateTimeField("Yüklenme", auto_now_add=True)
+    reviewed_at = models.DateTimeField("İncelenme", null=True, blank=True)
+
+    class Meta:
+        ordering = ["category", "-uploaded_at"]
+        verbose_name = "Staj Belgesi"
+        verbose_name_plural = "Staj Belgeleri"
+
+    def __str__(self):
+        return f"{self.application} - {self.get_category_display()}"
+
+
+class ApplicationStatusHistory(models.Model):
+    application = models.ForeignKey(
+        InternApplication,
+        on_delete=models.CASCADE,
+        related_name="status_history",
+        verbose_name="Staj Başvurusu",
+    )
+    actor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="application_history_entries",
+        verbose_name="İşlemi Yapan",
+    )
+    from_status = models.CharField("Eski Durum", max_length=10, blank=True)
+    to_status = models.CharField("Yeni Durum", max_length=10)
+    note = models.TextField("Not", blank=True)
+    created_at = models.DateTimeField("Kayıt Zamanı", auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Başvuru Geçmişi"
+        verbose_name_plural = "Başvuru Geçmişi"
+
+    def __str__(self):
+        return f"{self.application} - {self.to_status}"
+
+
 class ConversationMessage(models.Model):
     application = models.ForeignKey(
         InternApplication,
@@ -295,7 +350,10 @@ class ConversationMessage(models.Model):
     )
     message = models.TextField("Mesaj", blank=True)
     attachment = models.FileField("Ek / Görsel", upload_to="intern_messages/", null=True, blank=True)
+    attachment_kind = models.CharField("Ek Türü", max_length=20, blank=True)
     created_at = models.DateTimeField("Gönderim Zamanı", auto_now_add=True)
+    edited_at = models.DateTimeField("Düzenlenme", null=True, blank=True)
+    deleted_at = models.DateTimeField("Silinme", null=True, blank=True)
     read_at = models.DateTimeField("Okunma Zamanı", null=True, blank=True)
 
     class Meta:
@@ -310,3 +368,19 @@ class ConversationMessage(models.Model):
         if not self.attachment:
             return False
         return self.attachment.name.lower().endswith((".png", ".jpg", ".jpeg", ".webp", ".gif"))
+
+
+class FormErrorLog(models.Model):
+    form_name = models.CharField("Form", max_length=80)
+    path = models.CharField("Yol", max_length=240)
+    payload = models.JSONField("Veri", default=dict, blank=True)
+    errors = models.JSONField("Hatalar", default=dict, blank=True)
+    created_at = models.DateTimeField("Kayıt Zamanı", auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Form Hata Kaydı"
+        verbose_name_plural = "Form Hata Kayıtları"
+
+    def __str__(self):
+        return f"{self.form_name} - {self.path}"

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Staj İşlemleri - Konumsal Bilgi Sistemleri</title>
-  <link rel="stylesheet" href="{% static 'css/output.css' %}?v=20260506-staj-minimal2">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}?v=20260506-staj-minimal3">
 </head>
 <body class="min-h-screen bg-slate-950">
   <main class="internship-landing internship-landing-cyber relative min-h-screen overflow-hidden bg-slate-950">
@@ -18,6 +18,8 @@
         <a href="{% url 'website:home' %}" class="auth-logo-link" aria-label="Ana sayfaya dön">
           <img src="{% static 'images/konumsal-logo-white.png' %}" alt="Konumsal Bilgi Sistemleri" class="auth-panel-logo">
         </a>
+
+        <h1 class="sr-only">Staj İşlemleri</h1>
 
         <div class="internship-choice-list internship-choice-list-tight">
           <a href="{% url 'internship:intern_apply' %}" class="internship-choice-link">

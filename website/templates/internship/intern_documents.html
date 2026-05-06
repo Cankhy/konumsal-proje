@@ -8,7 +8,7 @@
     <div>
       <p class="portal-kicker">BELGE MERKEZİ</p>
       <h1>Staj Belgeleri</h1>
-      <p class="portal-subline">Sözleşme, günlük formu ve teslim dosyalarını daha temiz bir kart düzeninde tek yerden aç.</p>
+      <p class="portal-subline">Belge yükle, durumunu takip et, eksik veya tekrar yükleme isteklerini aynı ekranda gör.</p>
     </div>
     <div class="portal-hero-actions">
       <a href="{% url 'internship:intern_daily_log' %}">Günlük Yaz</a>
@@ -16,33 +16,72 @@
     </div>
   </div>
 
-  <div class="document-board">
-    {% for doc in documents %}
-      <a href="{{ doc.url }}" class="document-card" target="_blank">
-        <span>PDF</span>
-        <strong>{{ doc.title }}</strong>
-        <p>{{ doc.description }}</p>
-        <em>Belgeyi Aç</em>
-      </a>
-    {% empty %}
-      <div class="portal-panel">
-        <div class="portal-empty">Belge bulunamadı.</div>
+  <div class="review-workspace">
+    <form method="post" enctype="multipart/form-data" class="daily-form-card">
+      {% csrf_token %}
+      <p class="portal-kicker">BELGE YÜKLE</p>
+      <h2 class="mt-2 text-2xl font-black text-slate-900">Yeni belge ekle</h2>
+      <div class="mt-6 space-y-5">
+        <div>
+          <label class="mb-2 block text-sm font-bold text-slate-700">{{ form.category.label }}</label>
+          {{ form.category }}
+        </div>
+        <div>
+          <label class="mb-2 block text-sm font-bold text-slate-700">{{ form.file.label }}</label>
+          {{ form.file }}
+          {% if form.file.errors %}
+            <p class="mt-2 text-xs font-semibold text-rose-700">{{ form.file.errors|striptags }}</p>
+          {% endif %}
+        </div>
       </div>
-    {% endfor %}
-  </div>
+      <div class="mt-6 flex flex-wrap gap-4">
+        <button type="submit" class="portal-primary-btn">Belgeyi Yükle</button>
+      </div>
+    </form>
 
-  <div class="portal-panel mt-5">
-    <div class="portal-panel-head">
-      <div>
-        <p class="portal-kicker">TESLİM KONTROLÜ</p>
-        <h2>Eksik kalmasın</h2>
+    <article class="log-detail-card">
+      <div class="log-detail-head">
+        <div>
+          <p class="portal-kicker">TESLİM PLANI</p>
+          <h2>Belge durumların</h2>
+        </div>
       </div>
-    </div>
-    <div class="timeline-list">
-      <div><span>01</span><p>Staj sözleşmesini indir, okul ve kurum onaylarını tamamla.</p></div>
-      <div><span>02</span><p>Günlük kayıtlarını sistemde doldur, gerekiyorsa çıktı formuyla eşleştir.</p></div>
-      <div><span>03</span><p>Teslimden önce sorumlu personelinle mesajlaşma alanından kontrol et.</p></div>
-    </div>
+
+      <div class="activity-stream">
+        {% for item in grouped_documents %}
+          <article class="document-status-card">
+            <div>
+              <strong>{{ item.title }}</strong>
+              {% if item.latest %}
+                <span class="status-pill {% if item.latest.status == 'approved' %}is-success{% elif item.latest.status == 'missing' %}is-danger{% else %}is-waiting{% endif %}">
+                  {{ item.latest.get_status_display }}
+                </span>
+              {% else %}
+                <span class="status-pill is-waiting">Henüz yüklenmedi</span>
+              {% endif %}
+            </div>
+            <p>{{ item.description }}</p>
+            <em class="text-xs text-slate-500">
+              İzin verilen türler: {{ item.rule.extensions|join:", " }} · Üst sınır: {{ item.rule.max_size_mb }} MB
+            </em>
+            {% if item.latest %}
+              <div class="mt-3 text-sm text-slate-600">
+                <p><a href="{{ item.latest.file.url }}" target="_blank" class="chat-file-link">Son yüklenen dosyayı aç</a></p>
+                <p class="mt-2">Yüklendi: {{ item.latest.uploaded_at|date:"d.m.Y H:i" }}</p>
+                {% if item.latest.personnel_note %}
+                  <p class="mt-2 rounded-xl bg-slate-50 px-3 py-2 text-xs text-slate-700">{{ item.latest.personnel_note }}</p>
+                {% endif %}
+                {% if item.latest.reupload_requested %}
+                  <p class="mt-2 rounded-xl bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700">Bu belge için tekrar yükleme istendi.</p>
+                {% endif %}
+              </div>
+            {% endif %}
+          </article>
+        {% empty %}
+          <div class="portal-empty">Henüz belge tanımı bulunamadı.</div>
+        {% endfor %}
+      </div>
+    </article>
   </div>
 </section>
 {% endblock %}

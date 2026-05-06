@@ -8,9 +8,10 @@
     <div class="portal-hero-copy">
       <p class="portal-kicker">BAŞVURU DETAYI</p>
       <h1>Başvuru Kaydım</h1>
-      <p class="portal-subline">Kimlik, okul, dönem ve durum bilgilerinin tamamı daha düzenli kartlar halinde burada yer alır.</p>
+      <p class="portal-subline">Kimlik, okul, dönem, belge ve durum geçmişi bilgilerini tek ekranda incele.</p>
     </div>
     <div class="portal-hero-actions">
+      <a href="{% url 'internship:intern_documents' %}">Belgeler</a>
       <a href="{% url 'internship:intern_dashboard' %}">Panele Dön</a>
     </div>
   </div>
@@ -71,10 +72,34 @@
             {% endif %}
           </p>
         </div>
-        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 md:col-span-2">
-          <p class="text-sm text-slate-500">Başvuru Tarihi</p>
-          <p class="mt-2 text-base font-semibold text-slate-900">{{ application.created_at|date:"d.m.Y H:i" }}</p>
+        {% if application.rejection_reason %}
+          <div class="rounded-2xl border border-rose-200 bg-rose-50 p-5 md:col-span-2">
+            <p class="text-sm text-rose-600">Red Nedeni</p>
+            <p class="mt-2 text-base font-semibold text-rose-800">{{ application.rejection_reason }}</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="portal-panel mt-6">
+      <div class="portal-panel-head">
+        <div>
+          <p class="portal-kicker">DURUM GEÇMİŞİ</p>
+          <h2>Süreç akışı</h2>
         </div>
+      </div>
+      <div class="timeline-list">
+        {% for item in application.status_history.all %}
+          <div>
+            <span>{{ forloop.counter|stringformat:"02d" }}</span>
+            <p>
+              <strong>{{ item.to_status }}</strong> · {{ item.created_at|date:"d.m.Y H:i" }}
+              {% if item.note %}<br>{{ item.note }}{% endif %}
+            </p>
+          </div>
+        {% empty %}
+          <div><span>01</span><p>Henüz süreç kaydı oluşturulmadı.</p></div>
+        {% endfor %}
       </div>
     </div>
   {% else %}

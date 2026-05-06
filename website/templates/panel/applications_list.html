@@ -8,7 +8,7 @@
     <div class="portal-hero-copy">
       <p class="portal-kicker">BAŞVURU HAVUZU</p>
       <h1>Staj Başvuruları</h1>
-      <p class="portal-subline">Başvuru sahiplerini daha rahat incele, sorumlu atamasını gör ve hesap açma kararlarını tek tabloda yönet.</p>
+      <p class="portal-subline">Başvuruları filtrele, ara, toplu işlem uygula, red nedenini kaydet ve belge/geçmiş takibini tek alandan yönet.</p>
     </div>
     <div class="portal-hero-actions">
       <a href="{% url 'website:personnel_home' %}">Panele Dön</a>
@@ -18,95 +18,159 @@
   <div class="portal-summary-strip mb-6">
     <div class="portal-stat-card"><span class="portal-stat-icon">01</span><p>Toplam</p><strong>{{ stats.total }}</strong><small>Tüm kayıtlar</small></div>
     <div class="portal-stat-card"><span class="portal-stat-icon">02</span><p>Beklemede</p><strong>{{ stats.pending }}</strong><small>Karar bekleyenler</small></div>
-    <div class="portal-stat-card"><span class="portal-stat-icon">03</span><p>Onaylandı</p><strong>{{ stats.approved }}</strong><small>Hesap açılabilenler</small></div>
-    <div class="portal-stat-card"><span class="portal-stat-icon">04</span><p>Reddedildi</p><strong>{{ stats.rejected }}</strong><small>Uygun bulunmayanlar</small></div>
+    <div class="portal-stat-card"><span class="portal-stat-icon">03</span><p>Onaylandı</p><strong>{{ stats.approved }}</strong><small>Hesap açılanlar</small></div>
+    <div class="portal-stat-card"><span class="portal-stat-icon">04</span><p>Reddedildi</p><strong>{{ stats.rejected }}</strong><small>Gerekçe kaydı olanlar</small></div>
   </div>
 
-  <div class="portal-table-shell">
-    <p class="px-5 pt-4 text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase md:hidden">Mobilde tabloyu yana kaydırarak inceleyebilirsin.</p>
-    <div class="overflow-x-auto">
-      <table class="portal-table">
-        <thead class="bg-slate-100 text-left text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-          <tr>
-            <th class="px-5 py-4">Başvuru Sahibi</th>
-            <th class="px-5 py-4">İletişim</th>
-            <th class="px-5 py-4">Eğitim</th>
-            <th class="px-5 py-4">Sorumlu</th>
-            <th class="px-5 py-4">Tarih Aralığı</th>
-            <th class="px-5 py-4">Durum</th>
-            <th class="px-5 py-4">Hesap / Mail</th>
-            <th class="px-5 py-4 text-right">İşlem</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-100">
-          {% for app in applications %}
-            <tr class="align-top transition hover:bg-slate-50">
-              <td class="px-5 py-5">
-                <p class="font-semibold text-slate-900">{{ app.first_name }} {{ app.last_name }}</p>
-                <p class="mt-1 text-xs text-slate-500">TC: {{ app.tc_no }}</p>
-              </td>
-              <td class="px-5 py-5 text-slate-600">
-                <p>{{ app.phone }}</p>
-                <p class="mt-1 text-xs">{{ app.email|default:"E-posta yok" }}</p>
-              </td>
-              <td class="px-5 py-5 text-slate-600">
-                <p>{{ app.school }}</p>
-                <p class="mt-1 text-xs">{{ app.department }}{% if app.grade %} / {{ app.grade }}{% endif %}</p>
-              </td>
-              <td class="px-5 py-5 text-slate-600">
-                {% if app.supervisor %}{{ app.supervisor }}{% else %}Atanmadı{% endif %}
-              </td>
-              <td class="px-5 py-5 text-slate-600">
-                {% if app.start_date and app.end_date %}
-                  {{ app.start_date|date:"d.m.Y" }} - {{ app.end_date|date:"d.m.Y" }}
-                {% else %}
-                  Belirtilmedi
-                {% endif %}
-              </td>
-              <td class="px-5 py-5">
-                {% if app.status == "pending" %}
-                  <span class="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">Beklemede</span>
-                {% elif app.status == "approved" %}
-                  <span class="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">Onaylandı</span>
-                {% else %}
-                  <span class="inline-flex rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700">Reddedildi</span>
-                {% endif %}
-              </td>
-              <td class="px-5 py-5 text-slate-600">
-                <p class="text-sm font-medium text-slate-900">
-                  {% if app.user %}{{ app.user.username }}{% else %}Henüz oluşturulmadı{% endif %}
-                </p>
-                <p class="mt-1 text-xs">
-                  {% if app.credentials_sent %}
-                    Giriş bilgileri iletildi
-                  {% elif app.user %}
-                    Mail bekleniyor
-                  {% else %}
-                    Hesap yok
-                  {% endif %}
-                </p>
-              </td>
-              <td class="px-5 py-5">
-                <div class="flex flex-col items-end gap-2">
-                  <a href="{% url 'internship:panel_application_approve' app.pk %}"
-                     class="inline-flex rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700">
-                    Onayla ve Hesap Aç
-                  </a>
-                  <a href="{% url 'internship:panel_application_reject' app.pk %}"
-                     class="inline-flex rounded-full bg-rose-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-rose-700">
-                    Reddet
-                  </a>
-                </div>
-              </td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="8" class="px-5 py-12 text-center text-sm text-slate-500">Henüz kayıtlı bir başvuru bulunmuyor.</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+  <form method="get" class="portal-panel mb-5">
+    <div class="application-filter-grid">
+      <div>
+        <label class="mb-2 block text-sm font-bold text-slate-700">Arama</label>
+        <input type="text" name="q" value="{{ q }}" class="form-input" placeholder="Ad, okul, telefon, TC...">
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-bold text-slate-700">Durum</label>
+        <select name="status" class="form-select">
+          <option value="">Tümü</option>
+          <option value="pending" {% if status_filter == "pending" %}selected{% endif %}>Beklemede</option>
+          <option value="approved" {% if status_filter == "approved" %}selected{% endif %}>Onaylandı</option>
+          <option value="rejected" {% if status_filter == "rejected" %}selected{% endif %}>Reddedildi</option>
+        </select>
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-bold text-slate-700">Atama</label>
+        <select name="supervisor" class="form-select">
+          <option value="">Tümü</option>
+          <option value="assigned" {% if supervisor_filter == "assigned" %}selected{% endif %}>Atanmış</option>
+          <option value="unassigned" {% if supervisor_filter == "unassigned" %}selected{% endif %}>Atanmamış</option>
+        </select>
+      </div>
+      <div class="application-filter-actions">
+        <button type="submit" class="portal-primary-btn">Filtrele</button>
+        <a href="{% url 'internship:panel_applications' %}" class="portal-secondary-btn">Temizle</a>
+      </div>
     </div>
-  </div>
+  </form>
+
+  <form method="post" class="portal-panel mb-5">
+    {% csrf_token %}
+    <div class="bulk-action-grid">
+      <div>
+        <label class="mb-2 block text-sm font-bold text-slate-700">Toplu İşlem</label>
+        {{ bulk_form.action }}
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-bold text-slate-700">Not / Red Nedeni</label>
+        {{ bulk_form.note }}
+      </div>
+      <div class="application-filter-actions">
+        <button type="submit" class="portal-primary-btn">Seçililere Uygula</button>
+      </div>
+    </div>
+
+    <div class="portal-table-shell mt-5">
+      <p class="px-5 pt-4 text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase md:hidden">Mobilde tabloyu yana kaydırarak inceleyebilirsin.</p>
+      <div class="overflow-x-auto">
+        <table class="portal-table">
+          <thead class="bg-slate-100 text-left text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+            <tr>
+              <th class="px-5 py-4"><input type="checkbox" data-select-all></th>
+              <th class="px-5 py-4">Başvuru Sahibi</th>
+              <th class="px-5 py-4">İletişim</th>
+              <th class="px-5 py-4">Eğitim</th>
+              <th class="px-5 py-4">Sorumlu</th>
+              <th class="px-5 py-4">Durum</th>
+              <th class="px-5 py-4">Belgeler</th>
+              <th class="px-5 py-4">Geçmiş / Red</th>
+              <th class="px-5 py-4 text-right">İşlem</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            {% for app in applications %}
+              <tr class="align-top transition hover:bg-slate-50">
+                <td class="px-5 py-5">
+                  <input type="checkbox" name="selected_ids" value="{{ app.pk }}" class="bulk-select">
+                </td>
+                <td class="px-5 py-5">
+                  <p class="font-semibold text-slate-900">{{ app.first_name }} {{ app.last_name }}</p>
+                  <p class="mt-1 text-xs text-slate-500">TC: {{ app.tc_no }}</p>
+                  {% if app.start_date and app.end_date %}
+                    <p class="mt-1 text-xs text-slate-500">{{ app.start_date|date:"d.m.Y" }} - {{ app.end_date|date:"d.m.Y" }}</p>
+                  {% endif %}
+                </td>
+                <td class="px-5 py-5 text-slate-600">
+                  <p>{{ app.phone }}</p>
+                  <p class="mt-1 text-xs">{{ app.email|default:"E-posta yok" }}</p>
+                </td>
+                <td class="px-5 py-5 text-slate-600">
+                  <p>{{ app.school }}</p>
+                  <p class="mt-1 text-xs">{{ app.department }}{% if app.grade %} / {{ app.grade }}{% endif %}</p>
+                </td>
+                <td class="px-5 py-5 text-slate-600">
+                  {% if app.supervisor %}{{ app.supervisor }}{% else %}Atanmadı{% endif %}
+                </td>
+                <td class="px-5 py-5">
+                  {% if app.status == "pending" %}
+                    <span class="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">Beklemede</span>
+                  {% elif app.status == "approved" %}
+                    <span class="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">Onaylandı</span>
+                  {% else %}
+                    <span class="inline-flex rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700">Reddedildi</span>
+                  {% endif %}
+                  <p class="mt-2 text-xs text-slate-500">
+                    {% if app.user %}{{ app.user.username }}{% else %}Hesap yok{% endif %}
+                  </p>
+                </td>
+                <td class="px-5 py-5 text-slate-600">
+                  <p class="text-sm font-medium text-slate-900">{{ app.documents.count }} belge</p>
+                  <a href="{% url 'internship:panel_document_review' app.pk %}" class="mt-2 inline-flex rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">Belge Merkezi</a>
+                </td>
+                <td class="px-5 py-5 text-slate-600">
+                  {% with latest=app.status_history.first %}
+                    {% if latest %}
+                      <p class="text-sm font-semibold text-slate-900">{{ latest.to_status }}</p>
+                      <p class="mt-1 text-xs">{{ latest.note|default:"Not yok"|truncatechars:70 }}</p>
+                      <p class="mt-1 text-[11px] text-slate-400">{{ latest.created_at|date:"d.m.Y H:i" }}</p>
+                    {% else %}
+                      <p class="text-sm">Geçmiş kaydı yok</p>
+                    {% endif %}
+                  {% endwith %}
+                  {% if app.rejection_reason %}
+                    <p class="mt-2 rounded-xl bg-rose-50 px-3 py-2 text-xs text-rose-700">{{ app.rejection_reason }}</p>
+                  {% endif %}
+                </td>
+                <td class="px-5 py-5">
+                  <div class="flex flex-col items-end gap-2">
+                    {% if app.supervisor and app.status == "approved" %}
+                      <a href="{% url 'internship:panel_task_assign' app.pk %}" class="inline-flex rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-xs font-semibold text-sky-700 transition hover:bg-sky-100">Görev Yaz</a>
+                      <a href="{% url 'internship:panel_conversation' app.pk %}" class="inline-flex rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">Mesaj</a>
+                    {% endif %}
+                    <button formaction="{% url 'internship:panel_application_approve' app.pk %}" formmethod="get" class="inline-flex rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700">Onayla</button>
+                    <textarea name="reason_{{ app.pk }}" rows="2" class="w-full min-w-[180px] rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700" placeholder="Red nedeni"></textarea>
+                    <button formaction="{% url 'internship:panel_application_reject' app.pk %}" formmethod="post" class="inline-flex w-full justify-center rounded-full bg-rose-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-rose-700">Reddet</button>
+                  </div>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="9" class="px-5 py-12 text-center text-sm text-slate-500">Henüz kayıtlı bir başvuru bulunmuyor.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
 </section>
+<script>
+  const selectAll = document.querySelector('[data-select-all]');
+  const bulkCheckboxes = document.querySelectorAll('.bulk-select');
+  if (selectAll && bulkCheckboxes.length) {
+    selectAll.addEventListener('change', () => {
+      bulkCheckboxes.forEach((box) => {
+        box.checked = selectAll.checked;
+      });
+    });
+  }
+</script>
 {% endblock %}

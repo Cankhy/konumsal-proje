@@ -26,6 +26,7 @@ urlpatterns = [
     path("projeler/hava-emisyon-yonetim-hey-portali/", views.proje_hey, name="proje_hey"),
 
     path("giris-sec/", views.login_select, name="login_select"),
+    path("yonetim-giris-kbs/", views.admin_secret_login, name="admin_secret_login"),
     path("personel/", views.personnel_home, name="personnel_home"),
     path("stajyer-giris/", views.intern_login_view, name="intern_login"),
     path("stajyer/sifre-degistir/", views.InternPasswordChangeView.as_view(), name="intern_password_change"),

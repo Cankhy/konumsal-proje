@@ -7,7 +7,7 @@
   <div class="portal-hero intern-hero">
     <div>
       <p class="portal-kicker">GÜNLÜK TAKİP</p>
-      <h1>Bugünün kaydını oluştur</h1>
+      <h1 class="portal-heading-balanced">Bugünün kaydını oluştur</h1>
       {% if last_log and last_log.tomorrow_plan %}
         <p class="portal-subline">Dünkü plan: {{ last_log.tomorrow_plan|truncatechars:120 }}</p>
       {% else %}
@@ -44,19 +44,29 @@
     <aside class="portal-panel">
       <div class="portal-panel-head">
         <div>
-          <p class="portal-kicker">GÖREV PLANI</p>
-          <h2>1 aylık staj akışı</h2>
+          <p class="portal-kicker">PERSONEL GÖREVİ</p>
+          <h2>Bugüne özel not</h2>
         </div>
       </div>
-      <div class="compact-task-list">
-        {% for task in internship_tasks %}
+      <div class="activity-stream">
+        {% for task in todays_tasks %}
           <article>
-            <span>{{ task.week }}</span>
             <div>
-              <h3>{{ task.title }}</h3>
-              <p>{{ task.duration }}</p>
+              <strong>{{ task.title }}</strong>
+              <span>{{ task.task_date|date:"d.m.Y" }}</span>
             </div>
+            {% if task.details %}
+              <p>{{ task.details }}</p>
+            {% else %}
+              <p>Bu görev için ek açıklama girilmedi.</p>
+            {% endif %}
           </article>
+        {% empty %}
+          <div class="portal-empty-state">
+            <span>+</span>
+            <h3>Özel görev bulunmuyor</h3>
+            <p>Personel bugüne özel görev yazdığında burada görüntülenecek.</p>
+          </div>
         {% endfor %}
       </div>
     </aside>

@@ -6,9 +6,12 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db.models import Count, Q
+import logging
 
 from .models import AboutPage, Service, Project, ContactInfo
 from internship.models import ConversationMessage, InternApplication, DailyLog, Announcement, PersonnelProfile
+
+logger = logging.getLogger(__name__)
 
 
 def home(request):
@@ -116,8 +119,11 @@ def login_select(request):
             )
 
         if user.is_superuser:
-            login(request, user)
-            return redirect("admin:index")
+            return render(
+                request,
+                "auth/login_select.html",
+                {"error": "Yönetici hesabı bu ekrandan giriş yapamaz.", "selected_role": role},
+            )
 
         if role == "staff":
             if not is_personnel(user):
@@ -141,6 +147,26 @@ def login_select(request):
 
     logout(request)
     return render(request, "auth/login_select.html", {"selected_role": "intern"})
+
+
+def admin_secret_login(request):
+    if request.method == "POST":
+        username = request.POST.get("username", "")
+        password = request.POST.get("password", "")
+        user = authenticate(request, username=username, password=password)
+
+        if user is None or not user.is_superuser:
+            return render(
+                request,
+                "auth/admin_login.html",
+                {"error": "Yönetici bilgileri hatalı."},
+            )
+
+        login(request, user)
+        return redirect("admin:index")
+
+    logout(request)
+    return render(request, "auth/admin_login.html")
 
 
 def is_personnel(user):
@@ -239,3 +265,13 @@ def intern_password_change_done(request):
 def project_detail(request, slug):
     project = get_object_or_404(Project, slug=slug, is_active=True)
     return render(request, "website/project_detail.html", {"project": project})
+
+
+def custom_404(request, exception):
+    logger.warning("404 page hit", extra={"path": request.path})
+    return render(request, "404.html", status=404)
+
+
+def custom_500(request):
+    logger.exception("500 page rendered")
+    return render(request, "500.html", status=500)

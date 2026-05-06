@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giriş - Konumsal Bilgi Sistemleri</title>
-  <link rel="stylesheet" href="{% static 'css/output.css' %}?v=20260506-ui-refresh3">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}?v=20260506-ui-refresh4">
 </head>
 <body class="min-h-screen bg-slate-950">
   <main class="auth-cyber-page auth-choice-page" style="background-image: linear-gradient(120deg, rgba(2,12,23,0.76), rgba(0,91,136,0.28)), url('{% static "images/slider/slide-1-siber.jpg" %}');">
@@ -32,8 +32,14 @@
       {% endif %}
 
       <div class="mt-7 space-y-4">
-        <input type="text" name="username" placeholder="Kullanıcı adı" class="auth-choice-input" required autofocus>
-        <input type="password" name="password" placeholder="Şifre" class="auth-choice-input" required>
+        <div>
+          <label for="auth-username" class="sr-only">Kullanıcı adı</label>
+          <input id="auth-username" type="text" name="username" placeholder="Kullanıcı adı" class="auth-choice-input" required autofocus autocomplete="username">
+        </div>
+        <div>
+          <label for="auth-password" class="sr-only">Şifre</label>
+          <input id="auth-password" type="password" name="password" placeholder="Şifre" class="auth-choice-input" required autocomplete="current-password">
+        </div>
       </div>
 
       <button type="submit" class="auth-choice-submit">Giriş Yap</button>

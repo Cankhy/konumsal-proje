@@ -9,13 +9,18 @@ from .mail_utils import send_intern_credentials_email
 from .models import (
     Announcement,
     Application,
+    ApplicationStatusHistory,
     ConversationMessage,
     DailyLog,
+    FormErrorLog,
     InternApplication,
+    InternDocument,
     InternLog,
     Log,
     LogReview,
     PersonnelProfile,
+    PersonnelTask,
+    PersonnelTaskComment,
     Review,
 )
 
@@ -279,8 +284,8 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
 @admin.register(ConversationMessage)
 class ConversationMessageAdmin(admin.ModelAdmin):
-    list_display = ("application", "sender", "created_at", "attachment")
-    list_filter = ("created_at",)
+    list_display = ("application", "sender", "created_at", "attachment", "attachment_kind", "edited_at", "deleted_at")
+    list_filter = ("created_at", "attachment_kind")
     search_fields = (
         "application__first_name",
         "application__last_name",
@@ -288,3 +293,48 @@ class ConversationMessageAdmin(admin.ModelAdmin):
         "message",
     )
     readonly_fields = ("created_at",)
+
+
+@admin.register(PersonnelTask)
+class PersonnelTaskAdmin(admin.ModelAdmin):
+    list_display = ("application", "title", "personnel", "task_date", "due_date", "priority", "is_active", "is_completed", "created_at")
+    list_filter = ("is_active", "is_completed", "task_date", "due_date", "priority", "personnel")
+    search_fields = (
+        "application__first_name",
+        "application__last_name",
+        "title",
+        "details",
+        "personnel__first_name",
+        "personnel__last_name",
+    )
+    readonly_fields = ("created_at",)
+
+
+@admin.register(PersonnelTaskComment)
+class PersonnelTaskCommentAdmin(admin.ModelAdmin):
+    list_display = ("task", "author", "created_at")
+    search_fields = ("task__title", "comment", "author__username")
+    readonly_fields = ("created_at",)
+
+
+@admin.register(InternDocument)
+class InternDocumentAdmin(admin.ModelAdmin):
+    list_display = ("application", "category", "status", "reupload_requested", "uploaded_at", "reviewed_at")
+    list_filter = ("category", "status", "reupload_requested")
+    search_fields = ("application__first_name", "application__last_name", "personnel_note")
+    readonly_fields = ("uploaded_at", "reviewed_at")
+
+
+@admin.register(ApplicationStatusHistory)
+class ApplicationStatusHistoryAdmin(admin.ModelAdmin):
+    list_display = ("application", "from_status", "to_status", "actor", "created_at")
+    list_filter = ("to_status", "from_status", "created_at")
+    search_fields = ("application__first_name", "application__last_name", "note")
+    readonly_fields = ("created_at",)
+
+
+@admin.register(FormErrorLog)
+class FormErrorLogAdmin(admin.ModelAdmin):
+    list_display = ("form_name", "path", "created_at")
+    search_fields = ("form_name", "path")
+    readonly_fields = ("created_at", "payload", "errors")

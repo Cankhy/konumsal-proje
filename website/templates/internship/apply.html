@@ -24,7 +24,7 @@
         <article class="portal-mini-card">
           <span>Adım 3</span>
           <strong>CV Yükleme</strong>
-          <small>Değerlendirme için tek dosya alanı</small>
+          <small>Yalnızca PDF dosyası kabul edilir</small>
         </article>
       </div>
     </div>
@@ -106,9 +106,10 @@
         {% if field.name == "cv_file" %}
           <label class="cv-upload-box">
             {{ field }}
-            <strong>CV dosyanı buraya ekle</strong>
-            <span>PDF, DOC veya DOCX dosyanı seç</span>
-            <small>Maksimum dosya boyutu sistem limitlerine göre kontrol edilir.</small>
+            <span class="cv-upload-trigger">PDF Seç</span>
+            <strong>CV dosyanı güvenli şekilde ekle</strong>
+            <span>Sadece PDF yükleyebilirsin</span>
+            <small>En fazla 5 MB · farklı dosya türleri kabul edilmez</small>
             <em class="file-feedback" data-file-feedback="cv">Henüz dosya seçilmedi.</em>
           </label>
           {% if field.errors %}<p class="mt-2 text-xs font-semibold text-rose-700">{{ field.errors|striptags }}</p>{% endif %}
@@ -132,9 +133,18 @@
 
   if (cvInput && cvBox && cvFeedback) {
     const syncCvState = () => {
-      const fileName = cvInput.files && cvInput.files.length ? cvInput.files[0].name : "Henüz dosya seçilmedi.";
-      cvBox.classList.toggle("has-file", !!(cvInput.files && cvInput.files.length));
-      cvFeedback.textContent = fileName;
+      const hasFile = !!(cvInput.files && cvInput.files.length);
+      if (!hasFile) {
+        cvBox.classList.remove("has-file");
+        cvFeedback.textContent = "Henüz dosya seçilmedi.";
+        cvFeedback.classList.add("is-visible");
+        return;
+      }
+
+      const file = cvInput.files[0];
+      const sizeInMb = (file.size / (1024 * 1024)).toFixed(2);
+      cvBox.classList.add("has-file");
+      cvFeedback.textContent = `${file.name} (${sizeInMb} MB)`;
       cvFeedback.classList.add("is-visible");
     };
 

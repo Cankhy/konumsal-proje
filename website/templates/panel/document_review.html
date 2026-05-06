@@ -1,0 +1,79 @@
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Belge Değerlendirme{% endblock %}
+
+{% block content %}
+<section class="portal-page mx-auto w-full max-w-7xl py-8">
+  <div class="portal-hero portal-hero-compact">
+    <div class="portal-hero-copy">
+      <p class="portal-kicker">BELGE MERKEZİ</p>
+      <h1 class="portal-heading-balanced">{{ application.first_name }} {{ application.last_name }}</h1>
+      <p class="portal-subline">Belge durumlarını yönet, personel notu bırak ve tekrar yükleme isteğini kaydet.</p>
+    </div>
+    <div class="portal-hero-actions">
+      <a href="{% url 'internship:panel_task_assign' application.pk %}">Görevler</a>
+      <a href="{% url 'internship:panel_conversation' application.pk %}">Mesaj</a>
+      <a href="{% url 'internship:panel_applications' %}">Liste</a>
+    </div>
+  </div>
+
+  <div class="log-board">
+    {% for item in docs_with_forms %}
+      {% with document=item.document form=item.form %}
+      <article class="log-detail-card">
+        <div class="log-detail-head">
+          <div>
+            <p class="portal-kicker">{{ document.get_category_display }}</p>
+            <h2>{{ document.file.name|cut:"intern_documents/" }}</h2>
+          </div>
+          <span class="status-pill {% if document.status == 'approved' %}is-success{% elif document.status == 'missing' %}is-danger{% else %}is-waiting{% endif %}">
+            {{ document.get_status_display }}
+          </span>
+        </div>
+
+        <div class="log-detail-grid">
+          <section>
+            <span class="mini-label">Yüklenme</span>
+            <strong>{{ document.uploaded_at|date:"d.m.Y H:i" }}</strong>
+          </section>
+          <section>
+            <span class="mini-label">Dosya</span>
+            <p><a href="{{ document.file.url }}" target="_blank" class="chat-file-link">Belgeyi Aç</a></p>
+          </section>
+          <section>
+            <span class="mini-label">Tekrar Yükleme</span>
+            <p>{% if document.reupload_requested %}İstendi{% else %}Yok{% endif %}</p>
+          </section>
+          <section>
+            <span class="mini-label">Personel Notu</span>
+            <p>{{ document.personnel_note|default:"Henüz not eklenmedi." }}</p>
+          </section>
+        </div>
+
+        <form method="post" class="mt-5 space-y-4">
+          {% csrf_token %}
+          <input type="hidden" name="document_id" value="{{ document.pk }}">
+          <div>
+            <label class="mb-2 block text-sm font-bold text-slate-700">Durum</label>
+            {{ form.status }}
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-bold text-slate-700">Personel Notu</label>
+            {{ form.personnel_note }}
+          </div>
+          <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
+            {{ form.reupload_requested }}
+            <span>Tekrar yükleme iste</span>
+          </label>
+          <button type="submit" class="portal-primary-btn">Belgeyi Güncelle</button>
+        </form>
+      </article>
+      {% endwith %}
+    {% empty %}
+      <div class="portal-panel">
+        <div class="portal-empty">Henüz belge yüklenmedi.</div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

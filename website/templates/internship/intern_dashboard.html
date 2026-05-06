@@ -4,16 +4,19 @@
 
 {% block content %}
 <section class="portal-page mx-auto w-full max-w-7xl py-8">
-  <div class="portal-hero intern-hero portal-hero-compact">
+  <div class="portal-hero intern-hero portal-hero-compact portal-hero-stack">
     <div class="portal-hero-copy">
       <p class="portal-kicker">STAJYER PANELİ</p>
-      <h1>Stajyer Çalışma Alanı</h1>
+      <h1 class="portal-heading-balanced">Stajyer çalışma alanı</h1>
       {% if application and application.supervisor %}
-        <p class="portal-subline">Günlükler, görev planı, belgeler ve personel iletişimi daha sade bir akışta burada.</p>
+        <p class="portal-subline">Günlükler, personel notları, belgeler ve iletişim alanı daha sade tek akışta burada.</p>
       {% else %}
-        <p class="portal-subline">Başvurun kayıtlı. Sorumlu personel ataması tamamlandığında mesaj ve takip alanları aktifleşecek.</p>
+        <p class="portal-subline">Başvurun kayıtlı. Sorumlu personel ataması tamamlandığında görev ve mesaj alanların aktifleşecek.</p>
       {% endif %}
-      <div class="portal-identity-grid">
+    </div>
+
+    <div class="portal-hero-side">
+      <div class="portal-identity-grid portal-identity-grid-compact">
         <article class="portal-mini-card">
           <span>Kullanıcı</span>
           <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
@@ -30,10 +33,11 @@
           <small>Günlük kontrol sorumlusu</small>
         </article>
       </div>
-    </div>
-    <div class="portal-hero-actions">
-      <a href="{% url 'internship:intern_daily_log' %}">Günlük Yaz</a>
-      <a href="{% url 'internship:intern_daily_logs' %}">Kayıtlarım</a>
+
+      <div class="portal-hero-actions portal-hero-actions-compact">
+        <a href="{% url 'internship:intern_daily_log' %}">Günlük Yaz</a>
+        <a href="{% url 'internship:intern_daily_logs' %}">Kayıtlarım</a>
+      </div>
     </div>
   </div>
 
@@ -41,7 +45,7 @@
     <aside class="portal-rail">
       <p class="portal-kicker">MENÜ</p>
       <a href="{% url 'internship:intern_daily_log' %}" class="is-active"><span>01</span><strong>Günlük Yaz</strong></a>
-      <a href="#intern-roadmap"><span>02</span><strong>Program</strong></a>
+      <a href="#task-board"><span>02</span><strong>Görev</strong></a>
       <a href="{% url 'internship:intern_daily_logs' %}"><span>03</span><strong>Günlüklerim</strong></a>
       <a href="{% url 'internship:intern_documents' %}"><span>04</span><strong>Belgeler</strong></a>
       {% if application and application.supervisor %}
@@ -61,22 +65,35 @@
       </div>
 
       <div class="portal-grid">
-        <div class="portal-panel portal-panel-main" id="intern-roadmap">
+        <div class="portal-panel portal-panel-main" id="task-board">
           <div class="portal-panel-head">
             <div>
-              <p class="portal-kicker">STAJ PROGRAMI</p>
-              <h2>1 aylık görev akışı</h2>
+              <p class="portal-kicker">PERSONEL GÖREVİ</p>
+              <h2>Bugünün notları</h2>
             </div>
-            <a href="{% url 'internship:intern_daily_log' %}">Bugünü Yaz</a>
+            <a href="{% url 'internship:intern_daily_log' %}">Göreve Git</a>
           </div>
-          <div class="task-roadmap">
-            {% for task in internship_tasks %}
-              <article>
-                <span>{{ task.week }}</span>
-                <h3>{{ task.title }}</h3>
-                <strong>{{ task.duration }}</strong>
-                <p>{{ task.detail }}</p>
-              </article>
+          <div class="activity-stream">
+            {% for task in active_tasks %}
+              <a href="{% url 'internship:intern_daily_log' %}" class="activity-link-card">
+                <article>
+                  <div>
+                    <strong>{{ task.title }}</strong>
+                    <span>{{ task.task_date|date:"d.m.Y" }}</span>
+                  </div>
+                  {% if task.details %}
+                    <p>{{ task.details|truncatechars:130 }}</p>
+                  {% else %}
+                    <p>Personel tarafından ek açıklama girilmedi.</p>
+                  {% endif %}
+                </article>
+              </a>
+            {% empty %}
+              <div class="portal-empty-state">
+                <span>+</span>
+                <h3>Özel görev bekleniyor</h3>
+                <p>Sorumlu personel sana günlük odak görevi yazdığında burada görünecek.</p>
+              </div>
             {% endfor %}
           </div>
         </div>

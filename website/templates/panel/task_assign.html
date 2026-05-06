@@ -1,0 +1,113 @@
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Görev Yaz{% endblock %}
+
+{% block content %}
+<section class="portal-page mx-auto w-full max-w-7xl py-8">
+  <div class="portal-hero portal-hero-compact">
+    <div class="portal-hero-copy">
+      <p class="portal-kicker">STAJYER GÖREVİ</p>
+      <h1 class="portal-heading-balanced">{{ application.first_name }} {{ application.last_name }}</h1>
+      <p class="portal-subline">Güne özel görev, teslim tarihi, öncelik ve görev bazlı yorumları tek akışta yönet.</p>
+    </div>
+    <div class="portal-hero-actions">
+      <a href="{% url 'internship:panel_conversation' application.pk %}">Mesaj</a>
+      <a href="{% url 'internship:panel_document_review' application.pk %}">Belgeler</a>
+      <a href="{% url 'website:personnel_home' %}">Panele Dön</a>
+    </div>
+  </div>
+
+  <div class="review-workspace">
+    <form method="post" class="daily-form-card">
+      {% csrf_token %}
+      <p class="portal-kicker">YENİ GÖREV</p>
+      <h2 class="mt-2 text-2xl font-black text-slate-900">Bugün ne yapmalı?</h2>
+      <div class="mt-6 space-y-5">
+        {% for field in form %}
+          <div>
+            <label class="mb-2 block text-sm font-bold text-slate-700">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <p class="mt-2 text-xs font-semibold text-rose-700">{{ field.errors|striptags }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="mt-6 flex flex-wrap gap-4">
+        <button type="submit" class="portal-primary-btn">Görevi Kaydet</button>
+        <a href="{% url 'website:personnel_home' %}" class="portal-secondary-btn">Vazgeç</a>
+      </div>
+    </form>
+
+    <article class="log-detail-card">
+      <div class="log-detail-head">
+        <div>
+          <p class="portal-kicker">KAYITLI GÖREVLER</p>
+          <h2>Görev geçmişi</h2>
+        </div>
+      </div>
+
+      <div class="activity-stream">
+        {% for task in tasks %}
+          <article class="task-history-card">
+            <div class="task-history-head">
+              <div>
+                <strong>{{ task.title }}</strong>
+                <p class="mt-1 text-xs text-slate-500">Görev: {{ task.task_date|date:"d.m.Y" }}{% if task.due_date %} · Teslim: {{ task.due_date|date:"d.m.Y" }}{% endif %}</p>
+              </div>
+              <div class="task-history-meta">
+                <span class="status-pill {% if task.priority == 'high' %}is-danger{% elif task.priority == 'low' %}is-info{% else %}is-waiting{% endif %}">{{ task.get_priority_display }}</span>
+                <span class="status-pill {% if task.is_completed %}is-success{% else %}is-waiting{% endif %}">
+                  {% if task.is_completed %}Tamamlandı{% else %}Aktif{% endif %}
+                </span>
+              </div>
+            </div>
+
+            {% if task.details %}
+              <p class="task-history-body">{{ task.details }}</p>
+            {% endif %}
+
+            <div class="task-history-actions">
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="task_action" value="toggle">
+                <input type="hidden" name="task_id" value="{{ task.pk }}">
+                <button type="submit" class="portal-secondary-btn">
+                  {% if task.is_completed %}Tekrar Aktif Yap{% else %}Tamamlandı İşaretle{% endif %}
+                </button>
+              </form>
+            </div>
+
+            <div class="task-comment-list">
+              {% for comment in task.comments.all %}
+                <div class="task-comment-item">
+                  <strong>{{ comment.author.get_full_name|default:comment.author.username }}</strong>
+                  <span>{{ comment.created_at|date:"d.m.Y H:i" }}</span>
+                  <p>{{ comment.comment|linebreaksbr }}</p>
+                </div>
+              {% empty %}
+                <div class="text-sm text-slate-500">Henüz görev yorumu yok.</div>
+              {% endfor %}
+            </div>
+
+            <form method="post" class="mt-4">
+              {% csrf_token %}
+              <input type="hidden" name="task_action" value="comment">
+              <input type="hidden" name="task_id" value="{{ task.pk }}">
+              <label class="mb-2 block text-sm font-bold text-slate-700">Görev Yorumu</label>
+              {{ comment_form.comment }}
+              <button type="submit" class="portal-primary-btn mt-3">Yorum Ekle</button>
+            </form>
+          </article>
+        {% empty %}
+          <div class="portal-empty-state">
+            <span>+</span>
+            <h3>Henüz görev yazılmadı</h3>
+            <p>İlk görev kaydını eklediğinde bu stajyer için günlük odak burada listelenecek.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+</section>
+{% endblock %}
