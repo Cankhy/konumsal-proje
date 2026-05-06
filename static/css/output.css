@@ -852,10 +852,6 @@ input::placeholder,
   margin-bottom: 2rem;
 }
 
-.mb-9 {
-  margin-bottom: 2.25rem;
-}
-
 .ml-0 {
   margin-left: 0px;
 }
@@ -3448,6 +3444,121 @@ select.form-select:focus {
   transform: translateY(-1px);
 }
 
+.internship-choice-card {
+  width: min(520px, calc(100vw - 40px));
+  padding: 42px 34px 34px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  background: linear-gradient(145deg, rgba(8, 35, 59, 0.74), rgba(3, 20, 35, 0.54));
+  box-shadow: 0 36px 110px rgba(0, 14, 27, 0.56);
+  backdrop-filter: blur(16px);
+}
+
+.internship-choice-title {
+  margin: 26px 0 0;
+  text-align: center;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 0.96;
+  font-weight: 850;
+  color: #fff;
+}
+
+.internship-choice-note {
+  margin: 16px auto 0;
+  max-width: 420px;
+  text-align: center;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.internship-choice-list {
+  margin-top: 30px;
+  display: grid;
+  gap: 14px;
+}
+
+.internship-choice-list-tight {
+  margin-top: 8px;
+}
+
+.internship-choice-link {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 18px 18px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.internship-choice-link:hover {
+  transform: translateY(-1px);
+  border-color: rgba(20, 215, 197, 0.32);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.internship-choice-icon {
+  display: inline-flex;
+  height: 46px;
+  width: 46px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid rgba(20, 215, 197, 0.18);
+  background: linear-gradient(180deg, rgba(13, 148, 136, 0.18), rgba(8, 47, 73, 0.5));
+  color: #9be7de;
+}
+
+.internship-choice-icon svg {
+  height: 20px;
+  width: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.internship-choice-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.internship-choice-copy strong {
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.internship-choice-copy small {
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.internship-choice-link em {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #078aa5, #13b981);
+  padding: 0 20px;
+  color: #fff;
+  font-size: 0.84rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
 .portal-action-card {
   min-height: 210px;
   display: flex;
@@ -5219,7 +5330,7 @@ select.form-select:focus {
   width: 218px;
   max-width: 76%;
   height: auto;
-  margin: 0 auto 22px;
+  margin: 0 auto;
 }
 
 .internship-logo-link {
@@ -5237,10 +5348,11 @@ select.form-select:focus {
 }
 
 .auth-logo-link {
-  display: block;
-  width: -moz-fit-content;
-  width: fit-content;
+  display: flex;
+  width: 100%;
   max-width: 100%;
+  align-items: center;
+  justify-content: center;
   margin: 0 auto;
   border-radius: 16px;
   transition: opacity 160ms ease;
@@ -5248,6 +5360,28 @@ select.form-select:focus {
 
 .auth-logo-link:hover {
   opacity: 0.92;
+}
+
+.auth-panel-logo {
+  display: block;
+  width: 238px;
+  max-width: 82%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.auth-choice-card > .auth-logo-link,
+.internship-choice-card > .auth-logo-link {
+  display: flex !important;
+  width: 100% !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 auto 22px !important;
+}
+
+.auth-choice-card > .auth-logo-link .auth-panel-logo,
+.internship-choice-card > .auth-logo-link .auth-panel-logo {
+  margin: 0 auto !important;
 }
 
 .internship-panel-kicker {
@@ -5651,6 +5785,30 @@ select.form-select:focus {
 
   .auth-choice-card {
     padding: 34px 24px;
+  }
+
+  .internship-choice-card {
+    padding: 34px 20px 22px;
+    border-radius: 24px;
+  }
+
+  .internship-choice-title {
+    font-size: clamp(2.2rem, 10vw, 3.2rem);
+  }
+
+  .internship-choice-note {
+    font-size: 0.92rem;
+  }
+
+  .internship-choice-link {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .internship-choice-link em {
+    width: 100%;
   }
 }
 
