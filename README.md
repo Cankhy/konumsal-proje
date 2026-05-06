@@ -1,8 +1,8 @@
 # Konumsal Proje
 
-Konumsal Bilgi Sistemleri için geliştirilen bu proje; staj başvurusu, başvuru sorgulama, stajyer paneli ve personel yönetim ekranlarını tek bir akışta birleştiren `Django` tabanlı bir web uygulamasıdır.
+Konumsal Bilgi Sistemleri için geliştirilen bu proje; staj başvurusu, başvuru sorgulama, stajyer paneli ve personel yönetim ekranlarını tek akışta birleştiren `Django` tabanlı bir web uygulamasıdır.
 
-Bu repo, sadece çalışan bir okul / staj projesi değil; aynı zamanda mevcut bir sistemi okuyup yeniden tasarlama, kullanıcı deneyimini iyileştirme, responsive arayüz kurma ve production hazırlığı yapma becerilerimi gösteren kapsamlı bir çalışma örneğidir.
+Bu repo, yalnızca çalışan bir uygulamayı değil; mevcut bir sistemi analiz edip yeniden düzenleme, kullanıcı deneyimini iyileştirme, responsive arayüz geliştirme ve production ortamına hazırlama yaklaşımımı gösteren kapsamlı bir çalışma örneğidir.
 
 ## CV İçin Kısa Proje Özeti
 
@@ -13,9 +13,9 @@ Bu repo, sadece çalışan bir okul / staj projesi değil; aynı zamanda mevcut 
 Sistemin temel hedefleri:
 
 - staj başvurularını dijital ortamda toplamak
-- başvuru durumlarını kullanıcıya şeffaf biçimde göstermek
+- başvuru durumlarını kullanıcıya şeffaf şekilde göstermek
 - stajyerlerin günlük, belge ve mesaj süreçlerini tek panelden yönetmesini sağlamak
-- personelin başvuru ve stajyer takibini tek merkezden yapabilmesini sağlamak
+- personelin başvuru ve stajyer takibini merkezi olarak sürdürebilmesini sağlamak
 
 ## Kullanılan Teknolojiler
 
@@ -78,7 +78,7 @@ Bu repo üzerinde aktif olarak şu diller ve yapılandırma formatları ile çal
 - dashboard yapısını daha okunur hale getirdim
 - metrik ve bilgi kartlarını dengeledim
 - başvuru, günlük ve stajyer takibini daha net bir hiyerarşiye taşıdım
-- gereksiz büyük başlık / kullanıcı alanlarını küçülttüm
+- gereksiz büyük başlık ve kullanıcı bloklarını küçülttüm
 
 ### 3. Stajyer Panelini İyileştirdim
 
@@ -97,9 +97,9 @@ Bu repo üzerinde aktif olarak şu diller ve yapılandırma formatları ile çal
 - günlük ekranlarını daha okunur hale getirdim
 - belge alanlarını daha düzenli bir yapıya taşıdım
 - mesajlaşma tarafında dosya seçimi geri bildirimi ekledim
-- kullanım akışında küçük ama etkili UX iyileştirmeleri yaptım
+- küçük ama etkili kullanıcı deneyimi iyileştirmeleri yaptım
 
-### 6. Giriş Akışlarını Tek Dile Taşıdım
+### 6. Giriş Akışlarını Tek Tasarım Diline Taşıdım
 
 - giriş seçim ekranı
 - personel girişi
@@ -113,7 +113,7 @@ aynı tasarım sistemi altında yeniden düzenlendi.
 
 - tablo, form ve mesaj alanlarını küçük ekranlara uyarladım
 - mobilde taşan alanları temizledim
-- kart ve buton boyutlarını mobil kullanıma göre ayarladım
+- kart ve buton boyutlarını mobil kullanım için optimize ettim
 
 ### 8. Production Hazırlığı Yaptım
 
@@ -123,9 +123,9 @@ aynı tasarım sistemi altında yeniden düzenlendi.
 - `SQLite` yanında `PostgreSQL` destekli dağıtım yapısı kurdum
 - `build.sh`, `Procfile` ve `render.yaml` ekledim
 
-## Özellikle Yaptığım Sayfalar
+## Özellikle Geliştirdiğim Sayfalar
 
-Bu çalışma kapsamında doğrudan geliştirdiğim başlıca ekranlar:
+Bu çalışma kapsamında doğrudan geliştirdiğim başlıca alanlar:
 
 - personel paneli
 - stajyer paneli
@@ -139,67 +139,6 @@ Bu çalışma kapsamında doğrudan geliştirdiğim başlıca ekranlar:
 - şifre değiştirme ekranları
 - başvuru başarılı ekranı
 - staj işlemleri yönlendirme ekranı
-
-## Ekran Görüntüleri
-
-### Personel Paneli
-
-![Personel Paneli](docs/screenshots/personel-panel-before.png)
-
-### Stajyer Paneli
-
-![Stajyer Paneli](docs/screenshots/stajyer-panel-before.png)
-
-### Başvuru Formu
-
-![Başvuru Formu](docs/screenshots/basvuru-before.png)
-
-### Başvuru Sorgulama
-
-![Başvuru Sorgulama](docs/screenshots/sorgulama-before.png)
-
-### Giriş Seçim Ekranı
-
-![Giriş Seçim Ekranı Son Hali](docs/screenshots/giris-sec-logo-fix.png)
-
-### Staj İşlemleri Ekranı
-
-![Staj İşlemleri Son Hali](docs/screenshots/staj-islemleri-logo-fix.png)
-
-## Before / After
-
-### Giriş Seçim Ekranı
-
-**Önce**
-
-![Giriş Seçim Önce](docs/screenshots/giris-sec-before.png)
-
-**Sonra**
-
-![Giriş Seçim Sonra](docs/screenshots/giris-sec-logo-fix.png)
-
-Yapılan iyileştirmeler:
-
-- logo hizası düzeltildi
-- kart düzeni dengelendi
-- giriş akışı daha temiz ve premium hale getirildi
-
-### Staj İşlemleri Ekranı
-
-**Önce**
-
-![Staj İşlemleri Önce](docs/screenshots/staj-islemleri-before.png)
-
-**Sonra**
-
-![Staj İşlemleri Sonra](docs/screenshots/staj-islemleri-logo-fix.png)
-
-Yapılan iyileştirmeler:
-
-- gereksiz büyük başlık alanı temizlendi
-- numaralı bloklar kaldırıldı
-- işlem kartları daha minimal hale getirildi
-- logo hizası düzeltildi
 
 ## Bu Projede Gösterilen Yetkinlikler
 
@@ -265,4 +204,4 @@ Hazırlanan dağıtım dosyaları:
 
 Bu çalışma; sadece birkaç ekranı güzelleştirme işi değil, mevcut bir sistemi daha profesyonel, daha okunur, daha kullanılabilir ve daha yayına hazır hale getirme sürecidir.
 
-Bu repo, `Django backend`, `template tabanlı frontend geliştirme`, `responsive UI tasarımı`, `production hazırlığı` ve `ürün odaklı iyileştirme` alanlarında somut çıktı üretebildiğimi gösteren güçlü bir portföy parçasıdır.
+Bu repo; `Django backend`, `template tabanlı frontend geliştirme`, `responsive UI tasarımı`, `production hazırlığı` ve `ürün odaklı iyileştirme` alanlarında somut çıktı üretebildiğimi gösteren güçlü bir portföy örneğidir.
