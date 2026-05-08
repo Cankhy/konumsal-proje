@@ -1,207 +1,104 @@
 # Konumsal Proje
 
-Konumsal Bilgi Sistemleri için geliştirilen bu proje; staj başvurusu, başvuru sorgulama, stajyer paneli ve personel yönetim ekranlarını tek akışta birleştiren `Django` tabanlı bir web uygulamasıdır.
+Konumsal Bilgi Sistemleri için geliştirilen bu proje, kurumsal web sitesi ile stajyer ve personel süreçlerini bir araya getiren Django tabanlı bir web uygulamasıdır.
 
-Bu repo, yalnızca çalışan bir uygulamayı değil; mevcut bir sistemi analiz edip yeniden düzenleme, kullanıcı deneyimini iyileştirme, responsive arayüz geliştirme ve production ortamına hazırlama yaklaşımımı gösteren kapsamlı bir çalışma örneğidir.
+Projede öne çıkan ana alanlar:
 
-## CV İçin Kısa Proje Özeti
-
-`Django tabanlı staj ve personel yönetim portalında; başvuru, sorgulama, günlük, belge ve mesajlaşma ekranlarını yeniden tasarladım. Arayüz tarafında Tailwind CSS ve özel CSS sistemiyle responsive, daha okunur ve daha profesyonel bir kullanıcı deneyimi oluşturdum. Backend tarafında production ayarları, PostgreSQL uyumu, WhiteNoise, Gunicorn ve ortam değişkeni yönetimi ile projeyi canlı ortama hazır hale getirdim.`
-
-## Proje Amacı
-
-Sistemin temel hedefleri:
-
-- staj başvurularını dijital ortamda toplamak
-- başvuru durumlarını kullanıcıya şeffaf şekilde göstermek
-- stajyerlerin günlük, belge ve mesaj süreçlerini tek panelden yönetmesini sağlamak
-- personelin başvuru ve stajyer takibini merkezi olarak sürdürebilmesini sağlamak
+- kurumsal web sayfaları
+- staj başvuru ve başvuru sorgulama akışı
+- stajyer paneli
+- personel paneli
+- günlük, belge ve mesajlaşma ekranları
+- yönetim ve içerik düzenleme altyapısı
 
 ## Kullanılan Teknolojiler
 
 ### Backend
 
-- `Python`
-- `Django 5`
-- `Django REST Framework`
-- `SimpleJWT`
-- `Gunicorn`
-- `WhiteNoise`
-- `dj-database-url`
-- `psycopg`
+- Python
+- Django
+- Django REST Framework
+- SimpleJWT
 
 ### Frontend
 
-- `HTML5`
-- `CSS3`
-- `Tailwind CSS`
-- `JavaScript`
-- `Django Template Language`
+- HTML
+- CSS
+- Tailwind CSS
+- JavaScript
+- Django Template Language
 
-### Veri / Ortam
+### Veritabanı ve Ortam
 
-- `SQLite` geliştirme ortamı için
-- `PostgreSQL` production hedefi için
+- SQLite3
+- PostgreSQL desteği
 - `.env` tabanlı ortam değişkeni yönetimi
 
-### DevOps / Yayınlama
+### Deploy
 
-- `Git`
-- `GitHub`
-- `Render` için production hazırlığı
-- `Procfile`
-- `build.sh`
-- `render.yaml`
+- Gunicorn
+- WhiteNoise
+- Render
+- GitHub
 
-## Hangi Dilleri ve Yapıları Kullandım?
+## Projede Yapılan Başlıca Düzenlemeler
 
-Bu repo üzerinde aktif olarak şu diller ve yapılandırma formatları ile çalıştım:
+- stajyer ve personel paneli arayüzlerinin sadeleştirilmesi
+- başvuru, günlük, belge ve mesajlaşma ekranlarının düzenlenmesi
+- giriş akışlarının toparlanması
+- oturum ve host yönlendirme problemlerinin düzeltilmesi
+- hukuk sayfalarının eklenmesi ve düzenlenmesi
+- production ayarlarının güçlendirilmesi
+- güvenlik ve şifre akışlarında iyileştirmeler
 
-- `Python`
-- `HTML`
-- `CSS`
-- `JavaScript`
-- `YAML`
-- `Shell`
+## Önemli Dosyalar
 
-## Teknik Olarak Neler Yaptım?
-
-### 1. Arayüz Sistemini Baştan Düzenledim
-
-- dağınık ekranları ortak bir görsel dil altında topladım
-- kart, buton, tipografi ve boşluk sistemini yeniden kurdum
-- büyük ve dengesiz blokları daha sade ve profesyonel hale getirdim
-- panel ve giriş akışlarını tek ürün hissi verecek şekilde eşitledim
-
-### 2. Personel Panelini Yeniden Kurguladım
-
-- dashboard yapısını daha okunur hale getirdim
-- metrik ve bilgi kartlarını dengeledim
-- başvuru, günlük ve stajyer takibini daha net bir hiyerarşiye taşıdım
-- gereksiz büyük başlık ve kullanıcı bloklarını küçülttüm
-
-### 3. Stajyer Panelini İyileştirdim
-
-- ana paneli sadeleştirdim
-- günlük, program, belge ve kayıt akışlarını daha kullanışlı hale getirdim
-- bilgi yoğunluğunu azaltıp görev odaklı kullanım hissi oluşturdum
-
-### 4. Başvuru ve Sorgulama Akışını Yeniledim
-
-- başvuru formunu daha anlaşılır bölümlere ayırdım
-- sorgulama ekranını daha yönlendirici hale getirdim
-- boş durum ve işlem öncesi mesajları iyileştirdim
-
-### 5. Günlük, Belge ve Mesajlaşma Alanlarını Geliştirdim
-
-- günlük ekranlarını daha okunur hale getirdim
-- belge alanlarını daha düzenli bir yapıya taşıdım
-- mesajlaşma tarafında dosya seçimi geri bildirimi ekledim
-- küçük ama etkili kullanıcı deneyimi iyileştirmeleri yaptım
-
-### 6. Giriş Akışlarını Tek Tasarım Diline Taşıdım
-
-- giriş seçim ekranı
-- personel girişi
-- stajyer girişi
-- şifre değiştirme ekranları
-- işlem sonucu bilgilendirme ekranları
-
-aynı tasarım sistemi altında yeniden düzenlendi.
-
-### 7. Responsive ve Mobil Uyum Çalışması Yaptım
-
-- tablo, form ve mesaj alanlarını küçük ekranlara uyarladım
-- mobilde taşan alanları temizledim
-- kart ve buton boyutlarını mobil kullanım için optimize ettim
-
-### 8. Production Hazırlığı Yaptım
-
-- `settings.py` dosyasını production senaryosuna uygun hale getirdim
-- `DEBUG`, `SECRET_KEY`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DATABASE_URL` gibi değerleri ortam değişkenlerinden okunacak şekilde yapılandırdım
-- `WhiteNoise` ile statik dosya servis yapısını hazırladım
-- `SQLite` yanında `PostgreSQL` destekli dağıtım yapısı kurdum
-- `build.sh`, `Procfile` ve `render.yaml` ekledim
-
-## Özellikle Geliştirdiğim Sayfalar
-
-Bu çalışma kapsamında doğrudan geliştirdiğim başlıca alanlar:
-
-- personel paneli
-- stajyer paneli
-- staj başvuru ekranı
-- başvuru sorgulama ekranı
-- günlük yazma ve günlük listeleme ekranları
-- belge ekranı
-- mesajlaşma ekranı
-- giriş seçim ekranı
-- personel / stajyer giriş ekranları
-- şifre değiştirme ekranları
-- başvuru başarılı ekranı
-- staj işlemleri yönlendirme ekranı
-
-## Bu Projede Gösterilen Yetkinlikler
-
-Bu repo üzerinden görülebilecek güçlü yönler:
-
-- mevcut projeyi bozmadan geliştirebilme
-- frontend ve backend tarafını birlikte düşünebilme
-- Django template yapısında kontrollü revizyon yapabilme
-- kullanıcı deneyimi ve okunabilirlik odaklı tasarım kararı verebilme
-- responsive arayüz geliştirebilme
-- production ayarı ve deploy hazırlığı yapabilme
-- Git tabanlı düzenli ilerleme sağlayabilme
-
-## Doğrudan Düzenlenen Önemli Dosyalar
-
-- `website/templates/auth/personnel_home.html`
-- `website/templates/internship/intern_dashboard.html`
-- `website/templates/internship/apply.html`
-- `website/templates/internship/query.html`
-- `website/templates/internship/conversation.html`
-- `website/templates/internship/intern_documents.html`
-- `website/templates/internship/daily_log.html`
-- `website/templates/auth/login_select.html`
-- `website/templates/internship/login_choice.html`
-- `static/css/input.css`
-- `static/css/output.css`
 - `core/settings.py`
-- `requirements.txt`
-- `render.yaml`
-- `Procfile`
-- `build.sh`
+- `core/middleware.py`
+- `internship/views.py`
+- `internship/admin.py`
+- `internship/mail_utils.py`
+- `website/views.py`
+- `website/urls.py`
+- `website/templates/website/legal_page.html`
+- `website/templates/internship/conversation.html`
+- `static/internship/css/panel_dashboard.css`
 
 ## Yerelde Çalıştırma
 
 ```powershell
-$env:PYTHONPATH = (Resolve-Path '.\venv\Lib\site-packages').Path
-py -3 manage.py migrate
-py -3 manage.py runserver
+cd C:\Users\Abidin CAN\konumsal-proje\konumsal-proje
+venv\Scripts\python.exe manage.py migrate
+venv\Scripts\python.exe manage.py runserver
 ```
 
-Tailwind çıktısını yeniden üretmek için:
+Uygulama varsayılan olarak şu adreste açılır:
+
+```text
+http://127.0.0.1:8000/
+```
+
+## Tailwind Derleme
 
 ```powershell
 npx tailwindcss -i .\static\css\input.css -o .\static\css\output.css
 ```
 
-## Production / Deploy Notu
+## Deploy Notu
 
-Bu repo production hazırlığı yapılmış bir yapıya sahiptir:
+Proje production ortamı için yapılandırılmıştır. `render.yaml`, `Procfile`, `build.sh` ve ortam değişkenleri üzerinden dağıtım yapılabilir.
 
-- `PostgreSQL` ile çalışabilecek şekilde ayarlandı
-- `Gunicorn` ile servis edilebilir
-- `WhiteNoise` ile statik dosyalar yayınlanabilir
-- ortam değişkenleri ile güvenli yapılandırma desteklenir
+Özellikle dikkat edilmesi gereken değişkenler:
 
-Hazırlanan dağıtım dosyaları:
+- `SECRET_KEY`
+- `DEBUG`
+- `ALLOWED_HOSTS`
+- `DATABASE_URL`
+- `APP_BASE_URL`
+- `CANONICAL_HOST`
 
-- `render.yaml`
-- `Procfile`
-- `build.sh`
+## Repo
 
-## Sonuç
+GitHub deposu:
 
-Bu çalışma; sadece birkaç ekranı güzelleştirme işi değil, mevcut bir sistemi daha profesyonel, daha okunur, daha kullanılabilir ve daha yayına hazır hale getirme sürecidir.
-
-Bu repo; `Django backend`, `template tabanlı frontend geliştirme`, `responsive UI tasarımı`, `production hazırlığı` ve `ürün odaklı iyileştirme` alanlarında somut çıktı üretebildiğimi gösteren güçlü bir portföy örneğidir.
+- [konumsal-proje](https://github.com/Cankhy/konumsal-proje)
