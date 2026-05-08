@@ -13,8 +13,20 @@ services:
         generateValue: true
       - key: ALLOWED_HOSTS
         value: "konumsal-proje.onrender.com"
+      - key: CANONICAL_HOST
+        value: "konumsal-proje.onrender.com"
+      - key: APP_BASE_URL
+        value: "https://konumsal-proje.onrender.com"
       - key: CSRF_TRUSTED_ORIGINS
         value: "https://konumsal-proje.onrender.com"
+      - key: SECURE_SSL_REDIRECT
+        value: "true"
+      - key: SECURE_HSTS_SECONDS
+        value: "31536000"
+      - key: SECURE_HSTS_INCLUDE_SUBDOMAINS
+        value: "true"
+      - key: SECURE_HSTS_PRELOAD
+        value: "true"
       - key: DATABASE_URL
         fromDatabase:
           name: konumsal-proje-db

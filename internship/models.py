@@ -38,6 +38,8 @@ class Application(models.Model):
     class Meta:
         unique_together = ("tc_kimlik", "phone")
         ordering = ["-created_at"]
+        verbose_name = "Eski Başvuru"
+        verbose_name_plural = "Eski Başvurular"
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.tc_kimlik}"
@@ -50,6 +52,11 @@ class InternLog(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-date", "-created_at"]
+        verbose_name = "Eski Staj Günlüğü"
+        verbose_name_plural = "Eski Staj Günlükleri"
+
     def __str__(self):
         return f"{self.application} - {self.date}"
 
@@ -60,6 +67,11 @@ class LogReview(models.Model):
     score = models.PositiveSmallIntegerField("Puan", default=0)
     comment = models.TextField("Yorum", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Eski Günlük Değerlendirmesi"
+        verbose_name_plural = "Eski Günlük Değerlendirmeleri"
 
     def __str__(self):
         return f"Değerlendirme: {self.log} ({self.score})"
@@ -72,6 +84,11 @@ class Log(models.Model):
     score = models.PositiveSmallIntegerField(null=True, blank=True)
     reviewer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="reviewed_logs")
 
+    class Meta:
+        ordering = ["-date"]
+        verbose_name = "Günlük Kaydı"
+        verbose_name_plural = "Günlük Kayıtları"
+
     def __str__(self):
         return f"{self.intern} - {self.date}"
 
@@ -81,7 +98,10 @@ class PersonnelProfile(models.Model):
     last_name = models.CharField("Soyad", max_length=50)
     email = models.EmailField("E-posta", blank=True)
     phone = models.CharField("Telefon", max_length=15, blank=True)
+    identity_number = models.CharField("TC Kimlik No", max_length=11, blank=True)
     title = models.CharField("Görev / Ünvan", max_length=80, blank=True)
+    profile_avatar = models.FileField("Profil Fotoğrafı", upload_to="profile_avatars/personnel/", blank=True)
+    leave_entitlement_days = models.DecimalField("İzin Hakkı (Gün)", max_digits=5, decimal_places=1, default=56)
     is_active = models.BooleanField("Aktif", default=True)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -120,6 +140,7 @@ class InternApplication(models.Model):
     start_date = models.DateField("Başlangıç Tarihi", null=True, blank=True)
     end_date = models.DateField("Bitiş Tarihi", null=True, blank=True)
     cv_file = models.FileField("CV", upload_to="intern_cvs/", null=True, blank=True)
+    profile_avatar = models.FileField("Profil Fotoğrafı", upload_to="profile_avatars/interns/", blank=True)
     status = models.CharField("Durum", max_length=10, choices=STATUS_CHOICES, default="pending")
     created_at = models.DateTimeField("Başvuru Tarihi", auto_now_add=True)
     user = models.OneToOneField(
@@ -144,6 +165,11 @@ class InternApplication(models.Model):
         verbose_name="Sorumlu Personel",
     )
 
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Staj Başvurusu"
+        verbose_name_plural = "Staj Başvuruları"
+
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.tc_no}"
 
@@ -164,6 +190,8 @@ class DailyLog(models.Model):
     class Meta:
         ordering = ["-date", "-created_at"]
         unique_together = ("application", "date")
+        verbose_name = "Staj Günlüğü"
+        verbose_name_plural = "Staj Günlükleri"
 
     def __str__(self):
         return f"{self.application.tc_no} - {self.date}"
@@ -221,6 +249,51 @@ class PersonnelTaskComment(models.Model):
         return f"{self.task} - {self.author}"
 
 
+class PersonnelLeaveRequest(models.Model):
+    class LeaveType(models.TextChoices):
+        ANNUAL = "annual", "Yıllık"
+        EXCUSE = "excuse", "Mazeret"
+        BIRTH = "birth", "Doğum"
+        UNPAID = "unpaid", "Ücretsiz"
+        HOURLY = "hourly", "Saatlik"
+
+    class Status(models.TextChoices):
+        PENDING = "pending", "Beklemede"
+        APPROVED = "approved", "Onaylandı"
+        REJECTED = "rejected", "Reddedildi"
+
+    personnel = models.ForeignKey(
+        PersonnelProfile,
+        on_delete=models.CASCADE,
+        related_name="leave_requests",
+        verbose_name="Personel",
+    )
+    full_name = models.CharField("Ad Soyad", max_length=120)
+    identity_number = models.CharField("TC Kimlik No", max_length=11, blank=True)
+    job_title = models.CharField("Unvan", max_length=120, blank=True)
+    leave_type = models.CharField("İzin Türü", max_length=20, choices=LeaveType.choices)
+    start_date = models.DateField("Başlangıç")
+    end_date = models.DateField("Bitiş")
+    duration_value = models.DecimalField("Süre", max_digits=5, decimal_places=1)
+    duration_unit = models.CharField("Süre Birimi", max_length=10, default="gun")
+    return_date = models.DateField("Göreve Dönüş Tarihi")
+    reason = models.CharField("Gerekçe", max_length=255)
+    address = models.CharField("Adres", max_length=255, blank=True)
+    status = models.CharField("Onay", max_length=12, choices=Status.choices, default=Status.PENDING)
+    status_note = models.TextField("Durum Notu", blank=True)
+    created_at = models.DateTimeField("Oluşturulma", auto_now_add=True)
+    updated_at = models.DateTimeField("Güncellenme", auto_now=True)
+    reviewed_at = models.DateTimeField("İncelenme", null=True, blank=True)
+
+    class Meta:
+        ordering = ["-start_date", "-created_at"]
+        verbose_name = "Personel İzin Talebi"
+        verbose_name_plural = "Personel İzin Talepleri"
+
+    def __str__(self):
+        return f"{self.full_name} - {self.get_leave_type_display()} - {self.start_date:%d.%m.%Y}"
+
+
 class Review(models.Model):
     log = models.ForeignKey(DailyLog, on_delete=models.CASCADE, related_name="reviews", verbose_name="Günlük")
     reviewer = models.ForeignKey(
@@ -233,6 +306,11 @@ class Review(models.Model):
     score = models.PositiveSmallIntegerField("Puan", default=0)
     comment = models.TextField("Yorum", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Günlük Değerlendirmesi"
+        verbose_name_plural = "Günlük Değerlendirmeleri"
 
     def __str__(self):
         return f"{self.log} - {self.score}"

@@ -16,6 +16,7 @@ urlpatterns = [
     path("stajyer/mesajlar/", views.intern_conversation_view, name="intern_conversation"),
     path("stajyer/mesajlar/poll/", views.intern_conversation_poll, name="intern_conversation_poll"),
     path("stajyer/gorev/<int:pk>/tamamla/", views.task_toggle_complete, name="task_toggle_complete"),
+    path("panel/dashboard/", views.panel_dashboard, name="panel_dashboard"),
     path("panel/basvurular/", views.panel_applications, name="panel_applications"),
     path("panel/basvurular/<int:pk>/onayla/", views.panel_application_approve, name="panel_application_approve"),
     path("panel/basvurular/<int:pk>/reddet/", views.panel_application_reject, name="panel_application_reject"),

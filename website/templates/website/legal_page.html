@@ -1,0 +1,54 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}{{ page.title }} | Konumsal{% endblock %}
+
+{% block content %}
+<section class="relative h-[220px] overflow-hidden md:h-[350px]">
+  <img
+    src="{% static 'images/legal/policy-bg.jpg' %}"
+    alt="{{ page.title }}"
+    class="absolute inset-0 h-full w-full object-cover"
+  >
+  <div class="absolute inset-0 bg-slate-950/55"></div>
+  <div class="relative z-10 flex h-full items-center justify-center px-4 text-center">
+    <h1 class="text-3xl font-extrabold text-white drop-shadow-lg md:text-5xl">{{ page.title }}</h1>
+  </div>
+</section>
+
+<section class="mx-auto max-w-6xl px-6 py-10 md:px-10 md:py-14">
+  <div class="space-y-8 text-[15px] leading-8 text-slate-800 md:text-base">
+    {% for block in page.blocks %}
+      <section>
+        {% if block.heading %}
+          <h2 class="mb-4 text-xl font-bold text-slate-900">{{ block.heading }}</h2>
+        {% endif %}
+
+        {% if block.paragraphs %}
+          <div class="space-y-4">
+            {% for paragraph in block.paragraphs %}
+              <p>{{ paragraph }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if block.items %}
+          <ul class="mt-4 list-disc space-y-3 pl-6">
+            {% for item in block.items %}
+              <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if block.paragraphs_after %}
+          <div class="mt-4 space-y-4">
+            {% for paragraph in block.paragraphs_after %}
+              <p>{{ paragraph }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </section>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

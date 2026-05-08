@@ -9,6 +9,7 @@ from .models import (
     InternApplication,
     InternDocument,
     InternLog,
+    PersonnelLeaveRequest,
     PersonnelTask,
     PersonnelTaskComment,
     Review,
@@ -216,6 +217,55 @@ class PersonnelTaskForm(forms.ModelForm):
         return cleaned
 
 
+class PersonnelLeaveRequestForm(forms.ModelForm):
+    class Meta:
+        model = PersonnelLeaveRequest
+        fields = [
+            "leave_type",
+            "start_date",
+            "end_date",
+            "duration_value",
+            "return_date",
+            "reason",
+            "address",
+        ]
+        widgets = {
+            "leave_type": forms.Select(attrs={"class": "form-select leave-select"}),
+            "start_date": forms.DateInput(attrs={"type": "date", "class": "form-input"}),
+            "end_date": forms.DateInput(attrs={"type": "date", "class": "form-input"}),
+            "duration_value": forms.NumberInput(attrs={"class": "form-input", "step": "0.5", "min": "0.5"}),
+            "return_date": forms.DateInput(attrs={"type": "date", "class": "form-input"}),
+            "reason": forms.TextInput(attrs={"class": "form-input", "placeholder": "Izin gerekcesini yazin"}),
+            "address": forms.TextInput(attrs={"class": "form-input", "placeholder": "Ulasilabilecek adres bilgisi"}),
+        }
+
+    def clean(self):
+        cleaned = super().clean()
+        leave_type = cleaned.get("leave_type")
+        start_date = cleaned.get("start_date")
+        end_date = cleaned.get("end_date")
+        duration_value = cleaned.get("duration_value")
+        return_date = cleaned.get("return_date")
+
+        if start_date and end_date and end_date < start_date:
+            raise ValidationError("Bitis tarihi baslangic tarihinden once olamaz.")
+
+        if leave_type == PersonnelLeaveRequest.LeaveType.HOURLY:
+            if not duration_value or duration_value <= 0:
+                self.add_error("duration_value", "Saatlik izin icin sure girmelisiniz.")
+            cleaned["duration_unit"] = "saat"
+            if not return_date and end_date:
+                cleaned["return_date"] = end_date
+        else:
+            if start_date and end_date:
+                total_days = (end_date - start_date).days + 1
+                cleaned["duration_value"] = total_days
+            cleaned["duration_unit"] = "gun"
+            if not return_date and end_date:
+                cleaned["return_date"] = end_date
+        return cleaned
+
+
 class TaskCommentForm(forms.ModelForm):
     class Meta:
         model = PersonnelTaskComment
@@ -233,7 +283,7 @@ class InternDocumentUploadForm(forms.ModelForm):
         fields = ["category", "file"]
         widgets = {
             "category": forms.Select(attrs={"class": "form-select"}),
-            "file": forms.ClearableFileInput(attrs={"class": "form-input"}),
+            "file": forms.ClearableFileInput(attrs={"class": "form-input", "accept": allowed_accept_value(PDF_RULE)}),
         }
 
     def clean_file(self):

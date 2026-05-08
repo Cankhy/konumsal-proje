@@ -1,0 +1,125 @@
+{% extends "auth/base_auth.html" %}
+{% load static %}
+
+{% block title %}Yönetim Paneli{% endblock %}
+
+{% block content %}
+<section class="dashboard-page">
+  <div class="dashboard-welcome">
+    <div>
+      <h1>Merhaba, tekrar hoş geldiniz!</h1>
+      <p>Staj işlemleri yönetim paneli</p>
+    </div>
+    <aside class="dashboard-rating">
+      <small>Genel durum</small>
+      <strong>%{{ completion_rate|default:"0" }}</strong>
+      <p>Onaylanan başvuru oranı</p>
+    </aside>
+  </div>
+
+  <div class="dashboard-stats">
+    <article class="dashboard-stat">
+      <span>Toplam Başvuru</span>
+      <strong>{{ total_applications }}</strong>
+      <small>Bu dönem sisteme giren kayıtlar</small>
+      <div class="sparkline"><i style="height: 32%"></i><i style="height: 52%"></i><i style="height: 44%"></i><i style="height: 70%"></i><i style="height: 62%"></i><i style="height: 86%"></i></div>
+    </article>
+    <article class="dashboard-stat">
+      <span>Onaylanan Başvuru</span>
+      <strong>{{ approved_applications }}</strong>
+      <small>Hesabı açılan stajyerler</small>
+      <div class="sparkline"><i style="height: 28%"></i><i style="height: 38%"></i><i style="height: 56%"></i><i style="height: 50%"></i><i style="height: 74%"></i><i style="height: 68%"></i></div>
+    </article>
+    <article class="dashboard-stat">
+      <span>Bekleyen Başvuru</span>
+      <strong>{{ pending_applications }}</strong>
+      <small>Personel kontrolü bekleyenler</small>
+      <div class="sparkline"><i style="height: 72%"></i><i style="height: 60%"></i><i style="height: 48%"></i><i style="height: 52%"></i><i style="height: 36%"></i><i style="height: 44%"></i></div>
+    </article>
+    <article class="dashboard-stat">
+      <span>Reddedilen Başvuru</span>
+      <strong>{{ rejected_applications }}</strong>
+      <small>Gerekçesi kaydedilenler</small>
+      <div class="sparkline"><i style="height: 34%"></i><i style="height: 46%"></i><i style="height: 24%"></i><i style="height: 40%"></i><i style="height: 31%"></i><i style="height: 28%"></i></div>
+    </article>
+  </div>
+
+  <div class="dashboard-grid">
+    <article class="dashboard-card">
+      <h2>Başvuru Durumu</h2>
+      <div style="height: 315px">
+        <canvas
+          id="applicationStatusChart"
+          data-labels='{{ chart_labels_json|default:"[\"Ocak\",\"Şubat\",\"Mart\",\"Nisan\",\"Mayıs\",\"Haziran\"]"|safe }}'
+          data-approved='{{ chart_approved_json|default:"[2,4,3,6,5,7]"|safe }}'
+          data-pending='{{ chart_pending_json|default:"[6,5,4,3,4,2]"|safe }}'
+          data-rejected='{{ chart_rejected_json|default:"[1,0,1,2,1,1]"|safe }}'></canvas>
+      </div>
+    </article>
+
+    <article class="dashboard-card">
+      <h2>Stajyer Dağılımı</h2>
+      <div class="map-placeholder">
+        <div>
+          <strong>Harita alanı hazır</strong>
+          <p>Okul, şehir veya bölüm dağılımı burada görselleştirilebilir.</p>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="dashboard-bottom">
+    <article class="dashboard-card">
+      <h2>Son Başvurular</h2>
+      <div class="compact-list">
+        {% for application in recent_applications %}
+          <article>
+            <div>
+              <strong>{{ application.first_name }} {{ application.last_name }}</strong>
+              <p>{{ application.created_at|date:"d.m.Y" }}</p>
+            </div>
+            <span class="status-chip">{{ application.get_status_display }}</span>
+          </article>
+        {% empty %}
+          <article><div><strong>Kayıt yok</strong><p>Henüz başvuru bulunmuyor.</p></div></article>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="dashboard-card">
+      <h2>Son Günlükler</h2>
+      <div class="compact-list">
+        {% for log in recent_logs %}
+          <article>
+            <div>
+              <strong>{{ log.application.first_name }} {{ log.application.last_name }}</strong>
+              <p>{{ log.task_focus|default:"Günlük kaydı" }}</p>
+              <small>{{ log.date|date:"d.m.Y" }}</small>
+            </div>
+          </article>
+        {% empty %}
+          <article><div><strong>Günlük yok</strong><p>Yeni günlükler burada listelenecek.</p></div></article>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="dashboard-card">
+      <h2>Sistem Bildirimleri</h2>
+      <div class="compact-list">
+        {% for notification in notifications %}
+          <article>
+            <div>
+              <strong>{{ notification.title }}</strong>
+              <p>{{ notification.message|truncatechars:80 }}</p>
+              <small>{{ notification.created_at|date:"d.m.Y H:i" }}</small>
+            </div>
+          </article>
+        {% empty %}
+          <article><div><strong>Bildirim yok</strong><p>Aktif sistem bildirimi bulunmuyor.</p></div></article>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}

@@ -25,6 +25,30 @@
   <h2 class="text-3xl md:text-4xl font-bold text-center mt-2">Proje Örneklerimiz</h2>
 
   <div class="grid md:grid-cols-3 gap-8 mt-12">
+    {% if projects %}
+      {% for project in projects %}
+      <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition p-8 text-center border border-slate-200">
+        <h3 class="text-xl font-semibold mb-6 text-slate-900">{{ project.title }}</h3>
+        <a href="{{ project.detail_url|default:'#' }}">
+          {% if project.image %}
+          <img src="{{ project.image.url }}"
+               alt="{{ project.title }}"
+               class="mx-auto object-contain"
+               style="height: 280px;">
+          {% endif %}
+        </a>
+        {% if project.summary %}
+          <p class="mt-4 text-sm text-slate-600">{{ project.summary }}</p>
+        {% endif %}
+        <div class="mt-8">
+          <a href="{{ project.detail_url|default:'#' }}"
+             class="inline-block bg-[#00b7b1] hover:bg-[#009b96] text-white text-xs md:text-sm font-semibold px-5 py-2 rounded">
+            Detaylar
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
 
     <!-- Orman -->
     <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition p-8 text-center border border-slate-200">
@@ -76,6 +100,7 @@
         </a>
       </div>
     </div>
+    {% endif %}
 
   </div>
 </section>

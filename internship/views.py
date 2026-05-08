@@ -1,3 +1,4 @@
+import json
 import secrets
 import string
 
@@ -95,7 +96,7 @@ DOCUMENT_REQUIREMENTS = [
     {
         "category": InternDocument.Category.PRESENTATION,
         "title": "Sunum Dosyası",
-        "description": "Sunumunu PDF veya PowerPoint olarak yükleyebilirsin.",
+        "description": "Sunum dosyanı PDF olarak yükle.",
     },
 ]
 
@@ -289,6 +290,39 @@ def _application_queryset_for_personnel(user):
     if personnel:
         queryset = queryset.filter(Q(supervisor=personnel) | Q(supervisor__isnull=True))
     return personnel, queryset
+
+
+@login_required
+@user_passes_test(is_admin)
+def panel_dashboard(request):
+    applications = InternApplication.objects.select_related("supervisor", "user").order_by("-created_at")
+    total_applications = applications.count()
+    approved_applications = applications.filter(status="approved").count()
+    pending_applications = applications.filter(status="pending").count()
+    rejected_applications = applications.filter(status="rejected").count()
+    completion_rate = round((approved_applications / total_applications) * 100) if total_applications else 0
+
+    month_labels = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran"]
+    # Placeholder chart data keeps the UI ready until month-based reporting is connected.
+    chart_approved = [1, 2, 3, 4, 3, max(approved_applications, 1)]
+    chart_pending = [4, 3, 4, 2, 3, max(pending_applications, 1)]
+    chart_rejected = [0, 1, 0, 1, 1, rejected_applications]
+
+    context = {
+        "total_applications": total_applications,
+        "approved_applications": approved_applications,
+        "pending_applications": pending_applications,
+        "rejected_applications": rejected_applications,
+        "completion_rate": completion_rate,
+        "recent_applications": applications[:5],
+        "recent_logs": DailyLog.objects.select_related("application").order_by("-date", "-created_at")[:5],
+        "notifications": Announcement.objects.filter(is_active=True).order_by("-created_at")[:5],
+        "chart_labels_json": json.dumps(month_labels, ensure_ascii=False),
+        "chart_approved_json": json.dumps(chart_approved),
+        "chart_pending_json": json.dumps(chart_pending),
+        "chart_rejected_json": json.dumps(chart_rejected),
+    }
+    return render(request, "internship/panel_dashboard.html", context)
 
 
 def application_create_view(request):
@@ -955,3 +989,25 @@ def intern_documents_view(request):
         "internship/intern_documents.html",
         {"application": application, "form": form, "grouped_documents": grouped_documents},
     )
+
+
+@login_required
+@user_passes_test(is_personnel)
+def panel_application_approve(request, pk):
+    personnel, applications = _application_queryset_for_personnel(request.user)
+    app = get_object_or_404(applications, pk=pk)
+    username, password = _approve_application(app, personnel, request.user)
+    if username and password:
+        if app.email:
+            messages.success(
+                request,
+                f"Başvuru #{app.id} onaylandı. Kullanıcı adı {username} için giriş bilgileri e-posta adresine gönderildi.",
+            )
+        else:
+            messages.warning(
+                request,
+                f"Başvuru #{app.id} onaylandı. Kullanıcı adı {username} oluşturuldu ancak e-posta adresi olmadığı için geçici şifre gönderilemedi.",
+            )
+    else:
+        messages.success(request, f"Başvuru #{app.id} onaylandı.")
+    return redirect("internship:panel_applications")

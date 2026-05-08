@@ -1,79 +1,231 @@
-{% load static %}
+{% load static panel_tags %}
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}Giriş{% endblock %} - Konumsal Bilgi Sistemleri</title>
+  <title>{% block title %}Panel{% endblock %} - Konumsal Bilgi Sistemleri</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static 'css/output.css' %}?v=20260506-ui-refresh1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}?v=20260507-mobile4">
+  <link rel="stylesheet" href="{% static 'internship/css/panel_dashboard.css' %}?v=20260507-panel10">
 </head>
 
-<body class="portal-surface min-h-screen text-slate-900">
+<body class="panel-shell">
+  <div class="panel-overlay" data-panel-overlay></div>
 
-  {% include "partials/site_header.html" %}
+  <aside class="panel-sidebar" data-panel-sidebar>
+    <div class="panel-brand">
+      <img src="{% static 'images/konumsal-logo-white.png' %}" alt="Konumsal">
+      <button type="button" class="panel-icon-button panel-sidebar-close" data-sidebar-toggle aria-label="Menüyü kapat">×</button>
+    </div>
 
-  <main class="portal-main-shell min-h-screen px-4 py-10">
-    <div class="mx-auto max-w-7xl">
-      {% if messages %}
-        <div class="mb-6 space-y-3">
-          {% for message in messages %}
-            <div class="rounded-2xl border px-4 py-3 text-sm shadow-sm
-              {% if message.tags == 'success' %}border-emerald-200 bg-emerald-50 text-emerald-800
-              {% elif message.tags == 'error' %}border-rose-200 bg-rose-50 text-rose-800
-              {% elif message.tags == 'warning' %}border-amber-200 bg-amber-50 text-amber-800
-              {% else %}border-sky-200 bg-sky-50 text-sky-800{% endif %}">
-              {{ message }}
+    <nav class="panel-nav" aria-label="Panel menüsü">
+      {% if request.user.is_authenticated and request.user.is_superuser %}
+        <p>Ana</p>
+        <a href="{% url 'internship:panel_dashboard' %}" class="{% if request.resolver_match.url_name == 'panel_dashboard' %}is-active{% endif %}">
+          <span>⌂</span><strong>Panel Özeti</strong>
+        </a>
+        <a href="{% url 'admin:index' %}">
+          <span>⚙</span><strong>Django Admin</strong>
+        </a>
+      {% elif request.user|has_group:"Personel" %}
+        <p>Ana</p>
+        <a href="{% url 'website:personnel_home' %}" class="{% if request.resolver_match.url_name == 'personnel_home' %}is-active{% endif %}">
+          <span>▣</span><strong>Personel Paneli</strong>
+        </a>
+
+        <p>Başvurular</p>
+        <a href="{% url 'internship:panel_applications' %}" class="{% if request.resolver_match.url_name == 'panel_applications' %}is-active{% endif %}">
+          <span>▤</span><strong>Başvuru Havuzu</strong>
+        </a>
+
+        <p>Günlükler</p>
+        <a href="{% url 'internship:panel_logs_list' %}" class="{% if request.resolver_match.url_name == 'panel_logs_list' or request.resolver_match.url_name == 'panel_log_review' %}is-active{% endif %}">
+          <span>◷</span><strong>Günlük İncele</strong>
+        </a>
+
+        <p>İşlemler</p>
+        <a href="{% url 'website:personnel_leave_requests' %}" class="{% if request.resolver_match.url_name == 'personnel_leave_requests' %}is-active{% endif %}">
+          <span>☑</span><strong>İzin Talepleri</strong>
+        </a>
+      {% elif request.user|has_group:"Stajyer" %}
+        <p>Ana</p>
+        <a href="{% url 'internship:intern_dashboard' %}" class="{% if request.resolver_match.url_name == 'intern_dashboard' %}is-active{% endif %}">
+          <span>◫</span><strong>Stajyer Paneli</strong>
+        </a>
+
+        <p>Günlükler</p>
+        <a href="{% url 'internship:intern_daily_log' %}" class="{% if request.resolver_match.url_name == 'intern_daily_log' %}is-active{% endif %}">
+          <span>✎</span><strong>Günlük Yaz</strong>
+        </a>
+        <a href="{% url 'internship:intern_daily_logs' %}" class="{% if request.resolver_match.url_name == 'intern_daily_logs' %}is-active{% endif %}">
+          <span>☰</span><strong>Günlüklerim</strong>
+        </a>
+
+        <p>Başvuru</p>
+        <a href="{% url 'internship:intern_application_detail' %}" class="{% if request.resolver_match.url_name == 'intern_application_detail' %}is-active{% endif %}">
+          <span>□</span><strong>Başvurum</strong>
+        </a>
+
+        <p>Belgeler</p>
+        <a href="{% url 'internship:intern_documents' %}" class="{% if request.resolver_match.url_name == 'intern_documents' %}is-active{% endif %}">
+          <span>▧</span><strong>Staj Belgeleri</strong>
+        </a>
+        <a href="{% url 'internship:intern_conversation' %}" class="{% if request.resolver_match.url_name == 'intern_conversation' %}is-active{% endif %}">
+          <span>✉</span><strong>Mesajlar</strong>
+        </a>
+      {% else %}
+        <p>Staj İşlemleri</p>
+        <a href="{% url 'internship:intern_apply' %}" class="{% if request.resolver_match.url_name == 'intern_apply' %}is-active{% endif %}">
+          <span>＋</span><strong>Başvuru Oluştur</strong>
+        </a>
+        <a href="{% url 'internship:intern_query' %}" class="{% if request.resolver_match.url_name == 'intern_query' %}is-active{% endif %}">
+          <span>?</span><strong>Başvuru Sorgula</strong>
+        </a>
+        <a href="{% url 'website:login_select' %}">
+          <span>↗</span><strong>Giriş Yap</strong>
+        </a>
+      {% endif %}
+
+      <p>Ayarlar</p>
+      {% if request.user.is_authenticated %}
+        {% if request.user.is_superuser %}
+          <a href="{% url 'website:home' %}"><span>←</span><strong>Siteye Dön</strong></a>
+        {% endif %}
+        <form method="post" action="{% url 'logout' %}" class="panel-logout-form">
+          {% csrf_token %}
+          <button type="submit"><span>↪</span><strong>Çıkış</strong></button>
+        </form>
+      {% else %}
+        <a href="{% url 'website:home' %}"><span>←</span><strong>Siteye Dön</strong></a>
+      {% endif %}
+    </nav>
+  </aside>
+
+  <div class="panel-body">
+    <header class="panel-topbar">
+      <button type="button" class="panel-icon-button" data-sidebar-toggle aria-label="Menüyü aç/kapat">☰</button>
+      <form class="panel-search" role="search" data-panel-search>
+        <span>⌕</span>
+        <input type="search" placeholder="Panel içinde ara..." data-panel-search-input autocomplete="off">
+        <div class="panel-search-results" data-panel-search-results></div>
+      </form>
+      <div class="panel-top-actions">
+        <div class="panel-top-menu" data-panel-menu>
+          <button type="button" class="panel-icon-button has-counter" data-panel-menu-toggle aria-label="Bildirimler">
+            🔔
+            {% if panel_notification_count %}<em>{{ panel_notification_count }}</em>{% endif %}
+          </button>
+          <div class="panel-popover">
+            <strong>Bildirimler</strong>
+            {% for notification in panel_notifications %}
+              <article class="panel-popover-item">
+                <b>{{ notification.title }}</b>
+                <small>{{ notification.message|truncatechars:90 }}</small>
+              </article>
+            {% empty %}
+              <p>Yeni sistem bildirimi bulunmuyor.</p>
+            {% endfor %}
+            {% if panel_unread_messages %}
+              <article class="panel-popover-item is-accent">
+                <b>{{ panel_unread_messages }} okunmamış mesaj</b>
+                <small>Mesaj kutusundan konuşmayı açabilirsiniz.</small>
+              </article>
+            {% endif %}
+          </div>
+        </div>
+        <div class="panel-top-menu" data-panel-menu>
+          <button type="button" class="panel-icon-button has-counter" data-panel-menu-toggle aria-label="Mesajlar">
+            ✉
+            {% if panel_unread_messages %}<em>{{ panel_unread_messages }}</em>{% endif %}
+          </button>
+          <div class="panel-popover">
+            <strong>Mesajlar</strong>
+            {% for message in panel_recent_messages %}
+              <article class="panel-popover-item">
+                <b>{{ message.sender.get_full_name|default:message.sender.username }}</b>
+                <small>{{ message.message|default:"Dosya eki gönderildi."|truncatechars:80 }}</small>
+              </article>
+            {% empty %}
+              <p>Yeni mesaj bulunmuyor.</p>
+            {% endfor %}
+            {% if request.user|has_group:"Personel" %}
+              <a href="{% url 'website:personnel_home' %}#matched-interns">Mesajları aç</a>
+            {% elif request.user|has_group:"Stajyer" %}
+              <a href="{% url 'internship:intern_conversation' %}">Mesajlaşmayı aç</a>
+            {% endif %}
+          </div>
+        </div>
+        {% if request.user.is_authenticated %}
+          <div class="panel-user-menu" data-user-menu>
+            <form method="post" action="{% url 'website:profile_avatar_upload' %}" enctype="multipart/form-data" class="panel-avatar-form">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <label class="panel-avatar-upload" title="Profil fotoğrafı yükle">
+                <input type="file" name="profile_avatar" accept="image/png,image/jpeg,image/webp" data-avatar-input>
+                {% if panel_avatar_url %}
+                  <img src="{{ panel_avatar_url }}" alt="Profil fotoğrafı">
+                {% else %}
+                  <span>{{ request.user.username|slice:":1"|upper }}</span>
+                {% endif %}
+              </label>
+            </form>
+            <button type="button" class="panel-user-name-button" data-user-toggle aria-expanded="false">
+              <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+            </button>
+            <div class="panel-user-dropdown" data-user-dropdown>
+              <div class="panel-user-head">
+                {% if panel_avatar_url %}
+                  <img src="{{ panel_avatar_url }}" alt="Profil fotoğrafı">
+                {% else %}
+                  <span>{{ request.user.username|slice:":1"|upper }}</span>
+                {% endif %}
+                <div>
+                  <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+                  <small>Aktif kullanıcı</small>
+                </div>
+              </div>
+              {% if request.user.is_superuser %}
+                <a href="{% url 'internship:panel_dashboard' %}">Panel Özeti</a>
+                <a href="{% url 'admin:index' %}">Django Admin</a>
+              {% elif request.user|has_group:"Personel" %}
+                <a href="{% url 'website:personnel_home' %}">Profil</a>
+                <a href="{% url 'internship:panel_applications' %}">Başvurular</a>
+                <a href="{% url 'internship:panel_logs_list' %}">Günlükler</a>
+                <a href="{% url 'website:personnel_password_change' %}">Hesap Ayarları</a>
+              {% elif request.user|has_group:"Stajyer" %}
+                <a href="{% url 'internship:intern_dashboard' %}">Profil</a>
+                <a href="{% url 'internship:intern_application_detail' %}">Başvurum</a>
+                <a href="{% url 'internship:intern_conversation' %}">Mesajlar</a>
+                <a href="{% url 'website:intern_password_change' %}">Hesap Ayarları</a>
+              {% endif %}
+              <form method="post" action="{% url 'logout' %}" class="panel-dropdown-logout">
+                {% csrf_token %}
+                <button type="submit">Oturumu Kapat</button>
+              </form>
             </div>
+          </div>
+        {% else %}
+          <a href="{% url 'website:login_select' %}" class="panel-login-link">Giriş</a>
+        {% endif %}
+      </div>
+    </header>
+
+    <main class="panel-content">
+      {% if messages %}
+        <div class="panel-messages">
+          {% for message in messages %}
+            <div class="panel-message panel-message-{{ message.tags|default:'info' }}">{{ message }}</div>
           {% endfor %}
         </div>
       {% endif %}
       {% block content %}{% endblock %}
-    </div>
-  </main>
+    </main>
+  </div>
 
-  <footer class="bg-black text-slate-100 pt-10 pb-6 mt-10">
-    <div class="max-w-6xl mx-auto px-4 grid gap-8 md:grid-cols-3">
-      <div class="space-y-4">
-        <img src="{% static 'images/konumsal-logo-white.png' %}"
-             alt="Konumsal Logo"
-             class="h-12 w-auto">
-
-        <p class="text-sm leading-relaxed text-slate-300 max-w-md">
-          Konumsal BS, yazılım geliştirme alanında faaliyet gösteren ve uzman kadrosuyla
-          Türkiye'nin önde gelen kurumsal çözümlerini üreten bilgi sistemleri şirketidir.
-        </p>
-      </div>
-
-      <div class="space-y-3">
-        <h3 class="text-sm font-semibold text-white tracking-wide uppercase">Bize Ulaşın</h3>
-        <div class="space-y-2 text-sm text-slate-300">
-          <p>Cyberpark Tepe Binası No:19-31<br/>Bilkent / ANKARA</p>
-          <p>Tel: (0312) 266 39 39</p>
-          <p>E-posta: <a href="mailto:bilgi@konumsal.com.tr" class="text-[#00b7b1]">bilgi@konumsal.com.tr</a></p>
-        </div>
-      </div>
-
-      <div class="space-y-3">
-        <h3 class="text-sm font-semibold text-white tracking-wide uppercase">Bilgilendirmeler</h3>
-        <ul class="space-y-1 text-sm text-slate-300">
-          <li><a href="#" class="hover:text-[#00b7b1]">Kalite Politikamız</a></li>
-          <li><a href="#" class="hover:text-[#00b7b1]">Gizlilik Sözleşmesi</a></li>
-          <li><a href="#" class="hover:text-[#00b7b1]">Kullanım Koşulları</a></li>
-          <li><a href="#" class="hover:text-[#00b7b1]">Kişisel Veriler ve Çerez Politikası</a></li>
-          <li><a href="#" class="hover:text-[#00b7b1]">KVKK Bilgilendirme Metni</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="border-t border-slate-800 mt-8 pt-4">
-      <div class="max-w-6xl mx-auto px-4 flex items-center justify-between text-xs text-slate-500">
-        <p>©2025 <span class="text-[#00b7b1] font-semibold text-brand">Konumsal Bilgi Sistemleri</span> All Rights Reserved</p>
-        <div class="flex items-center gap-3 text-sm">
-          <span>🌐</span><span>in</span>
-        </div>
-      </div>
-    </div>
-  </footer>
-
+  <script src="{% static 'internship/js/panel_dashboard.js' %}?v=20260507-panel10"></script>
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>

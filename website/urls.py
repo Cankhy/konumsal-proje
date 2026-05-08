@@ -9,6 +9,7 @@ urlpatterns = [
     path("hizmetler/", views.hizmetler, name="hizmetler"),
     path("iletisim/", views.iletisim, name="iletisim"),
     path("projeler/", views.projeler, name="projeler"),
+    path("kurumsal/<slug:slug>/", views.legal_page, name="legal_page"),
 
     path("hizmetler/cografi-bilgi-sistemleri/", views.hizmet_cbs, name="hizmet_cbs"),
     path("hizmetler/kurumsal-kaynak-planlama/", views.hizmet_erp, name="hizmet_erp"),
@@ -28,6 +29,9 @@ urlpatterns = [
     path("giris-sec/", views.login_select, name="login_select"),
     path("yonetim-giris-kbs/", views.admin_secret_login, name="admin_secret_login"),
     path("personel/", views.personnel_home, name="personnel_home"),
+    path("personel/izin/", views.personnel_leave_requests, name="personnel_leave_requests"),
+    path("personel/sifre-degistir/", views.InternPasswordChangeView.as_view(), name="personnel_password_change"),
+    path("profil/fotograf/", views.profile_avatar_upload, name="profile_avatar_upload"),
     path("stajyer-giris/", views.intern_login_view, name="intern_login"),
     path("stajyer/sifre-degistir/", views.InternPasswordChangeView.as_view(), name="intern_password_change"),
     path("stajyer/sifre-degistir/basarili/", views.intern_password_change_done, name="intern_password_change_done"),

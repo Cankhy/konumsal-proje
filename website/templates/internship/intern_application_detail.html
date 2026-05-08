@@ -81,27 +81,6 @@
       </div>
     </div>
 
-    <div class="portal-panel mt-6">
-      <div class="portal-panel-head">
-        <div>
-          <p class="portal-kicker">DURUM GEÇMİŞİ</p>
-          <h2>Süreç akışı</h2>
-        </div>
-      </div>
-      <div class="timeline-list">
-        {% for item in application.status_history.all %}
-          <div>
-            <span>{{ forloop.counter|stringformat:"02d" }}</span>
-            <p>
-              <strong>{{ item.to_status }}</strong> · {{ item.created_at|date:"d.m.Y H:i" }}
-              {% if item.note %}<br>{{ item.note }}{% endif %}
-            </p>
-          </div>
-        {% empty %}
-          <div><span>01</span><p>Henüz süreç kaydı oluşturulmadı.</p></div>
-        {% endfor %}
-      </div>
-    </div>
   {% else %}
     <div class="portal-panel">
       <h2 class="text-xl font-semibold text-slate-900">Başvuru kaydı bulunamadı</h2>

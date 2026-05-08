@@ -1,0 +1,63 @@
+{% extends "admin/base_site.html" %}
+{% load i18n log %}
+
+{% block content %}
+<div class="kbs-admin-dashboard">
+  <div class="kbs-admin-layout">
+    <section class="kbs-admin-apps" aria-label="Yönetim Modülleri">
+      {% for app in app_list %}
+        <article class="kbs-admin-card">
+          <header>
+            <span>{{ app.name }}</span>
+          </header>
+
+          <div class="kbs-admin-models">
+            {% for model in app.models %}
+              <div class="kbs-admin-model-row">
+                {% if model.admin_url %}
+                  <a href="{{ model.admin_url }}" class="kbs-admin-model-name">{{ model.name }}</a>
+                {% else %}
+                  <span class="kbs-admin-model-name">{{ model.name }}</span>
+                {% endif %}
+
+                <div class="kbs-admin-model-actions">
+                  {% if model.add_url %}
+                    <a href="{{ model.add_url }}" class="kbs-admin-action-add">Ekle</a>
+                  {% endif %}
+                  {% if model.admin_url %}
+                    <a href="{{ model.admin_url }}" class="kbs-admin-action-manage">Yönet</a>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </article>
+      {% empty %}
+        <article class="kbs-admin-card">
+          <header><span>Yetki Yok</span></header>
+          <div class="kbs-admin-empty">Görüntüleyebileceğiniz yönetim modülü bulunmuyor.</div>
+        </article>
+      {% endfor %}
+    </section>
+
+    <aside class="kbs-admin-recent" aria-label="Son İşlemler">
+      <header>
+        <span>Son İşlemler</span>
+      </header>
+      {% get_admin_log 8 as admin_log for_user user %}
+      {% if admin_log %}
+        <div class="kbs-admin-activity-list">
+          {% for entry in admin_log %}
+            <div class="kbs-admin-activity">
+              <strong>{{ entry.object_repr }}</strong>
+              <span>{{ entry.content_type.name|default:"Kayıt" }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="kbs-admin-empty">Henüz işlem kaydı yok.</div>
+      {% endif %}
+    </aside>
+  </div>
+</div>
+{% endblock %}

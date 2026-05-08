@@ -1,0 +1,313 @@
+{% extends "auth/base_auth.html" %}
+
+{% block title %}Izin Talepleri{% endblock %}
+
+{% block content %}
+<section class="portal-page mx-auto w-full max-w-7xl py-8">
+  <div class="portal-hero portal-hero-compact portal-hero-stack leave-hero">
+    <div class="portal-hero-copy">
+      <p class="portal-kicker">PERSONEL IZIN AKISI</p>
+      <h1 class="portal-heading-balanced">Izin talep sayfasi</h1>
+      <p class="portal-subline">Izin talebini olustur, bekleyen kaydi duzenle ve onceki izin hareketlerini tek ekranda takip et.</p>
+    </div>
+    <div class="portal-hero-side">
+      <div class="portal-identity-grid portal-identity-grid-compact leave-summary-grid">
+        <article class="portal-mini-card">
+          <span>Izin Hakki</span>
+          <strong>{{ leave_summary.entitlement }} gun</strong>
+          <small>Yillik toplam hak</small>
+        </article>
+        <article class="portal-mini-card">
+          <span>Kullanilan</span>
+          <strong>{{ leave_summary.used }} gun</strong>
+          <small>Onayli yillik izin</small>
+        </article>
+        <article class="portal-mini-card">
+          <span>Kalan</span>
+          <strong>{{ leave_summary.remaining }} gun</strong>
+          <small>Mevcut kullanilabilir hak</small>
+        </article>
+        <article class="portal-mini-card">
+          <span>Bekleyen</span>
+          <strong>{{ leave_summary.pending }}</strong>
+          <small>Onay bekleyen talep</small>
+        </article>
+      </div>
+      <div class="portal-hero-actions portal-hero-actions-compact">
+        <a href="{% url 'website:personnel_home' %}">Portala Don</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="portal-panel leave-step-shell">
+    <div class="leave-stepper">
+      <div class="leave-step">
+        <span>1</span>
+        <strong>Personel Giris</strong>
+      </div>
+      <div class="leave-step is-active">
+        <span>2</span>
+        <strong>Izin Talep</strong>
+      </div>
+      <div class="leave-step">
+        <span>3</span>
+        <strong>Kayit Takibi</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="portal-panel leave-request-panel">
+    <div class="portal-panel-head">
+      <div>
+        <p class="portal-kicker">IZIN FORMU</p>
+        <h2>{% if edit_request %}Bekleyen talebi duzenle{% else %}Yeni izin talebi{% endif %}</h2>
+      </div>
+      <div class="portal-hero-actions portal-hero-actions-compact">
+        <a href="{% url 'website:personnel_leave_requests' %}">Yenile</a>
+      </div>
+    </div>
+
+    <form method="post" class="leave-form-grid" id="leave-form">
+      {% csrf_token %}
+      <input type="hidden" name="leave_action" value="save">
+      {% if edit_request %}<input type="hidden" name="leave_id" value="{{ edit_request.pk }}">{% endif %}
+
+      <div class="leave-field">
+        <label>Isim</label>
+        <input type="text" class="form-input" value="{{ personnel.first_name }} {{ personnel.last_name }}" readonly>
+      </div>
+      <div class="leave-field">
+        <label>TC</label>
+        <input type="text" class="form-input" value="{{ personnel.identity_number|default:'-' }}" readonly>
+      </div>
+      <div class="leave-field">
+        <label>Unvan</label>
+        <input type="text" class="form-input" value="{{ personnel.title|default:'Personel' }}" readonly>
+      </div>
+
+      <div class="leave-field">
+        <label>Izin Hakki</label>
+        <input type="text" class="form-input" value="{{ leave_summary.entitlement }} gun" readonly>
+      </div>
+      <div class="leave-field">
+        <label>Kullanilan Izin</label>
+        <input type="text" class="form-input" value="{{ leave_summary.used }} gun" readonly>
+      </div>
+      <div class="leave-field">
+        <label>Kalan Izin</label>
+        <input type="text" class="form-input" value="{{ leave_summary.remaining }} gun" readonly>
+      </div>
+
+      <div class="leave-field">
+        <label for="{{ form.leave_type.id_for_label }}">Izin Turu</label>
+        {{ form.leave_type }}
+        {% if form.leave_type.errors %}<p class="leave-error">{{ form.leave_type.errors|join:", " }}</p>{% endif %}
+      </div>
+
+      <div class="leave-field leave-range-field">
+        <label>Tarih Araligi</label>
+        <div class="leave-range-inputs">
+          {{ form.start_date }}
+          {{ form.end_date }}
+        </div>
+        {% if form.start_date.errors %}<p class="leave-error">{{ form.start_date.errors|join:", " }}</p>{% endif %}
+        {% if form.end_date.errors %}<p class="leave-error">{{ form.end_date.errors|join:", " }}</p>{% endif %}
+      </div>
+
+      <div class="leave-field">
+        <label for="{{ form.duration_value.id_for_label }}">Sure</label>
+        {{ form.duration_value }}
+        <small class="leave-hint">Saatlik izin icin manuel, diger tiplerde tarih secimine gore guncellenir.</small>
+        {% if form.duration_value.errors %}<p class="leave-error">{{ form.duration_value.errors|join:", " }}</p>{% endif %}
+      </div>
+
+      <div class="leave-field">
+        <label for="{{ form.return_date.id_for_label }}">Goreve Donus Tarihi</label>
+        {{ form.return_date }}
+        {% if form.return_date.errors %}<p class="leave-error">{{ form.return_date.errors|join:", " }}</p>{% endif %}
+      </div>
+      <div class="leave-field">
+        <label for="{{ form.reason.id_for_label }}">Gerekce</label>
+        {{ form.reason }}
+        {% if form.reason.errors %}<p class="leave-error">{{ form.reason.errors|join:", " }}</p>{% endif %}
+      </div>
+      <div class="leave-field">
+        <label for="{{ form.address.id_for_label }}">Adres</label>
+        {{ form.address }}
+        {% if form.address.errors %}<p class="leave-error">{{ form.address.errors|join:", " }}</p>{% endif %}
+      </div>
+
+      {% if form.non_field_errors %}
+        <div class="leave-form-alert">{{ form.non_field_errors|join:", " }}</div>
+      {% endif %}
+
+      <div class="leave-form-actions">
+        <a href="{% url 'website:personnel_leave_requests' %}" class="portal-secondary-btn">Yenile</a>
+        <button type="submit" class="portal-primary-btn">{% if edit_request %}Guncelle{% else %}Kaydet{% endif %}</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="portal-panel leave-table-panel">
+    <div class="portal-panel-head">
+      <div>
+        <p class="portal-kicker">IZIN GECMISI</p>
+        <h2>Olusturulan talepler</h2>
+      </div>
+    </div>
+
+    <div class="portal-table-shell">
+      <div class="overflow-x-auto">
+        <table class="portal-table leave-table">
+          <thead>
+            <tr>
+              <th>Izin Turu</th>
+              <th>Baslangic</th>
+              <th>Bitis</th>
+              <th>Kullanilan</th>
+              <th>Kalan</th>
+              <th>Izin Hakki</th>
+              <th>Nedeni</th>
+              <th>Onay</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in page_obj %}
+              {% with leave=row.request %}
+                <tr>
+                  <td>{{ leave.get_leave_type_display }}</td>
+                  <td>{{ leave.start_date|date:"d.m.Y" }}</td>
+                  <td>{{ leave.end_date|date:"d.m.Y" }}</td>
+                  <td>{{ row.used }} {% if leave.duration_unit == "saat" %}saat{% else %}gun{% endif %}</td>
+                  <td>{{ row.remaining }} gun</td>
+                  <td>{{ row.entitlement }} gun</td>
+                  <td>
+                    <div class="leave-reason-cell">
+                      <strong>{{ leave.reason }}</strong>
+                      {% if leave.address %}<small>{{ leave.address }}</small>{% endif %}
+                    </div>
+                  </td>
+                  <td>
+                    <div class="leave-status-cell">
+                      {% if leave.status == "pending" %}
+                        <span class="status-pill is-waiting">Beklemede</span>
+                        <div class="leave-row-actions">
+                          <a href="{% url 'website:personnel_leave_requests' %}?edit={{ leave.pk }}" class="leave-icon-btn" aria-label="Duzenle">✎</a>
+                          <button type="button" class="leave-icon-btn danger" data-delete-open data-delete-id="{{ leave.pk }}" data-delete-label="{{ leave.get_leave_type_display }} {{ leave.start_date|date:'d.m.Y' }}">🗑</button>
+                        </div>
+                      {% elif leave.status == "approved" %}
+                        <span class="status-pill is-success">Onaylandi</span>
+                      {% else %}
+                        <span class="status-pill is-danger">Reddedildi</span>
+                      {% endif %}
+                      {% if leave.status_note %}<small>{{ leave.status_note }}</small>{% endif %}
+                    </div>
+                  </td>
+                </tr>
+              {% endwith %}
+            {% empty %}
+              <tr>
+                <td colspan="8" class="empty-cell">Henuz izin talebi bulunmuyor.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+      <div class="leave-pagination">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}">‹</a>
+        {% else %}
+          <span class="is-disabled">‹</span>
+        {% endif %}
+        {% for page_number in page_obj.paginator.page_range %}
+          {% if page_number == page_obj.number %}
+            <span class="is-active">{{ page_number }}</span>
+          {% else %}
+            <a href="?page={{ page_number }}">{{ page_number }}</a>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">›</a>
+        {% else %}
+          <span class="is-disabled">›</span>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<dialog class="leave-delete-dialog" id="leave-delete-dialog">
+  <form method="post" class="leave-delete-card">
+    {% csrf_token %}
+    <input type="hidden" name="leave_action" value="delete">
+    <input type="hidden" name="leave_id" id="leave-delete-id">
+    <div class="leave-delete-head">
+      <h3>Confirmation</h3>
+      <button type="button" class="leave-dialog-close" data-delete-close aria-label="Kapat">×</button>
+    </div>
+    <p>Record will be deleted. Are you sure?</p>
+    <p class="leave-delete-target" id="leave-delete-target"></p>
+    <div class="leave-delete-actions">
+      <button type="button" class="portal-secondary-btn" data-delete-close>Cancel</button>
+      <button type="submit" class="leave-danger-btn">Delete</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  const leaveType = document.getElementById('{{ form.leave_type.id_for_label }}');
+  const startDate = document.getElementById('{{ form.start_date.id_for_label }}');
+  const endDate = document.getElementById('{{ form.end_date.id_for_label }}');
+  const durationInput = document.getElementById('{{ form.duration_value.id_for_label }}');
+  const returnDate = document.getElementById('{{ form.return_date.id_for_label }}');
+
+  const syncLeaveDuration = () => {
+    if (!leaveType || !startDate || !endDate || !durationInput) return;
+    const isHourly = leaveType.value === 'hourly';
+    durationInput.readOnly = !isHourly;
+    durationInput.classList.toggle('is-readonly', !isHourly);
+
+    if (isHourly) {
+      durationInput.placeholder = 'Ornek: 1.5';
+      return;
+    }
+
+    if (startDate.value && endDate.value) {
+      const start = new Date(startDate.value);
+      const end = new Date(endDate.value);
+      const diff = Math.round((end - start) / 86400000) + 1;
+      if (diff > 0) {
+        durationInput.value = diff;
+        if (returnDate && !returnDate.value) {
+          returnDate.value = endDate.value;
+        }
+      }
+    }
+  };
+
+  [leaveType, startDate, endDate].forEach((field) => {
+    if (field) field.addEventListener('change', syncLeaveDuration);
+  });
+  syncLeaveDuration();
+
+  const deleteDialog = document.getElementById('leave-delete-dialog');
+  const deleteIdInput = document.getElementById('leave-delete-id');
+  const deleteTarget = document.getElementById('leave-delete-target');
+
+  document.querySelectorAll('[data-delete-open]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!deleteDialog || !deleteIdInput || !deleteTarget) return;
+      deleteIdInput.value = button.dataset.deleteId;
+      deleteTarget.textContent = button.dataset.deleteLabel || '';
+      deleteDialog.showModal();
+    });
+  });
+
+  document.querySelectorAll('[data-delete-close]').forEach((button) => {
+    button.addEventListener('click', () => deleteDialog?.close());
+  });
+</script>
+{% endblock %}

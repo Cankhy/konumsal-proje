@@ -5,7 +5,7 @@ from django.utils import timezone
 import secrets
 import string
 
-from .mail_utils import send_intern_credentials_email
+from .mail_utils import send_intern_credentials_email, send_personnel_credentials_email
 from .models import (
     Announcement,
     Application,
@@ -18,6 +18,7 @@ from .models import (
     InternLog,
     Log,
     LogReview,
+    PersonnelLeaveRequest,
     PersonnelProfile,
     PersonnelTask,
     PersonnelTaskComment,
@@ -317,6 +318,33 @@ class PersonnelTaskCommentAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at",)
 
 
+@admin.register(PersonnelLeaveRequest)
+class PersonnelLeaveRequestAdmin(admin.ModelAdmin):
+    list_display = ("full_name", "leave_type", "start_date", "end_date", "duration_value", "status", "personnel")
+    list_filter = ("leave_type", "status", "start_date", "personnel")
+    search_fields = ("full_name", "identity_number", "reason", "address")
+    readonly_fields = ("created_at", "updated_at")
+    actions = ["approve_leave_requests", "reject_leave_requests", "mark_leave_pending"]
+
+    def approve_leave_requests(self, request, queryset):
+        updated = queryset.update(status=PersonnelLeaveRequest.Status.APPROVED, reviewed_at=timezone.now())
+        self.message_user(request, f"{updated} izin talebi ONAYLANDI.")
+
+    approve_leave_requests.short_description = "Seçili izin taleplerini onayla"
+
+    def reject_leave_requests(self, request, queryset):
+        updated = queryset.update(status=PersonnelLeaveRequest.Status.REJECTED, reviewed_at=timezone.now())
+        self.message_user(request, f"{updated} izin talebi REDDEDİLDİ.")
+
+    reject_leave_requests.short_description = "Seçili izin taleplerini reddet"
+
+    def mark_leave_pending(self, request, queryset):
+        updated = queryset.update(status=PersonnelLeaveRequest.Status.PENDING, reviewed_at=None)
+        self.message_user(request, f"{updated} izin talebi yeniden BEKLEMEDE yapıldı.")
+
+    mark_leave_pending.short_description = "Seçili izin taleplerini beklemeye al"
+
+
 @admin.register(InternDocument)
 class InternDocumentAdmin(admin.ModelAdmin):
     list_display = ("application", "category", "status", "reupload_requested", "uploaded_at", "reviewed_at")
@@ -338,3 +366,141 @@ class FormErrorLogAdmin(admin.ModelAdmin):
     list_display = ("form_name", "path", "created_at")
     search_fields = ("form_name", "path")
     readonly_fields = ("created_at", "payload", "errors")
+
+
+def _secure_create_personnel_accounts(self, request, queryset):
+    personnel_group, _ = Group.objects.get_or_create(name="Personel")
+    created_count = 0
+    skipped_count = 0
+
+    for profile in queryset:
+        if profile.user_id:
+            skipped_count += 1
+            continue
+
+        username = _generate_unique_username(profile.first_name, profile.last_name)
+        password = _generate_password()
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            first_name=profile.first_name,
+            last_name=profile.last_name,
+            email=profile.email or "",
+        )
+        user.is_staff = False
+        user.is_superuser = False
+        user.save()
+        user.groups.add(personnel_group)
+
+        profile.user = user
+        profile.account_created_at = timezone.now()
+        profile.save(update_fields=["user", "account_created_at"])
+
+        if profile.email:
+            try:
+                sent, error_message = send_personnel_credentials_email(profile, username, password)
+                if sent:
+                    self.message_user(
+                        request,
+                        f"[Personel #{profile.id}] hesap oluşturuldu. Kullanıcı adı: {username}. Giriş bilgileri e-posta adresine gönderildi.",
+                        level="SUCCESS",
+                    )
+                else:
+                    self.message_user(
+                        request,
+                        f"[Personel #{profile.id}] hesap oluşturuldu ancak e-posta gönderilemedi: {error_message}",
+                        level="WARNING",
+                    )
+            except Exception as exc:
+                self.message_user(
+                    request,
+                    f"[Personel #{profile.id}] hesap oluşturuldu ancak e-posta gönderilemedi: {exc}",
+                    level="WARNING",
+                )
+        else:
+            self.message_user(
+                request,
+                f"[Personel #{profile.id}] hesap oluşturuldu. Kullanıcı adı: {username}. E-posta adresi olmadığı için geçici şifre gönderilemedi.",
+                level="WARNING",
+            )
+        created_count += 1
+
+    self.message_user(
+        request,
+        f"{created_count} personel hesabı oluşturuldu. {skipped_count} kayıt atlandı.",
+    )
+
+
+def _secure_approve_interns_create_accounts(self, request, queryset):
+    stajyer_group, _ = Group.objects.get_or_create(name="Stajyer")
+    created_count = 0
+    skipped_count = 0
+
+    for app in queryset:
+        if getattr(app, "user_id", None):
+            skipped_count += 1
+            continue
+
+        username = _generate_unique_username(app.first_name, app.last_name)
+        password = _generate_password()
+
+        user = User.objects.create_user(username=username, password=password)
+        user.is_staff = False
+        user.is_superuser = False
+        if app.email:
+            user.email = app.email
+        user.save()
+        user.groups.add(stajyer_group)
+
+        app.status = "approved"
+        app.user = user
+        app.account_created_at = timezone.now()
+        app.credentials_sent = False
+        app.must_change_password = True
+        app.save()
+
+        if app.email:
+            try:
+                sent, error_message = send_intern_credentials_email(app, username, password)
+                if sent:
+                    app.credentials_sent = True
+                    app.save(update_fields=["credentials_sent"])
+                    self.message_user(
+                        request,
+                        f"[Başvuru #{app.id}] hesap oluşturuldu. Kullanıcı adı: {username}. Giriş bilgileri e-posta adresine gönderildi.",
+                        level="SUCCESS",
+                    )
+                elif error_message:
+                    self.message_user(
+                        request,
+                        f"[Başvuru #{app.id}] hesap oluşturuldu ancak e-posta gönderilemedi: {error_message}",
+                        level="WARNING",
+                    )
+            except Exception as exc:
+                self.message_user(
+                    request,
+                    f"[Başvuru #{app.id}] hesap oluşturuldu ancak e-posta gönderilemedi: {exc}",
+                    level="WARNING",
+                )
+        else:
+            self.message_user(
+                request,
+                f"[Başvuru #{app.id}] hesap oluşturuldu. Kullanıcı adı: {username}. E-posta adresi olmadığı için geçici şifre gönderilemedi.",
+                level="WARNING",
+            )
+
+        created_count += 1
+
+    self.message_user(
+        request,
+        f"{created_count} başvuru onaylandı ve hesap açıldı. {skipped_count} kayıt atlandı.",
+    )
+
+
+_secure_create_personnel_accounts.short_description = "Seçili personeller için kullanıcı hesabı oluştur"
+_secure_approve_interns_create_accounts.short_description = "Seçili staj başvurularını onayla ve hesap oluştur"
+
+PersonnelProfileAdmin.create_personnel_accounts = _secure_create_personnel_accounts
+PersonnelProfileAdmin.actions = ["create_personnel_accounts"]
+InternApplicationAdmin.approve_interns_create_accounts = _secure_approve_interns_create_accounts
+InternApplicationAdmin.actions = ["approve_interns_create_accounts", "reject_interns"]

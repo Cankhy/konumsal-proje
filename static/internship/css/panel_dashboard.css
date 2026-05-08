@@ -1,0 +1,2467 @@
+:root {
+  --panel-bg: #111827;
+  --panel-card: #172033;
+  --panel-card-2: #1d2940;
+  --panel-line: rgba(148, 163, 184, 0.18);
+  --panel-text: #e5edf8;
+  --panel-muted: #9aa8bd;
+  --panel-blue: #0d6efd;
+  --panel-cyan: #18c4c7;
+  --panel-pink: #f5577b;
+  --panel-green: #32c391;
+  --panel-orange: #ff9f43;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body.panel-shell {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--panel-bg);
+  color: var(--panel-text);
+  font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+body.panel-shell::-webkit-scrollbar,
+.panel-sidebar::-webkit-scrollbar,
+.panel-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+body.panel-shell::-webkit-scrollbar-track,
+.panel-sidebar::-webkit-scrollbar-track,
+.panel-content::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+body.panel-shell::-webkit-scrollbar-thumb,
+.panel-sidebar::-webkit-scrollbar-thumb,
+.panel-content::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.34);
+}
+
+body.panel-shell::-webkit-scrollbar-thumb:hover,
+.panel-sidebar::-webkit-scrollbar-thumb:hover,
+.panel-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.52);
+}
+
+body.panel-shell,
+.panel-sidebar,
+.panel-content {
+  scrollbar-color: rgba(148, 163, 184, 0.34) #111827;
+  scrollbar-width: thin;
+}
+
+.panel-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 50;
+  width: 260px;
+  overflow-y: auto;
+  border-right: 1px solid var(--panel-line);
+  background: #121b2d;
+  box-shadow: 18px 0 45px rgba(2, 8, 23, 0.22);
+  transition: transform 0.2s ease;
+}
+
+.panel-shell.sidebar-collapsed .panel-sidebar {
+  width: 80px;
+}
+
+.panel-shell.sidebar-collapsed .panel-body {
+  padding-left: 80px;
+}
+
+.panel-shell.sidebar-collapsed .panel-brand {
+  justify-content: center;
+  padding: 0;
+}
+
+.panel-shell.sidebar-collapsed .panel-brand img {
+  width: 42px;
+  max-width: 42px;
+  height: 42px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.panel-shell.sidebar-collapsed .panel-nav {
+  padding-inline: 12px;
+}
+
+.panel-shell.sidebar-collapsed .panel-nav p,
+.panel-shell.sidebar-collapsed .panel-nav strong,
+.panel-shell.sidebar-collapsed .panel-logout-form strong {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.panel-shell.sidebar-collapsed .panel-nav a,
+.panel-shell.sidebar-collapsed .panel-logout-form button {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  padding: 8px 0;
+}
+
+.panel-shell.sidebar-collapsed .panel-nav a.is-active {
+  box-shadow: inset 3px 0 0 var(--panel-blue);
+}
+
+.panel-brand {
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 22px;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.panel-brand img {
+  width: 150px;
+  height: auto;
+}
+
+.panel-sidebar-close {
+  display: none !important;
+}
+
+.panel-nav {
+  padding: 18px 14px 30px;
+}
+
+.panel-nav p {
+  margin: 22px 10px 10px;
+  color: #aab6c8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.panel-nav a,
+.panel-logout-form button {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #aab6c8;
+  padding: 8px 10px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+}
+
+.panel-nav a:hover,
+.panel-nav a.is-active,
+.panel-logout-form button:hover {
+  background: rgba(13, 110, 253, 0.13);
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+.panel-nav a.is-active {
+  box-shadow: inset 3px 0 0 var(--panel-blue);
+}
+
+.panel-nav span,
+.panel-logout-form span {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(148, 163, 184, 0.12);
+  color: #dce8f8;
+  font-size: 14px;
+}
+
+.panel-nav strong,
+.panel-logout-form strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.panel-body {
+  min-height: 100vh;
+  padding-left: 260px;
+}
+
+.panel-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 35;
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid var(--panel-line);
+  background: rgba(18, 27, 45, 0.94);
+  padding: 0 24px;
+  backdrop-filter: blur(16px);
+}
+
+.panel-icon-button {
+  position: relative;
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #dce8f8;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.panel-icon-button.has-counter em {
+  position: absolute;
+  top: 2px;
+  right: 1px;
+  display: inline-flex;
+  min-width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--panel-pink);
+  color: #fff;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+  padding: 0 5px;
+}
+
+.panel-icon-button:hover {
+  border-color: var(--panel-line);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.panel-search {
+  position: relative;
+  display: flex;
+  width: min(430px, 42vw);
+  min-width: 220px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--panel-line);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.38);
+  padding: 0 16px;
+}
+
+.panel-search-results {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: none;
+  overflow: hidden;
+  border: 1px solid var(--panel-line);
+  border-radius: 8px;
+  background: #121b2d;
+  box-shadow: 0 22px 55px rgba(2, 8, 23, 0.42);
+}
+
+.panel-search.has-results .panel-search-results {
+  display: block;
+}
+
+.panel-search-results a,
+.panel-search-results button,
+.panel-search-empty {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #d9e4f4;
+  padding: 12px 14px;
+  text-align: left;
+  text-decoration: none;
+  font: inherit;
+  font-size: 13px;
+}
+
+.panel-search-results a:hover,
+.panel-search-results button:hover {
+  background: rgba(13, 110, 253, 0.15);
+}
+
+.panel-search-results small {
+  display: block;
+  margin-top: 3px;
+  color: var(--panel-muted);
+}
+
+.panel-search-empty {
+  color: var(--panel-muted);
+}
+
+.panel-search-hidden {
+  display: none !important;
+}
+
+.panel-search input {
+  width: 100%;
+  height: 42px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--panel-text);
+  font: inherit;
+}
+
+.panel-search input::placeholder {
+  color: #78879d;
+}
+
+.panel-top-actions {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-login-link {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--panel-blue);
+  color: #fff;
+  padding: 0 18px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.panel-user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-top-menu {
+  position: relative;
+}
+
+.panel-user-name-button {
+  display: flex;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.panel-avatar-form {
+  margin: 0;
+}
+
+.panel-avatar-upload {
+  position: relative;
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--panel-blue), var(--panel-cyan));
+  color: #fff !important;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.panel-avatar-upload::after {
+  content: "+";
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  border: 2px solid #121b2d;
+  border-radius: 999px;
+  background: var(--panel-blue);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.panel-avatar-upload input {
+  display: none;
+}
+
+.panel-avatar-upload img,
+.panel-user-head img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.panel-avatar-upload span,
+.panel-user-head span {
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--panel-blue), var(--panel-cyan));
+  color: #fff;
+  font-weight: 900;
+}
+
+.panel-user-head img {
+  flex: 0 0 auto;
+  border-radius: 999px;
+}
+
+.panel-user-name-button strong {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.panel-user-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  display: none;
+  width: 250px;
+  overflow: hidden;
+  border: 1px solid var(--panel-line);
+  border-radius: 8px;
+  background: #121b2d;
+  box-shadow: 0 22px 55px rgba(2, 8, 23, 0.42);
+}
+
+.panel-popover {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  display: none;
+  width: 260px;
+  border: 1px solid var(--panel-line);
+  border-radius: 8px;
+  background: #121b2d;
+  box-shadow: 0 22px 55px rgba(2, 8, 23, 0.42);
+  padding: 16px;
+}
+
+.panel-top-menu.is-open .panel-popover {
+  display: grid;
+  gap: 10px;
+}
+
+.panel-popover strong {
+  color: #fff;
+  font-size: 15px;
+}
+
+.panel-popover p {
+  margin: 0;
+  color: var(--panel-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.panel-popover-item {
+  display: block;
+  border: 1px solid var(--panel-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 10px;
+}
+
+.panel-popover-item.is-accent {
+  border-color: rgba(245, 87, 123, 0.35);
+  background: rgba(245, 87, 123, 0.12);
+}
+
+.panel-popover-item b {
+  display: block;
+  color: #fff;
+  font-size: 13px;
+}
+
+.panel-popover-item small {
+  display: block;
+  margin-top: 4px;
+  color: var(--panel-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.panel-popover a {
+  display: block;
+  border-radius: 8px;
+  background: rgba(13, 110, 253, 0.14);
+  color: #dce8ff;
+  padding: 10px 12px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.panel-popover a:hover {
+  background: rgba(13, 110, 253, 0.24);
+}
+
+.panel-user-menu.is-open .panel-user-dropdown {
+  display: block;
+}
+
+.panel-user-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--panel-blue);
+  padding: 16px;
+}
+
+.panel-user-head strong,
+.panel-user-head small {
+  display: block;
+}
+
+.panel-user-head small {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.panel-user-dropdown a {
+  display: block;
+  color: #d9e4f4;
+  padding: 13px 16px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.panel-user-dropdown a:hover,
+.panel-dropdown-logout button:hover {
+  background: rgba(13, 110, 253, 0.15);
+  color: #fff;
+}
+
+.panel-dropdown-logout button {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #d9e4f4;
+  cursor: pointer;
+  padding: 13px 16px;
+  text-align: left;
+  font: inherit;
+  font-size: 14px;
+}
+
+.panel-content {
+  min-height: calc(100vh - 72px);
+  padding: 28px 24px 46px;
+}
+
+.panel-content > .portal-page,
+.panel-content > section {
+  max-width: 100% !important;
+  padding-top: 0 !important;
+}
+
+.panel-messages {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.panel-message {
+  border: 1px solid var(--panel-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--panel-text);
+  padding: 12px 14px;
+  font-size: 14px;
+}
+
+.panel-message-success {
+  border-color: rgba(50, 195, 145, 0.35);
+  background: rgba(50, 195, 145, 0.12);
+}
+
+.panel-message-error {
+  border-color: rgba(245, 87, 123, 0.35);
+  background: rgba(245, 87, 123, 0.12);
+}
+
+.portal-surface,
+.panel-shell .portal-main-shell {
+  background: transparent !important;
+}
+
+.panel-shell .portal-hero,
+.panel-shell .portal-panel,
+.panel-shell .portal-stat-card,
+.panel-shell .portal-rail,
+.panel-shell .application-combo-card,
+.panel-shell .application-step,
+.panel-shell .query-card,
+.panel-shell .process-grid article,
+.panel-shell .quick-action-grid a,
+.panel-shell .daily-form-card,
+.panel-shell .log-detail-card,
+.panel-shell .chat-profile-card,
+.panel-shell .chat-panel,
+.panel-shell .portal-table-shell {
+  border: 1px solid var(--panel-line) !important;
+  border-radius: 8px !important;
+  background: var(--panel-card) !important;
+  box-shadow: 0 20px 48px rgba(2, 8, 23, 0.18) !important;
+  color: var(--panel-text) !important;
+}
+
+.panel-shell .portal-hero {
+  border-left: 0 !important;
+  padding: 28px !important;
+}
+
+.panel-shell .portal-hero::before,
+.panel-shell .portal-hero::after,
+.panel-shell .portal-main-shell::before,
+.panel-shell .portal-panel::before,
+.panel-shell .portal-metrics div::after {
+  display: none !important;
+}
+
+.panel-shell .portal-kicker,
+.panel-shell .portal-stat-card p,
+.panel-shell .mini-label {
+  color: #7fa2cf !important;
+  letter-spacing: 0.08em !important;
+}
+
+.panel-shell .portal-hero h1,
+.panel-shell .portal-panel h2,
+.panel-shell .portal-panel-head h2,
+.panel-shell .query-card h2,
+.panel-shell .application-step h2,
+.panel-shell .log-detail-card h2,
+.panel-shell .chat-profile-title,
+.panel-shell .chat-panel h2,
+.panel-shell .portal-stat-card strong,
+.panel-shell .portal-mini-card strong {
+  color: #f8fbff !important;
+}
+
+.panel-shell .portal-subline,
+.panel-shell .portal-stat-card small,
+.panel-shell .portal-mini-card small,
+.panel-shell .portal-empty,
+.panel-shell .portal-empty-state p,
+.panel-shell .activity-stream p,
+.panel-shell .portal-note,
+.panel-shell label {
+  color: var(--panel-muted) !important;
+}
+
+.panel-shell .portal-mini-card,
+.panel-shell .portal-empty-state,
+.panel-shell .activity-stream article,
+.panel-shell .document-status-card,
+.panel-shell .intern-track-card,
+.panel-shell .log-detail-grid section,
+.panel-shell .chat-profile-list div,
+.panel-shell .leave-step,
+.panel-shell .cv-upload-box {
+  border-color: var(--panel-line) !important;
+  background: var(--panel-card-2) !important;
+  color: var(--panel-text) !important;
+}
+
+.panel-shell .portal-primary-btn,
+.panel-shell .portal-hero-actions a:first-child,
+.panel-shell .portal-panel-head a,
+.panel-shell .portal-empty-state a {
+  border-radius: 8px !important;
+  background: var(--panel-blue) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.panel-shell .portal-secondary-btn,
+.panel-shell .portal-hero-actions a + a {
+  border-radius: 8px !important;
+  border-color: var(--panel-line) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #e5edf8 !important;
+  box-shadow: none !important;
+}
+
+.panel-shell input,
+.panel-shell select,
+.panel-shell textarea,
+.panel-shell .form-input,
+.panel-shell .form-select,
+.panel-shell .form-textarea {
+  border-color: var(--panel-line) !important;
+  background: #101827 !important;
+  color: #edf4ff !important;
+}
+
+.panel-shell input::placeholder,
+.panel-shell textarea::placeholder {
+  color: #7d8ca2 !important;
+}
+
+.panel-shell .portal-table {
+  color: var(--panel-text) !important;
+}
+
+.panel-shell .portal-table thead,
+.panel-shell .portal-table thead th {
+  background: #101827 !important;
+  color: #aab6c8 !important;
+}
+
+.panel-shell .portal-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.dashboard-page {
+  display: grid;
+  gap: 24px;
+}
+
+.dashboard-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.dashboard-welcome h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 800;
+}
+
+.dashboard-welcome p {
+  margin: 6px 0 0;
+  color: var(--panel-muted);
+}
+
+.dashboard-rating {
+  min-width: 220px;
+  border: 1px solid var(--panel-line);
+  border-radius: 8px;
+  background: var(--panel-card);
+  padding: 16px;
+  text-align: right;
+}
+
+.dashboard-rating strong {
+  display: block;
+  color: #fff;
+  font-size: 22px;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.dashboard-stat {
+  overflow: hidden;
+  border-radius: 8px;
+  padding: 18px;
+  color: #fff;
+  min-height: 142px;
+}
+
+.dashboard-stat:nth-child(1) { background: linear-gradient(135deg, #0d6efd, #0b5ed7); }
+.dashboard-stat:nth-child(2) { background: linear-gradient(135deg, #32c391, #28a97d); }
+.dashboard-stat:nth-child(3) { background: linear-gradient(135deg, #ff9f43, #f76707); }
+.dashboard-stat:nth-child(4) { background: linear-gradient(135deg, #f5577b, #d6336c); }
+
+.dashboard-stat span {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+.dashboard-stat strong {
+  display: block;
+  margin-top: 18px;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.dashboard-stat small {
+  display: block;
+  margin-top: 8px;
+  opacity: 0.85;
+}
+
+.sparkline {
+  display: flex;
+  height: 30px;
+  align-items: flex-end;
+  gap: 6px;
+  margin-top: 16px;
+  opacity: 0.75;
+}
+
+.sparkline i {
+  display: block;
+  width: 100%;
+  border-radius: 999px 999px 0 0;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.8fr);
+  gap: 18px;
+}
+
+.dashboard-card {
+  border: 1px solid var(--panel-line);
+  border-radius: 8px;
+  background: var(--panel-card);
+  padding: 22px;
+}
+
+.dashboard-card h2 {
+  margin: 0 0 18px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.map-placeholder {
+  display: grid;
+  min-height: 315px;
+  place-items: center;
+  border: 1px dashed rgba(148, 163, 184, 0.28);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(13, 110, 253, 0.16) 1px, transparent 1px),
+    linear-gradient(rgba(13, 110, 253, 0.16) 1px, transparent 1px),
+    radial-gradient(circle at 32% 38%, rgba(24, 196, 199, 0.28), transparent 24%),
+    #101827;
+  background-size: 36px 36px, 36px 36px, auto, auto;
+  color: var(--panel-muted);
+  text-align: center;
+}
+
+.map-placeholder strong {
+  display: block;
+  color: #fff;
+  font-size: 20px;
+}
+
+.dashboard-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.compact-list {
+  display: grid;
+  gap: 12px;
+}
+
+.compact-list article {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  border: 1px solid var(--panel-line);
+  border-radius: 8px;
+  background: var(--panel-card-2);
+  padding: 14px;
+}
+
+.compact-list strong {
+  color: #fff;
+}
+
+.compact-list p,
+.compact-list small {
+  margin: 4px 0 0;
+  color: var(--panel-muted);
+}
+
+.status-chip {
+  align-self: start;
+  border-radius: 999px;
+  background: rgba(13, 110, 253, 0.18);
+  color: #99c4ff;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.panel-overlay {
+  display: none;
+}
+
+@media (max-width: 1180px) {
+  .dashboard-stats,
+  .dashboard-bottom {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .panel-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .panel-shell.sidebar-open .panel-sidebar {
+    transform: translateX(0);
+  }
+
+  .panel-shell.sidebar-open .panel-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    display: block;
+    background: rgba(2, 8, 23, 0.58);
+  }
+
+  .panel-sidebar-close {
+    display: inline-flex !important;
+  }
+
+  .panel-body {
+    padding-left: 0;
+  }
+
+  .panel-search {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .panel-topbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 12px;
+  }
+
+  .panel-top-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .panel-content {
+    padding: 18px 12px 34px;
+  }
+
+  .dashboard-welcome {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .dashboard-rating {
+    text-align: left;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-stats,
+  .dashboard-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-avatar-button strong,
+  .panel-user-name-button strong,
+  .panel-top-actions .panel-icon-button:nth-child(1),
+  .panel-top-actions .panel-icon-button:nth-child(2) {
+    display: none;
+  }
+}
+
+/* Final visual pass: calmer corporate surfaces and fewer nested boxes. */
+.panel-shell {
+  --panel-bg: #151e2e;
+  --panel-card: #1b2638;
+  --panel-card-2: #202e44;
+  --panel-card-3: #111a28;
+  --panel-line: rgba(148, 163, 184, 0.22);
+  --panel-text: #f3f6fb;
+  --panel-muted: #b6c2d2;
+  --panel-subtle: #8fa0b6;
+  --panel-blue: #0d6efd;
+  --panel-cyan: #20c997;
+  --panel-whatsapp: #075e54;
+  --panel-whatsapp-2: #128c7e;
+}
+
+.panel-sidebar,
+.panel-topbar {
+  background: #172033;
+}
+
+.panel-content {
+  background:
+    linear-gradient(180deg, rgba(27, 38, 56, 0.75), rgba(21, 30, 46, 0) 260px),
+    #151e2e;
+}
+
+.panel-shell .portal-command {
+  display: block !important;
+}
+
+.panel-shell .portal-command > .portal-rail {
+  display: none !important;
+}
+
+.panel-shell .portal-main {
+  width: 100% !important;
+}
+
+.panel-shell .portal-page {
+  display: grid;
+  gap: 18px;
+}
+
+.panel-shell .portal-hero,
+.panel-shell .portal-panel,
+.panel-shell .portal-stat-card,
+.panel-shell .application-combo-card,
+.panel-shell .application-step,
+.panel-shell .query-card,
+.panel-shell .process-grid article,
+.panel-shell .quick-action-grid a,
+.panel-shell .daily-form-card,
+.panel-shell .log-detail-card,
+.panel-shell .chat-profile-card,
+.panel-shell .chat-panel,
+.panel-shell .portal-table-shell,
+.panel-shell .dashboard-card,
+.panel-shell .dashboard-rating {
+  border-color: rgba(117, 145, 183, 0.18) !important;
+  border-radius: 12px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)),
+    var(--panel-card) !important;
+  box-shadow: 0 18px 42px rgba(2, 8, 23, 0.14) !important;
+}
+
+.panel-shell .portal-hero {
+  min-height: 168px;
+  border: 0 !important;
+  background:
+    linear-gradient(105deg, rgba(32, 201, 151, 0.10), rgba(13, 110, 253, 0.10) 42%, rgba(27, 38, 56, 0.94)),
+    #131f33 !important;
+}
+
+.panel-shell .portal-hero h1 {
+  font-size: clamp(34px, 3.3vw, 52px) !important;
+}
+
+.panel-shell .portal-kicker,
+.panel-shell .portal-stat-card p,
+.panel-shell .mini-label {
+  color: #8ebcf5 !important;
+}
+
+.panel-shell .portal-subline,
+.panel-shell .portal-stat-card small,
+.panel-shell .portal-mini-card small,
+.panel-shell .activity-stream p,
+.panel-shell .compact-list p,
+.panel-shell .compact-list small,
+.panel-shell label,
+.panel-shell p,
+.panel-shell small {
+  color: var(--panel-muted) !important;
+}
+
+.panel-shell strong,
+.panel-shell h1,
+.panel-shell h2,
+.panel-shell h3,
+.panel-shell h4 {
+  color: var(--panel-text) !important;
+}
+
+.panel-shell .portal-summary-strip {
+  gap: 16px !important;
+}
+
+.panel-shell .portal-stat-card {
+  min-height: 126px;
+  padding: 18px !important;
+  background:
+    linear-gradient(90deg, rgba(24, 168, 172, 0.10), rgba(11, 116, 209, 0.04)),
+    var(--panel-card) !important;
+}
+
+.panel-shell .portal-stat-icon,
+.panel-shell .portal-rail a span {
+  background: rgba(24, 168, 172, 0.16) !important;
+  color: #bdf7f6 !important;
+}
+
+.panel-shell .portal-panel-main {
+  border-top: 0 !important;
+}
+
+.panel-shell .portal-grid,
+.panel-shell .portal-grid-lower,
+.panel-shell .daily-workspace,
+.panel-shell .review-workspace,
+.panel-shell .chat-shell {
+  gap: 16px !important;
+}
+
+.panel-shell .portal-mini-card,
+.panel-shell .portal-empty-state,
+.panel-shell .activity-stream article,
+.panel-shell .document-status-card,
+.panel-shell .intern-track-card,
+.panel-shell .log-detail-grid section,
+.panel-shell .chat-profile-list div,
+.panel-shell .leave-step,
+.panel-shell .cv-upload-box,
+.panel-shell .compact-list article {
+  border-color: rgba(120, 147, 184, 0.16) !important;
+  border-radius: 12px !important;
+  background: rgba(32, 46, 68, 0.74) !important;
+  box-shadow: none !important;
+}
+
+.panel-shell .portal-panel:hover,
+.panel-shell .portal-stat-card:hover,
+.panel-shell .quick-action-grid a:hover,
+.panel-shell .process-grid article:hover {
+  transform: none !important;
+  border-color: rgba(24, 168, 172, 0.34) !important;
+  box-shadow: 0 18px 42px rgba(2, 8, 23, 0.18) !important;
+}
+
+.panel-shell .bg-white,
+.panel-shell .bg-slate-50,
+.panel-shell .bg-slate-100,
+.panel-shell [class*="bg-white"],
+.panel-shell [class*="bg-slate-50"],
+.panel-shell [class*="bg-slate-100"] {
+  background-color: rgba(32, 46, 68, 0.84) !important;
+  color: var(--panel-text) !important;
+}
+
+.panel-shell .text-slate-900,
+.panel-shell .text-slate-800,
+.panel-shell .text-slate-700,
+.panel-shell .text-slate-600 {
+  color: var(--panel-text) !important;
+}
+
+.panel-shell .text-slate-500,
+.panel-shell .text-slate-400 {
+  color: var(--panel-muted) !important;
+}
+
+.panel-shell .border-slate-200,
+.panel-shell .border-slate-300 {
+  border-color: rgba(120, 147, 184, 0.20) !important;
+}
+
+.panel-shell .rounded-2xl,
+.panel-shell .rounded-xl {
+  border-radius: 12px !important;
+}
+
+.panel-shell .portal-empty,
+.panel-shell .portal-empty-state,
+.panel-shell .query-empty,
+.panel-shell .chat-thread {
+  border: 1px dashed rgba(120, 147, 184, 0.22) !important;
+  background:
+    linear-gradient(135deg, rgba(32, 201, 151, 0.055), rgba(13, 110, 253, 0.045)),
+    rgba(17, 26, 40, 0.86) !important;
+  color: var(--panel-muted) !important;
+}
+
+.panel-shell input,
+.panel-shell select,
+.panel-shell textarea,
+.panel-shell .form-input,
+.panel-shell .form-select,
+.panel-shell .form-textarea {
+  border-radius: 12px !important;
+  background: #0d1828 !important;
+}
+
+.panel-shell .portal-primary-btn,
+.panel-shell .portal-hero-actions a:first-child,
+.panel-shell .portal-panel-head a,
+.panel-shell .portal-empty-state a {
+  background: linear-gradient(135deg, #0d6efd, #20c997) !important;
+  border-radius: 10px !important;
+}
+
+.panel-shell .portal-secondary-btn,
+.panel-shell .portal-hero-actions a + a {
+  background: rgba(255, 255, 255, 0.055) !important;
+  border-radius: 10px !important;
+}
+
+.panel-shell .status-pill,
+.panel-shell .status-chip,
+.panel-shell .inline-flex.rounded-full {
+  border-color: rgba(24, 168, 172, 0.28) !important;
+  background: rgba(24, 168, 172, 0.14) !important;
+  color: #c7fffb !important;
+}
+
+.panel-shell .is-danger,
+.panel-shell .text-rose-700,
+.panel-shell .bg-rose-50 {
+  border-color: rgba(244, 114, 132, 0.32) !important;
+  background: rgba(244, 114, 132, 0.12) !important;
+  color: #ffd0d8 !important;
+}
+
+.panel-shell .is-waiting,
+.panel-shell .text-amber-700,
+.panel-shell .bg-amber-50 {
+  border-color: rgba(251, 191, 36, 0.30) !important;
+  background: rgba(251, 191, 36, 0.12) !important;
+  color: #ffe8ad !important;
+}
+
+.panel-shell .portal-table thead,
+.panel-shell .portal-table thead th {
+  background: rgba(15, 26, 43, 0.96) !important;
+}
+
+.panel-shell .portal-table tbody tr {
+  background: rgba(19, 31, 51, 0.46) !important;
+}
+
+.panel-shell .portal-table tbody tr:hover {
+  background: rgba(24, 168, 172, 0.08) !important;
+}
+
+.panel-shell .leave-stepper {
+  gap: 16px !important;
+}
+
+.panel-shell .leave-step {
+  min-height: 64px;
+}
+
+.panel-shell .dashboard-stat:nth-child(1),
+.panel-shell .dashboard-stat:nth-child(2),
+.panel-shell .dashboard-stat:nth-child(3),
+.panel-shell .dashboard-stat:nth-child(4) {
+  background:
+    linear-gradient(135deg, rgba(13, 110, 253, 0.94), rgba(32, 201, 151, 0.78)),
+    #123255 !important;
+}
+
+.panel-shell .sparkline i {
+  background: rgba(199, 255, 251, 0.42);
+}
+
+/* WhatsApp-style conversation surface. */
+.panel-shell .chat-shell {
+  grid-template-columns: 320px minmax(0, 1fr) !important;
+  align-items: start;
+}
+
+.panel-shell .chat-panel {
+  display: grid;
+  min-height: 650px;
+  grid-template-rows: auto minmax(360px, 1fr) auto;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.panel-shell .chat-panel-head {
+  margin: 0 !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  background: #172033;
+  padding: 20px 24px;
+}
+
+.panel-shell .chat-thread {
+  position: relative;
+  min-height: 430px;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    radial-gradient(circle at 20% 20%, rgba(32, 201, 151, 0.07), transparent 28%),
+    #0b141f !important;
+  background-size: 42px 42px, 42px 42px, auto, auto !important;
+  padding: 26px 28px !important;
+}
+
+.panel-shell .chat-date-divider {
+  margin: 14px 0 !important;
+}
+
+.panel-shell .chat-date-divider span {
+  border: 1px solid rgba(148, 163, 184, 0.16) !important;
+  border-radius: 999px !important;
+  background: #223047 !important;
+  color: #dbe7f5 !important;
+  padding: 7px 14px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+.panel-shell .chat-message {
+  display: flex !important;
+  margin: 10px 0 !important;
+}
+
+.panel-shell .chat-message.is-mine {
+  justify-content: flex-end !important;
+}
+
+.panel-shell .chat-bubble {
+  position: relative;
+  width: fit-content;
+  max-width: min(520px, 76%);
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #202c3f !important;
+  color: #f8fafc !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18) !important;
+  padding: 12px 14px !important;
+}
+
+.panel-shell .chat-message:not(.is-mine) .chat-bubble {
+  border-top-left-radius: 4px !important;
+}
+
+.panel-shell .chat-message.is-mine .chat-bubble {
+  border-top-right-radius: 4px !important;
+  background: linear-gradient(135deg, #075e54, #128c7e) !important;
+}
+
+.panel-shell .chat-meta {
+  gap: 12px !important;
+  margin-bottom: 7px !important;
+}
+
+.panel-shell .chat-meta strong {
+  color: #f8fafc !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+.panel-shell .chat-meta span,
+.panel-shell .message-state,
+.panel-shell .message-state em {
+  color: rgba(226, 232, 240, 0.78) !important;
+  font-size: 11px !important;
+}
+
+.panel-shell .chat-bubble p {
+  margin: 0 !important;
+  color: #f8fafc !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+}
+
+.panel-shell .chat-message-tools {
+  margin-top: 10px !important;
+  gap: 8px !important;
+}
+
+.panel-shell .chat-message-tools summary,
+.panel-shell .chat-danger-btn {
+  min-height: 30px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: #0f172a !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+.panel-shell .chat-compose {
+  border: 0 !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.18) !important;
+  border-radius: 0 !important;
+  background: #172033 !important;
+  padding: 16px !important;
+}
+
+.panel-shell .chat-compose textarea {
+  min-height: 58px !important;
+  border-radius: 16px !important;
+  background: #0f1a2b !important;
+}
+
+.panel-shell .chat-upload-group {
+  margin-top: 12px !important;
+}
+
+.panel-shell .chat-upload-modes {
+  gap: 8px !important;
+}
+
+.panel-shell .chat-upload-option,
+.panel-shell .chat-upload {
+  border-color: rgba(148, 163, 184, 0.18) !important;
+  border-radius: 999px !important;
+  background: #202c3f !important;
+  color: var(--panel-text) !important;
+}
+
+.panel-shell .chat-upload-option.is-active {
+  background: #075e54 !important;
+  color: #fff !important;
+}
+
+.panel-shell .chat-compose-actions {
+  align-items: center !important;
+}
+
+@media (max-width: 980px) {
+  .panel-shell .chat-shell {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Valex-inspired gray-blue palette pass. */
+.panel-shell {
+  --panel-bg: #222836;
+  --panel-card: #192132;
+  --panel-card-2: #202a3d;
+  --panel-card-3: #151c2b;
+  --panel-line: rgba(148, 163, 184, 0.18);
+  --panel-text: #f4f7fb;
+  --panel-muted: #c0c8d4;
+  --panel-subtle: #8e9aad;
+  --panel-blue: #0d6efd;
+  --panel-blue-2: #1164c8;
+  --panel-cyan: #1aa8ff;
+  --panel-green: #2fc79a;
+}
+
+body.panel-shell {
+  background: #222836;
+}
+
+.panel-sidebar,
+.panel-topbar {
+  background: #192132;
+  border-color: rgba(148, 163, 184, 0.16);
+}
+
+.panel-content {
+  background:
+    linear-gradient(180deg, rgba(34, 40, 54, 0.92), rgba(34, 40, 54, 0.82) 260px),
+    #222836 !important;
+}
+
+.panel-shell .portal-hero,
+.panel-shell .portal-panel,
+.panel-shell .portal-stat-card,
+.panel-shell .application-combo-card,
+.panel-shell .application-step,
+.panel-shell .query-card,
+.panel-shell .process-grid article,
+.panel-shell .quick-action-grid a,
+.panel-shell .daily-form-card,
+.panel-shell .log-detail-card,
+.panel-shell .chat-profile-card,
+.panel-shell .chat-panel,
+.panel-shell .portal-table-shell,
+.panel-shell .dashboard-card,
+.panel-shell .dashboard-rating {
+  border-color: rgba(148, 163, 184, 0.16) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0)),
+    #192132 !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+.panel-shell .portal-hero {
+  background:
+    linear-gradient(105deg, rgba(13, 110, 253, 0.10), rgba(34, 40, 54, 0.12) 42%, rgba(25, 33, 50, 0.98)),
+    #192132 !important;
+}
+
+.panel-shell .portal-mini-card,
+.panel-shell .portal-empty-state,
+.panel-shell .activity-stream article,
+.panel-shell .document-status-card,
+.panel-shell .intern-track-card,
+.panel-shell .log-detail-grid section,
+.panel-shell .chat-profile-list div,
+.panel-shell .leave-step,
+.panel-shell .cv-upload-box,
+.panel-shell .compact-list article,
+.panel-shell .bg-white,
+.panel-shell .bg-slate-50,
+.panel-shell .bg-slate-100,
+.panel-shell [class*="bg-white"],
+.panel-shell [class*="bg-slate-50"],
+.panel-shell [class*="bg-slate-100"] {
+  background: #202a3d !important;
+  border-color: rgba(148, 163, 184, 0.14) !important;
+}
+
+.panel-shell .portal-kicker,
+.panel-shell .portal-stat-card p,
+.panel-shell .mini-label {
+  color: #9cb7da !important;
+}
+
+.panel-shell .portal-subline,
+.panel-shell .portal-stat-card small,
+.panel-shell .portal-mini-card small,
+.panel-shell .activity-stream p,
+.panel-shell .compact-list p,
+.panel-shell .compact-list small,
+.panel-shell label,
+.panel-shell p,
+.panel-shell small {
+  color: #c0c8d4 !important;
+}
+
+.panel-shell .panel-nav a:hover,
+.panel-shell .panel-nav a.is-active,
+.panel-shell .panel-logout-form button:hover {
+  background: rgba(13, 110, 253, 0.16);
+}
+
+.panel-shell .panel-nav a.is-active {
+  box-shadow: inset 3px 0 0 #0d6efd;
+}
+
+.panel-shell .panel-nav span,
+.panel-shell .panel-logout-form span,
+.panel-shell .portal-stat-icon {
+  background: rgba(13, 110, 253, 0.12) !important;
+  color: #b9d7ff !important;
+}
+
+.panel-shell input,
+.panel-shell select,
+.panel-shell textarea,
+.panel-shell .form-input,
+.panel-shell .form-select,
+.panel-shell .form-textarea,
+.panel-shell .panel-search {
+  background: #151c2b !important;
+  border-color: rgba(148, 163, 184, 0.18) !important;
+}
+
+.panel-shell .portal-primary-btn,
+.panel-shell .portal-hero-actions a:first-child,
+.panel-shell .portal-panel-head a,
+.panel-shell .portal-empty-state a {
+  background: linear-gradient(135deg, #0d6efd, #1164c8) !important;
+}
+
+.panel-shell .portal-secondary-btn,
+.panel-shell .portal-hero-actions a + a {
+  background: rgba(255, 255, 255, 0.055) !important;
+}
+
+.panel-shell .portal-empty,
+.panel-shell .portal-empty-state,
+.panel-shell .query-empty {
+  background:
+    linear-gradient(135deg, rgba(13, 110, 253, 0.055), rgba(255, 255, 255, 0.012)),
+    #202a3d !important;
+}
+
+.panel-shell .dashboard-stat:nth-child(1),
+.panel-shell .dashboard-stat:nth-child(2),
+.panel-shell .dashboard-stat:nth-child(3),
+.panel-shell .dashboard-stat:nth-child(4) {
+  background: linear-gradient(135deg, #0d6efd, #1164c8) !important;
+}
+
+.panel-shell .chat-thread {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    #151c2b !important;
+}
+
+.panel-shell .chat-panel-head,
+.panel-shell .chat-compose {
+  background: #192132 !important;
+}
+
+.panel-shell .chat-bubble {
+  background: #202a3d !important;
+}
+
+.panel-shell .chat-message.is-mine .chat-bubble {
+  background: linear-gradient(135deg, #0d6efd, #1164c8) !important;
+}
+
+.panel-shell .chat-upload-option.is-active {
+  background: #0d6efd !important;
+}
+
+/* Final Valex-style blue/gray theme cleanup. Keep this block last. */
+.panel-shell {
+  --panel-bg: #222836;
+  --panel-surface: #1b2232;
+  --panel-surface-soft: #20293b;
+  --panel-surface-deep: #151c2b;
+  --panel-border: rgba(148, 163, 184, 0.18);
+  --panel-border-strong: rgba(148, 163, 184, 0.28);
+  --panel-text: #f4f7fb;
+  --panel-muted: #c4ccd8;
+  --panel-subtle: #98a5b8;
+  --panel-blue: #0d6efd;
+  --panel-blue-dark: #0a58ca;
+  --panel-blue-soft: rgba(13, 110, 253, 0.16);
+  --panel-blue-card: rgba(13, 110, 253, 0.24);
+  background: var(--panel-bg) !important;
+  color: var(--panel-text) !important;
+  font-family: "Poppins", "Inter", "Segoe UI", Arial, sans-serif !important;
+}
+
+body.panel-shell,
+.panel-shell .panel-content {
+  background:
+    radial-gradient(circle at 24% 0%, rgba(13, 110, 253, 0.08), transparent 32%),
+    linear-gradient(180deg, #252b38 0%, #222836 34%, #151c2b 100%) !important;
+}
+
+.panel-shell .panel-sidebar,
+.panel-shell .panel-topbar {
+  background: #1b2232 !important;
+  border-color: var(--panel-border) !important;
+}
+
+.panel-shell .portal-wrap {
+  gap: 18px !important;
+}
+
+.panel-shell .portal-hero,
+.panel-shell .portal-panel,
+.panel-shell .portal-side-menu,
+.panel-shell .portal-stat-card,
+.panel-shell .portal-mini-card,
+.panel-shell .portal-empty-state,
+.panel-shell .portal-empty,
+.panel-shell .dashboard-card,
+.panel-shell .dashboard-chart-card,
+.panel-shell .document-status-card,
+.panel-shell .activity-stream article,
+.panel-shell .intern-track-card,
+.panel-shell .log-detail-grid section,
+.panel-shell .leave-step,
+.panel-shell .cv-upload-box,
+.panel-shell .compact-list article,
+.panel-shell .query-empty,
+.panel-shell .chat-profile-card,
+.panel-shell .chat-profile-list div,
+.panel-shell .chat-shell,
+.panel-shell .chat-compose,
+.panel-shell .chat-panel-head,
+.panel-shell table,
+.panel-shell thead,
+.panel-shell tbody,
+.panel-shell tr,
+.panel-shell td,
+.panel-shell th,
+.panel-shell .bg-white,
+.panel-shell .bg-slate-50,
+.panel-shell .bg-slate-100,
+.panel-shell .bg-gray-50,
+.panel-shell .bg-gray-100,
+.panel-shell [class*="bg-white"],
+.panel-shell [class*="bg-slate-50"],
+.panel-shell [class*="bg-slate-100"],
+.panel-shell [class*="bg-gray-50"],
+.panel-shell [class*="bg-gray-100"] {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0)),
+    var(--panel-surface) !important;
+  border-color: var(--panel-border) !important;
+  color: var(--panel-text) !important;
+  box-shadow: none !important;
+}
+
+.panel-shell .portal-hero {
+  background:
+    radial-gradient(circle at 80% 18%, rgba(13, 110, 253, 0.10), transparent 30%),
+    linear-gradient(135deg, #20293b 0%, #1b2232 48%, #151c2b 100%) !important;
+}
+
+.panel-shell .portal-stat-card,
+.panel-shell .portal-mini-card,
+.panel-shell .document-status-card,
+.panel-shell .intern-track-card,
+.panel-shell .leave-step,
+.panel-shell .compact-list article {
+  background: var(--panel-surface-soft) !important;
+}
+
+.panel-shell .portal-empty,
+.panel-shell .portal-empty-state,
+.panel-shell .query-empty,
+.panel-shell .chat-thread {
+  background:
+    linear-gradient(rgba(13, 110, 253, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13, 110, 253, 0.035) 1px, transparent 1px),
+    #151c2b !important;
+  background-size: 34px 34px !important;
+  border: 1px dashed rgba(71, 115, 184, 0.38) !important;
+}
+
+.panel-shell h1,
+.panel-shell h2,
+.panel-shell h3,
+.panel-shell h4,
+.panel-shell h5,
+.panel-shell strong,
+.panel-shell b,
+.panel-shell .text-slate-950,
+.panel-shell .text-slate-900,
+.panel-shell .text-gray-950,
+.panel-shell .text-gray-900,
+.panel-shell [class*="text-slate-9"],
+.panel-shell [class*="text-gray-9"] {
+  color: var(--panel-text) !important;
+}
+
+.panel-shell p,
+.panel-shell small,
+.panel-shell label,
+.panel-shell span,
+.panel-shell td,
+.panel-shell th,
+.panel-shell .portal-subline,
+.panel-shell .portal-stat-card small,
+.panel-shell .text-slate-700,
+.panel-shell .text-slate-600,
+.panel-shell .text-slate-500,
+.panel-shell .text-gray-700,
+.panel-shell .text-gray-600,
+.panel-shell .text-gray-500,
+.panel-shell [class*="text-slate-7"],
+.panel-shell [class*="text-slate-6"],
+.panel-shell [class*="text-slate-5"],
+.panel-shell [class*="text-gray-7"],
+.panel-shell [class*="text-gray-6"],
+.panel-shell [class*="text-gray-5"] {
+  color: var(--panel-muted) !important;
+}
+
+.panel-shell .portal-kicker,
+.panel-shell .portal-stat-card p,
+.panel-shell .mini-label,
+.panel-shell .panel-nav-title {
+  color: #a8c7f7 !important;
+}
+
+.panel-shell .panel-nav a,
+.panel-shell .panel-logout-form button {
+  color: var(--panel-muted) !important;
+}
+
+.panel-shell .panel-nav a:hover,
+.panel-shell .panel-nav a.is-active,
+.panel-shell .panel-logout-form button:hover {
+  background: rgba(13, 110, 253, 0.18) !important;
+  color: #ffffff !important;
+  box-shadow: inset 4px 0 0 var(--panel-blue) !important;
+}
+
+.panel-shell .panel-nav span,
+.panel-shell .panel-logout-form span,
+.panel-shell .portal-stat-icon {
+  background: rgba(13, 110, 253, 0.14) !important;
+  color: #dbeafe !important;
+}
+
+.panel-shell .portal-primary-btn,
+.panel-shell .portal-hero-actions a:first-child,
+.panel-shell .portal-panel-head a,
+.panel-shell .portal-empty-state a,
+.panel-shell button[type="submit"],
+.panel-shell .dashboard-card,
+.panel-shell .chat-upload-option.is-active {
+  background: linear-gradient(135deg, var(--panel-blue), var(--panel-blue-dark)) !important;
+  border-color: rgba(147, 197, 253, 0.42) !important;
+  color: #ffffff !important;
+}
+
+.panel-shell .portal-secondary-btn,
+.panel-shell .portal-hero-actions a + a,
+.panel-shell .chat-upload-option,
+.panel-shell .panel-dropdown a,
+.panel-shell .panel-icon-btn {
+  background: rgba(255, 255, 255, 0.045) !important;
+  border-color: var(--panel-border) !important;
+  color: var(--panel-text) !important;
+}
+
+.panel-shell input,
+.panel-shell select,
+.panel-shell textarea,
+.panel-shell .form-input,
+.panel-shell .form-select,
+.panel-shell .form-textarea,
+.panel-shell .panel-search {
+  background: var(--panel-surface-deep) !important;
+  border-color: var(--panel-border) !important;
+  color: var(--panel-text) !important;
+}
+
+.panel-shell input::placeholder,
+.panel-shell textarea::placeholder,
+.panel-shell .panel-search input::placeholder {
+  color: #8d99ab !important;
+}
+
+.panel-shell input[type="file"] {
+  background: var(--panel-surface-deep) !important;
+  color: var(--panel-muted) !important;
+}
+
+.panel-shell input[type="file"]::file-selector-button {
+  background: linear-gradient(135deg, var(--panel-blue), var(--panel-blue-dark)) !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  margin-right: 12px !important;
+  padding: 9px 12px !important;
+}
+
+.panel-shell .portal-summary-strip {
+  align-items: stretch !important;
+  gap: 16px !important;
+}
+
+.panel-shell .portal-stat-card {
+  min-height: 136px !important;
+  padding: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  position: relative !important;
+}
+
+.panel-shell .portal-stat-card .portal-stat-icon {
+  width: 30px !important;
+  height: 30px !important;
+  position: absolute !important;
+  top: 18px !important;
+  left: 18px !important;
+  font-size: 11px !important;
+}
+
+.panel-shell .portal-stat-card p {
+  margin: 32px 0 0 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.14em !important;
+  line-height: 1.2 !important;
+}
+
+.panel-shell .portal-stat-card strong {
+  display: block !important;
+  color: var(--panel-text) !important;
+  font-size: clamp(26px, 2vw, 34px) !important;
+  line-height: 1.02 !important;
+  letter-spacing: 0 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.panel-shell .portal-stat-card small {
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+}
+
+.panel-shell .chat-thread {
+  min-height: 520px !important;
+}
+
+.panel-shell .chat-bubble {
+  background: #101826 !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  color: var(--panel-text) !important;
+}
+
+.panel-shell .chat-message.is-mine .chat-bubble {
+  background: linear-gradient(135deg, #0d6efd, #0954c6) !important;
+  border-color: rgba(147, 197, 253, 0.38) !important;
+}
+
+.panel-shell .status-pill,
+.panel-shell .badge,
+.panel-shell [class*="badge"],
+.panel-shell [class*="status"] {
+  border-color: rgba(147, 197, 253, 0.30) !important;
+  color: #dbeafe !important;
+}
+
+.panel-shell ::-webkit-scrollbar-track {
+  background: #151c2b !important;
+}
+
+.panel-shell ::-webkit-scrollbar-thumb {
+  background: #3b465a !important;
+  border: 3px solid #151c2b !important;
+}
+
+.panel-shell ::selection {
+  background: rgba(13, 110, 253, 0.35);
+  color: #ffffff;
+}
+
+.panel-shell .chat-file-input {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.panel-shell .chat-attach {
+  position: relative !important;
+  display: inline-flex !important;
+}
+
+.panel-shell .chat-attach .chat-upload {
+  min-height: 48px !important;
+  cursor: pointer !important;
+  padding: 0 22px !important;
+}
+
+.panel-shell .chat-upload-menu {
+  position: absolute !important;
+  left: 0 !important;
+  bottom: calc(100% + 10px) !important;
+  z-index: 20 !important;
+  min-width: 180px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(148, 163, 184, 0.22) !important;
+  border-radius: 14px !important;
+  background: #151c2b !important;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32) !important;
+}
+
+.panel-shell .chat-upload-menu button {
+  width: 100% !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #f4f7fb !important;
+  cursor: pointer !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  padding: 13px 16px !important;
+  text-align: left !important;
+}
+
+.panel-shell .chat-upload-menu button:hover {
+  background: rgba(13, 110, 253, 0.18) !important;
+}
+
+/* Remove remaining light surfaces from older Tailwind-heavy page fragments. */
+.panel-shell .portal-metrics,
+.panel-shell .portal-metrics > div,
+.panel-shell .timeline-list,
+.panel-shell .timeline-list > div,
+.panel-shell .review-preview-grid section,
+.panel-shell .review-list-card,
+.panel-shell .review-list-main,
+.panel-shell .review-list-actions,
+.panel-shell .log-review-board,
+.panel-shell .portal-table-shell,
+.panel-shell .portal-table-shell > div,
+.panel-shell .rounded-2xl,
+.panel-shell .status-pill,
+.panel-shell .chat-message-tools summary,
+.panel-shell .chat-danger-btn,
+.panel-shell .chat-file-link,
+.panel-shell .message-state,
+.panel-shell .inline-flex[class*="bg-"],
+.panel-shell [class*="bg-emerald"],
+.panel-shell [class*="bg-rose"],
+.panel-shell [class*="bg-amber"],
+.panel-shell [class*="bg-sky"],
+.panel-shell [class*="bg-blue"],
+.panel-shell [class*="bg-indigo"],
+.panel-shell [class*="bg-zinc"],
+.panel-shell [class*="bg-neutral"],
+.panel-shell [class*="border-slate"],
+.panel-shell [class*="border-gray"] {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0)),
+    #1b2232 !important;
+  border-color: rgba(148, 163, 184, 0.18) !important;
+  color: #f4f7fb !important;
+}
+
+.panel-shell .portal-metrics {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  margin: 18px 0 !important;
+}
+
+.panel-shell .portal-metrics > div {
+  min-height: 112px !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  border-radius: 10px !important;
+  padding: 20px !important;
+}
+
+.panel-shell .portal-metrics span {
+  color: #a8c7f7 !important;
+  display: block !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+}
+
+.panel-shell .portal-metrics strong {
+  color: #f4f7fb !important;
+  display: block !important;
+  font-size: clamp(26px, 2vw, 34px) !important;
+  line-height: 1.05 !important;
+  margin-top: 18px !important;
+}
+
+.panel-shell .timeline-list {
+  background: transparent !important;
+  border: 0 !important;
+  display: grid !important;
+  gap: 14px !important;
+}
+
+.panel-shell .timeline-list > div {
+  align-items: center !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  gap: 16px !important;
+  min-height: 62px !important;
+  padding: 14px 18px !important;
+}
+
+.panel-shell .timeline-list > div span {
+  color: #a8c7f7 !important;
+  font-weight: 800 !important;
+}
+
+.panel-shell .timeline-list > div p {
+  color: #d6dce8 !important;
+  margin: 0 !important;
+}
+
+.panel-shell .status-pill,
+.panel-shell .chat-message-tools summary,
+.panel-shell .chat-danger-btn,
+.panel-shell .chat-file-link {
+  background: rgba(13, 110, 253, 0.16) !important;
+  border: 1px solid rgba(147, 197, 253, 0.28) !important;
+  color: #dbeafe !important;
+}
+
+.panel-shell .chat-danger-btn {
+  background: rgba(244, 63, 94, 0.14) !important;
+  border-color: rgba(251, 113, 133, 0.30) !important;
+  color: #fecdd3 !important;
+}
+
+@media (max-width: 980px) {
+  .panel-shell .portal-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .panel-shell .portal-metrics {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* WhatsApp-like conversation polish and centered stat counters. */
+.panel-shell .chat-shell-whatsapp {
+  display: block !important;
+}
+
+.panel-shell .chat-shell-whatsapp .chat-panel {
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  background: #1b2232 !important;
+}
+
+.panel-shell .chat-shell-whatsapp .chat-panel-head {
+  min-height: 72px !important;
+  align-items: center !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16) !important;
+  background: #151c2b !important;
+  padding: 12px 18px !important;
+}
+
+.panel-shell .chat-contact {
+  align-items: center !important;
+  display: flex !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+.panel-shell .chat-contact-avatar {
+  align-items: center !important;
+  background: linear-gradient(135deg, #0d6efd, #0a58ca) !important;
+  border: 1px solid rgba(147, 197, 253, 0.32) !important;
+  border-radius: 50% !important;
+  color: #ffffff !important;
+  display: flex !important;
+  flex: 0 0 46px !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  height: 46px !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  text-transform: uppercase !important;
+  width: 46px !important;
+}
+
+.panel-shell .chat-contact-avatar img {
+  height: 100% !important;
+  object-fit: cover !important;
+  width: 100% !important;
+}
+
+.panel-shell .chat-contact h2 {
+  color: #f4f7fb !important;
+  font-size: 18px !important;
+  line-height: 1.15 !important;
+  margin: 0 !important;
+}
+
+.panel-shell .chat-contact p {
+  color: #98a5b8 !important;
+  font-size: 12px !important;
+  margin: 3px 0 0 !important;
+}
+
+.panel-shell .chat-shell-whatsapp .chat-thread {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(148, 163, 184, 0.08) 0 1px, transparent 2px),
+    radial-gradient(circle at 84% 28%, rgba(148, 163, 184, 0.07) 0 1px, transparent 2px),
+    radial-gradient(circle at 36% 72%, rgba(13, 110, 253, 0.08) 0 1px, transparent 2px),
+    linear-gradient(135deg, rgba(13, 110, 253, 0.035), transparent 34%),
+    #101826 !important;
+  background-size: 88px 88px, 104px 104px, 120px 120px, auto, auto !important;
+  border: 0 !important;
+  min-height: 560px !important;
+  padding: 22px 28px !important;
+}
+
+.panel-shell .chat-message {
+  margin: 10px 0 !important;
+}
+
+.panel-shell .chat-bubble {
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  border-radius: 14px 14px 14px 4px !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18) !important;
+  max-width: min(520px, 72%) !important;
+  padding: 10px 12px 8px !important;
+}
+
+.panel-shell .chat-message.is-mine .chat-bubble {
+  border-radius: 14px 14px 4px 14px !important;
+  background: linear-gradient(135deg, #0d6efd, #0a58ca) !important;
+}
+
+.panel-shell .chat-meta {
+  align-items: center !important;
+  display: flex !important;
+  gap: 8px !important;
+  justify-content: space-between !important;
+  margin-bottom: 6px !important;
+}
+
+.panel-shell .chat-meta strong,
+.panel-shell .chat-meta span {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.panel-shell .chat-bubble p {
+  color: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+  margin: 0 !important;
+}
+
+.panel-shell .chat-message:not(.is-mine) .chat-bubble p {
+  color: #e9eef8 !important;
+}
+
+.panel-shell .chat-message-menu {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  z-index: 3 !important;
+}
+
+.panel-shell .chat-message-menu summary {
+  align-items: center !important;
+  appearance: none !important;
+  background: rgba(10, 15, 25, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 999px !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  gap: 3px !important;
+  justify-content: center !important;
+  list-style: none !important;
+  min-height: 28px !important;
+  min-width: 28px !important;
+  padding: 0 8px !important;
+}
+
+.panel-shell .chat-message-menu summary::-webkit-details-marker {
+  display: none !important;
+}
+
+.panel-shell .chat-message-menu summary span {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-radius: 50% !important;
+  display: block !important;
+  height: 4px !important;
+  width: 4px !important;
+}
+
+.panel-shell .chat-message-menu[open] summary {
+  background: rgba(10, 15, 25, 0.4) !important;
+}
+
+.panel-shell .chat-message-menu-panel {
+  background: #162132 !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.26) !important;
+  margin-top: 8px !important;
+  min-width: 132px !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 100% !important;
+}
+
+.panel-shell .chat-message-menu-panel form {
+  margin: 0 !important;
+}
+
+.panel-shell .chat-menu-action {
+  background: transparent !important;
+  border: 0 !important;
+  color: #eef4ff !important;
+  cursor: pointer !important;
+  display: block !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  padding: 10px 14px !important;
+  text-align: left !important;
+  width: 100% !important;
+}
+
+.panel-shell .chat-menu-action:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.panel-shell .chat-menu-action.is-danger {
+  color: #fda4af !important;
+}
+
+.panel-shell .chat-message-tools {
+  margin-top: 10px !important;
+}
+
+.panel-shell .chat-message-tools.is-collapsed {
+  display: none !important;
+}
+
+.panel-shell .chat-inline-form {
+  background: rgba(8, 14, 24, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 12px !important;
+  display: grid !important;
+  gap: 10px !important;
+  padding: 10px !important;
+}
+
+.panel-shell .chat-inline-form textarea.form-textarea {
+  margin: 0 !important;
+  min-height: 76px !important;
+}
+
+.panel-shell .chat-inline-actions {
+  display: flex !important;
+  gap: 8px !important;
+  justify-content: flex-end !important;
+}
+
+.panel-shell .chat-cancel-btn {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 999px !important;
+  color: #ffffff !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  min-height: 34px !important;
+  padding: 0 14px !important;
+}
+
+.panel-shell .chat-message.is-mine .chat-meta {
+  padding-right: 34px !important;
+}
+
+.panel-shell .message-state {
+  background: transparent !important;
+  border: 0 !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  margin-top: 5px !important;
+  padding: 0 !important;
+}
+
+.panel-shell .message-state em,
+.panel-shell .message-state span {
+  color: rgba(255, 255, 255, 0.72) !important;
+  font-size: 11px !important;
+}
+
+.panel-shell .chat-date-divider span {
+  background: #263247 !important;
+  border: 1px solid rgba(148, 163, 184, 0.20) !important;
+  color: #dbe7f7 !important;
+}
+
+.panel-shell .portal-stat-icon,
+.panel-shell .portal-stat-card .portal-stat-icon {
+  align-items: center !important;
+  display: flex !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+.panel-shell .portal-stat-card {
+  overflow: hidden !important;
+}
+
+.panel-shell .leave-step span {
+  align-items: center !important;
+  background: linear-gradient(135deg, #0d6efd, #0a58ca) !important;
+  border: 1px solid rgba(147, 197, 253, 0.38) !important;
+  border-radius: 50% !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  flex: 0 0 32px !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  height: 32px !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+  width: 32px !important;
+}
+
+.panel-shell .leave-step.is-active span {
+  background: linear-gradient(135deg, #38bdf8, #0d6efd) !important;
+  box-shadow: 0 0 0 5px rgba(13, 110, 253, 0.14) !important;
+}
+
+.panel-shell .intern-track-meta span,
+.panel-shell .intern-track-meta strong,
+.panel-shell .intern-track-meta .chat-mini-link {
+  align-items: center !important;
+  background: rgba(13, 110, 253, 0.18) !important;
+  border: 1px solid rgba(147, 197, 253, 0.28) !important;
+  border-radius: 999px !important;
+  color: #dbeafe !important;
+  display: inline-flex !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  justify-content: center !important;
+  min-height: 34px !important;
+  padding: 0 13px !important;
+  text-decoration: none !important;
+}
+
+.panel-shell .intern-track-meta strong {
+  background: rgba(14, 165, 233, 0.18) !important;
+  color: #e0f2fe !important;
+}
+
+.panel-shell .intern-track-meta .chat-mini-link {
+  background: linear-gradient(135deg, #0d6efd, #0a58ca) !important;
+  color: #ffffff !important;
+}
+
+.panel-shell .activity-stream article div > span,
+.panel-shell .activity-link-card article div > span,
+.panel-shell .portal-panel-main .activity-stream article div > span {
+  align-items: center !important;
+  background: rgba(13, 110, 253, 0.18) !important;
+  border: 1px solid rgba(147, 197, 253, 0.30) !important;
+  border-radius: 999px !important;
+  color: #dbeafe !important;
+  display: inline-flex !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  justify-content: center !important;
+  min-height: 32px !important;
+  padding: 0 12px !important;
+}

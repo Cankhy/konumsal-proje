@@ -54,7 +54,7 @@
               <strong>{{ item.title }}</strong>
               {% if item.latest %}
                 <span class="status-pill {% if item.latest.status == 'approved' %}is-success{% elif item.latest.status == 'missing' %}is-danger{% else %}is-waiting{% endif %}">
-                  {{ item.latest.get_status_display }}
+                  {% if item.latest.status == 'pending' %}Yüklendi / İncelemede{% else %}{{ item.latest.get_status_display }}{% endif %}
                 </span>
               {% else %}
                 <span class="status-pill is-waiting">Henüz yüklenmedi</span>

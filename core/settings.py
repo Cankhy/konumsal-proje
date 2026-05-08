@@ -41,11 +41,17 @@ load_env_file(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-v^@_19m-h4!0*l$f$h)#^rba!ksi0umvb5y_7i&zeqd(dcjww)")
 DEBUG = env_bool("DEBUG", True)
 
+if not DEBUG and SECRET_KEY.startswith("django-insecure-"):
+    raise ValueError("Production ortamında SECRET_KEY çevre değişkeni zorunludur.")
+
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost,testserver").split(",")
     if host.strip()
 ]
+
+CANONICAL_HOST = os.getenv("CANONICAL_HOST", "127.0.0.1:8000").strip()
+APP_BASE_URL = os.getenv("APP_BASE_URL", f"http://{CANONICAL_HOST}").rstrip("/")
 
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
@@ -62,7 +68,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "website.apps.WebsiteConfig",
-    "internship",
+    "internship.apps.InternshipConfig",
     "rest_framework",
     "rest_framework_simplejwt",
 ]
@@ -70,6 +76,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "core.middleware.CanonicalHostRedirectMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -97,6 +104,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "website.context_processors.panel_context",
             ],
         },
     },
@@ -157,6 +165,18 @@ LOGIN_REDIRECT_URL = "personnel_home"
 LOGIN_URL = "website:login_select"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 30 * 60
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = env_bool("SECURE_SSL_REDIRECT", True)
+    SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS", "31536000"))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", True)
+    SECURE_HSTS_PRELOAD = env_bool("SECURE_HSTS_PRELOAD", True)
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = "DENY"
 
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
 EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")

@@ -72,15 +72,10 @@ DOCUMENT_RULES: dict[str, FileRule] = {
     ),
     "presentation": FileRule(
         label="sunum dosyası",
-        extensions=(".pdf", ".ppt", ".pptx"),
-        mime_types=(
-            "application/pdf",
-            "application/vnd.ms-powerpoint",
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            *GENERIC_MIME_TYPES,
-        ),
+        extensions=(".pdf",),
+        mime_types=PDF_RULE.mime_types,
         max_size=12 * 1024 * 1024,
-        required_signature=None,
+        required_signature=b"%PDF",
     ),
 }
 

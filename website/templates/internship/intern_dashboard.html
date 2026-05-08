@@ -4,43 +4,6 @@
 
 {% block content %}
 <section class="portal-page mx-auto w-full max-w-7xl py-8">
-  <div class="portal-hero intern-hero portal-hero-compact portal-hero-stack">
-    <div class="portal-hero-copy">
-      <p class="portal-kicker">STAJYER PANELİ</p>
-      <h1 class="portal-heading-balanced">Stajyer çalışma alanı</h1>
-      {% if application and application.supervisor %}
-        <p class="portal-subline">Günlükler, personel notları, belgeler ve iletişim alanı daha sade tek akışta burada.</p>
-      {% else %}
-        <p class="portal-subline">Başvurun kayıtlı. Sorumlu personel ataması tamamlandığında görev ve mesaj alanların aktifleşecek.</p>
-      {% endif %}
-    </div>
-
-    <div class="portal-hero-side">
-      <div class="portal-identity-grid portal-identity-grid-compact">
-        <article class="portal-mini-card">
-          <span>Kullanıcı</span>
-          <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
-          <small>Aktif stajyer hesabı</small>
-        </article>
-        <article class="portal-mini-card">
-          <span>Başvuru Durumu</span>
-          <strong>{% if application %}{{ application.get_status_display }}{% else %}Bekleniyor{% endif %}</strong>
-          <small>Staj kayıt sürecin</small>
-        </article>
-        <article class="portal-mini-card">
-          <span>Sorumlu Personel</span>
-          <strong>{% if application and application.supervisor %}{{ application.supervisor }}{% else %}Atama Bekleniyor{% endif %}</strong>
-          <small>Günlük kontrol sorumlusu</small>
-        </article>
-      </div>
-
-      <div class="portal-hero-actions portal-hero-actions-compact">
-        <a href="{% url 'internship:intern_daily_log' %}">Günlük Yaz</a>
-        <a href="{% url 'internship:intern_daily_logs' %}">Kayıtlarım</a>
-      </div>
-    </div>
-  </div>
-
   <div class="portal-command">
     <aside class="portal-rail">
       <p class="portal-kicker">MENÜ</p>

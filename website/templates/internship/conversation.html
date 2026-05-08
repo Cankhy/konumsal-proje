@@ -24,25 +24,41 @@
     </div>
   </div>
 
-  <div class="chat-shell">
-    <aside class="chat-profile-card chat-profile-card-compact">
-      <p class="portal-kicker">AKTİF EŞLEŞME</p>
-      <h2 class="chat-profile-title">{{ application.first_name }} {{ application.last_name }}</h2>
-      <div class="chat-profile-list">
-        <div><span>Okul</span><strong>{{ application.school }}</strong></div>
-        <div><span>Bölüm</span><strong>{{ application.department }}</strong></div>
-        <div><span>Sorumlu</span><strong>{{ application.supervisor|default:"Atama bekleniyor" }}</strong></div>
-      </div>
-      <div class="chat-hint">
-        Görsel için PNG/JPG/JPEG/WEBP, Word için DOC/DOCX kabul edilir. Görsel üst sınırı 4 MB, Word üst sınırı 6 MB.
-      </div>
-    </aside>
-
+  <div class="chat-shell chat-shell-whatsapp">
     <div class="chat-panel">
       <div class="chat-panel-head">
-        <div>
-          <p class="portal-kicker">KONUŞMA</p>
-          <h2>Ortak çalışma alanı</h2>
+        <div class="chat-contact">
+          <div class="chat-contact-avatar">
+            {% if mode == "intern" %}
+              {% if application.supervisor.profile_avatar %}
+                <img src="{{ application.supervisor.profile_avatar.url }}" alt="{{ application.supervisor }}">
+              {% else %}
+                <span>{{ application.supervisor.first_name|first }}{{ application.supervisor.last_name|first }}</span>
+              {% endif %}
+            {% else %}
+              {% if application.profile_avatar %}
+                <img src="{{ application.profile_avatar.url }}" alt="{{ application.first_name }} {{ application.last_name }}">
+              {% else %}
+                <span>{{ application.first_name|first }}{{ application.last_name|first }}</span>
+              {% endif %}
+            {% endif %}
+          </div>
+          <div>
+            <h2>
+              {% if mode == "intern" %}
+                {{ application.supervisor|default:"Sorumlu Personel" }}
+              {% else %}
+                {{ application.first_name }} {{ application.last_name }}
+              {% endif %}
+            </h2>
+            <p>
+              {% if mode == "intern" %}
+                Sorumlu personel
+              {% else %}
+                {{ application.school }} / {{ application.department }}
+              {% endif %}
+            </p>
+          </div>
         </div>
         <span class="status-pill is-waiting" id="chat-live-indicator">Canlı izleme açık</span>
       </div>
@@ -55,42 +71,59 @@
             {% with item=entry.message %}
               <article class="chat-message {% if entry.is_mine %}is-mine{% endif %}" data-message-id="{{ item.pk }}">
                 <div class="chat-bubble">
+                  {% if entry.is_mine %}
+                    <details class="chat-message-menu">
+                      <summary aria-label="Mesaj işlemleri">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </summary>
+                      <div class="chat-message-menu-panel">
+                        <button type="button" class="chat-menu-action" data-edit-toggle="{{ item.pk }}">Düzelt</button>
+                        <form method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="message_action" value="delete">
+                          <input type="hidden" name="message_id" value="{{ item.pk }}">
+                          <button type="submit" class="chat-menu-action is-danger">Sil</button>
+                        </form>
+                      </div>
+                    </details>
+                  {% endif %}
+
                   <div class="chat-meta">
                     <strong>{{ item.sender.get_full_name|default:item.sender.username }}</strong>
                     <span>{{ item.created_at|date:"H:i" }}</span>
                   </div>
+
                   {% if item.message %}
                     <p>{{ item.message|linebreaksbr }}</p>
                   {% endif %}
+
                   {% if item.attachment %}
                     {% if item.is_image %}
                       <a href="{{ item.attachment.url }}" target="_blank" class="chat-image-link">
                         <img src="{{ item.attachment.url }}" alt="Gönderilen görsel">
                       </a>
                     {% else %}
-                      <a href="{{ item.attachment.url }}" target="_blank" class="chat-file-link">Word Dosyasını Aç</a>
+                      <a href="{{ item.attachment.url }}" target="_blank" class="chat-file-link">Belgeyi Aç</a>
                     {% endif %}
                   {% endif %}
+
                   {% if item.edited_at %}
                     <div class="message-state"><em>Düzenlendi</em></div>
                   {% endif %}
+
                   {% if entry.is_mine %}
-                    <div class="chat-message-tools">
-                      <details>
-                        <summary>Düzenle</summary>
-                        <form method="post" class="chat-inline-form">
-                          {% csrf_token %}
-                          <input type="hidden" name="message_action" value="edit">
-                          <input type="hidden" name="message_id" value="{{ item.pk }}">
-                          <textarea name="edited_message" rows="2" class="form-textarea">{{ item.message }}</textarea>
-                          <button type="submit" class="portal-primary-btn">Kaydet</button>
-                        </form>
-                      </details>
-                      <form method="post">
+                    <div class="chat-message-tools is-collapsed" data-edit-form="{{ item.pk }}">
+                      <form method="post" class="chat-inline-form">
                         {% csrf_token %}
-                        <input type="hidden" name="message_action" value="delete">
+                        <input type="hidden" name="message_action" value="edit">
                         <input type="hidden" name="message_id" value="{{ item.pk }}">
-                        <button type="submit" class="chat-danger-btn">Sil</button>
+                        <textarea name="edited_message" rows="2" class="form-textarea">{{ item.message }}</textarea>
+                        <div class="chat-inline-actions">
+                          <button type="submit" class="portal-primary-btn">Kaydet</button>
+                          <button type="button" class="chat-cancel-btn" data-edit-cancel="{{ item.pk }}">Vazgeç</button>
+                        </div>
                       </form>
                     </div>
                     <div class="message-state {% if item.read_at %}is-read{% endif %}">
@@ -112,39 +145,38 @@
         <textarea name="message" rows="3" placeholder="Mesaj yazın..." class="form-textarea"></textarea>
 
         <div class="chat-upload-group">
-          <div class="chat-upload-modes" role="radiogroup" aria-label="Dosya türü seçimi">
-            <label class="chat-upload-option is-active">
-              <input type="radio" name="attachment_mode" value="image" checked>
-              <span>Görsel</span>
-            </label>
-            <label class="chat-upload-option">
-              <input type="radio" name="attachment_mode" value="document">
-              <span>Word</span>
-            </label>
-          </div>
-
+          <input type="hidden" name="attachment_mode" value="image" data-attachment-mode>
           <div class="chat-compose-actions">
-            <label class="chat-upload" id="chat-upload-label">
-              <input type="file" name="attachment" accept=".png,.jpg,.jpeg,.webp">
-              <span data-upload-label>Görsel Seç</span>
-              <small data-upload-help>PNG, JPG, JPEG veya WEBP · en fazla 4 MB</small>
-            </label>
+            <input class="chat-file-input" id="chat-file-input" type="file" name="attachment" accept=".png,.jpg,.jpeg,.webp">
+            <div class="chat-attach">
+              <button type="button" class="chat-upload" id="chat-upload-label" aria-expanded="false" aria-controls="chat-upload-menu">
+                <span data-upload-label>Dosya Ekle</span>
+              </button>
+              <div class="chat-upload-menu" id="chat-upload-menu" hidden>
+                <button type="button" data-upload-mode="image">Görsel Yükle</button>
+                <button type="button" data-upload-mode="document">Belge Yükle</button>
+              </div>
+            </div>
             <button type="submit" class="portal-primary-btn">Gönder</button>
           </div>
         </div>
 
-        <p class="file-feedback" id="chat-file-feedback">Henüz dosya seçilmedi.</p>
+        <p class="file-feedback" id="chat-file-feedback"></p>
       </form>
     </div>
   </div>
 </section>
 <script>
-  const chatFileInput = document.querySelector('.chat-upload input[type="file"]');
+  const chatFileInput = document.getElementById('chat-file-input');
   const chatFileLabel = document.getElementById('chat-upload-label');
   const chatFileFeedback = document.getElementById('chat-file-feedback');
-  const chatUploadOptions = document.querySelectorAll('.chat-upload-option');
   const uploadLabel = document.querySelector('[data-upload-label]');
-  const uploadHelp = document.querySelector('[data-upload-help]');
+  const attachmentModeInput = document.querySelector('[data-attachment-mode]');
+  const uploadMenu = document.getElementById('chat-upload-menu');
+  const uploadModeButtons = document.querySelectorAll('[data-upload-mode]');
+  const editToggleButtons = document.querySelectorAll('[data-edit-toggle]');
+  const editCancelButtons = document.querySelectorAll('[data-edit-cancel]');
+  const messageMenus = document.querySelectorAll('.chat-message-menu');
   const liveIndicator = document.getElementById('chat-live-indicator');
   const pollUrl = "{% if mode == 'personnel' %}{% url 'internship:panel_conversation_poll' application.pk %}{% else %}{% url 'internship:intern_conversation_poll' %}{% endif %}";
   let latestMessageId = Number(document.querySelector('[data-message-id]:last-of-type')?.dataset.messageId || 0);
@@ -152,59 +184,63 @@
   const uploadModes = {
     image: {
       accept: '.png,.jpg,.jpeg,.webp',
-      label: 'Görsel Seç',
-      help: 'PNG, JPG, JPEG veya WEBP · en fazla 4 MB',
+      selected: 'Görsel Seçildi',
     },
     document: {
       accept: '.doc,.docx',
-      label: 'Word Belgesi Seç',
-      help: 'DOC veya DOCX · en fazla 6 MB',
+      selected: 'Belge Seçildi',
     },
   };
 
-  if (chatFileInput && chatFileLabel && chatFileFeedback && uploadLabel && uploadHelp) {
+  if (chatFileInput && chatFileLabel && chatFileFeedback && uploadLabel && attachmentModeInput && uploadMenu) {
+    const setUploadMenuOpen = (open) => {
+      uploadMenu.hidden = !open;
+      chatFileLabel.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+
     const syncChatFileState = () => {
       const hasFile = chatFileInput.files && chatFileInput.files.length;
       if (!hasFile) {
         chatFileLabel.classList.remove('has-file');
-        chatFileFeedback.textContent = 'Henüz dosya seçilmedi.';
-        chatFileFeedback.classList.add('is-visible');
+        uploadLabel.textContent = 'Dosya Ekle';
+        chatFileFeedback.textContent = '';
+        chatFileFeedback.classList.remove('is-visible');
         return;
       }
 
       const file = chatFileInput.files[0];
       const sizeInMb = (file.size / (1024 * 1024)).toFixed(2);
+      const mode = attachmentModeInput.value || 'image';
       chatFileLabel.classList.add('has-file');
-      chatFileFeedback.textContent = `Seçilen dosya: ${file.name} (${sizeInMb} MB)`;
+      uploadLabel.textContent = uploadModes[mode]?.selected || 'Dosya Seçildi';
+      chatFileFeedback.textContent = `${file.name} (${sizeInMb} MB)`;
       chatFileFeedback.classList.add('is-visible');
     };
 
-    const syncUploadMode = (mode) => {
-      const config = uploadModes[mode] || uploadModes.image;
-      chatFileInput.value = '';
-      chatFileInput.setAttribute('accept', config.accept);
-      uploadLabel.textContent = config.label;
-      uploadHelp.textContent = config.help;
-      chatFileLabel.classList.remove('has-file');
-      chatFileFeedback.textContent = 'Henüz dosya seçilmedi.';
-      chatFileFeedback.classList.add('is-visible');
+    chatFileLabel.addEventListener('click', () => {
+      setUploadMenuOpen(uploadMenu.hidden);
+    });
 
-      chatUploadOptions.forEach((option) => {
-        const radio = option.querySelector('input[type="radio"]');
-        option.classList.toggle('is-active', !!radio && radio.value === mode);
-      });
-    };
-
-    chatUploadOptions.forEach((option) => {
-      const radio = option.querySelector('input[type="radio"]');
-      if (!radio) return;
-      radio.addEventListener('change', () => {
-        if (radio.checked) syncUploadMode(radio.value);
+    uploadModeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const mode = button.dataset.uploadMode || 'image';
+        const config = uploadModes[mode] || uploadModes.image;
+        attachmentModeInput.value = mode;
+        chatFileInput.value = '';
+        chatFileInput.setAttribute('accept', config.accept);
+        setUploadMenuOpen(false);
+        chatFileInput.click();
       });
     });
 
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('.chat-attach')) {
+        setUploadMenuOpen(false);
+      }
+    });
+
     chatFileInput.addEventListener('change', syncChatFileState);
-    syncUploadMode(document.querySelector('input[name="attachment_mode"]:checked')?.value || 'image');
+    syncChatFileState();
   }
 
   if (pollUrl && liveIndicator) {
@@ -223,5 +259,64 @@
       }
     }, 12000);
   }
+
+  const closeAllMessageMenus = (exceptMenu = null) => {
+    messageMenus.forEach((menu) => {
+      if (menu !== exceptMenu) {
+        menu.removeAttribute('open');
+      }
+    });
+  };
+
+  const closeAllEditForms = (exceptId = null) => {
+    document.querySelectorAll('[data-edit-form]').forEach((formWrap) => {
+      if (String(formWrap.dataset.editForm) !== String(exceptId)) {
+        formWrap.classList.add('is-collapsed');
+      }
+    });
+  };
+
+  messageMenus.forEach((menu) => {
+    menu.addEventListener('toggle', () => {
+      if (menu.open) {
+        closeAllMessageMenus(menu);
+      }
+    });
+  });
+
+  editToggleButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const messageId = button.dataset.editToggle;
+      const targetForm = document.querySelector(`[data-edit-form="${messageId}"]`);
+      const parentMenu = button.closest('.chat-message-menu');
+      if (!targetForm) return;
+
+      const willOpen = targetForm.classList.contains('is-collapsed');
+      closeAllEditForms(willOpen ? messageId : null);
+      targetForm.classList.toggle('is-collapsed');
+
+      if (willOpen) {
+        targetForm.querySelector('textarea')?.focus();
+      }
+
+      if (parentMenu) {
+        parentMenu.removeAttribute('open');
+      }
+    });
+  });
+
+  editCancelButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const messageId = button.dataset.editCancel;
+      const targetForm = document.querySelector(`[data-edit-form="${messageId}"]`);
+      targetForm?.classList.add('is-collapsed');
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.chat-message-menu')) {
+      closeAllMessageMenus();
+    }
+  });
 </script>
 {% endblock %}

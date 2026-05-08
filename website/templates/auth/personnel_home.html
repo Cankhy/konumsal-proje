@@ -4,47 +4,15 @@
 
 {% block content %}
 <section class="portal-page mx-auto w-full max-w-7xl py-8">
-  <div class="portal-hero portal-hero-compact portal-hero-stack">
-    <div class="portal-hero-copy">
-      <p class="portal-kicker">PERSONEL PORTALI</p>
-      <h1 class="portal-heading-balanced">Personel kontrol merkezi</h1>
-      <p class="portal-subline">Başvurular, günlük takibi, eşleşen stajyerler ve ekip içi iletişim daha düzenli tek akışta toplandı.</p>
-    </div>
-
-    <div class="portal-hero-side">
-      <div class="portal-identity-grid portal-identity-grid-compact">
-        <article class="portal-mini-card">
-          <span>Kullanıcı</span>
-          <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
-          <small>Aktif personel hesabı</small>
-        </article>
-        <article class="portal-mini-card">
-          <span>Eşleşen Stajyer</span>
-          <strong>{{ stats.approved_applications }}</strong>
-          <small>Sorumluluğundaki aktif kayıt</small>
-        </article>
-        <article class="portal-mini-card">
-          <span>Bekleyen Kontrol</span>
-          <strong>{{ stats.daily_logs }}</strong>
-          <small>İncelenecek günlükler</small>
-        </article>
-      </div>
-
-      <div class="portal-hero-actions portal-hero-actions-compact">
-        <a href="{% url 'internship:panel_applications' %}">Başvurular</a>
-        <a href="{% url 'internship:panel_logs_list' %}">Günlükler</a>
-      </div>
-    </div>
-  </div>
-
   <div class="portal-command">
     <aside class="portal-rail">
       <p class="portal-kicker">MENÜ</p>
       <a href="{% url 'internship:panel_applications' %}" class="is-active"><span>01</span><strong>Başvurular</strong></a>
       <a href="{% url 'internship:panel_logs_list' %}"><span>02</span><strong>Günlükler</strong></a>
-      <a href="#matched-interns"><span>03</span><strong>Stajyerler</strong></a>
-      <a href="#live-logs"><span>04</span><strong>Canlı Akış</strong></a>
-      <a href="#personnel-flow"><span>05</span><strong>Kontrol</strong></a>
+      <a href="{% url 'website:personnel_leave_requests' %}"><span>03</span><strong>İzin</strong></a>
+      <a href="#matched-interns"><span>04</span><strong>Stajyerler</strong></a>
+      <a href="#live-logs"><span>05</span><strong>Canlı Akış</strong></a>
+      <a href="#personnel-flow"><span>06</span><strong>Kontrol</strong></a>
     </aside>
 
     <div class="portal-main">
@@ -146,9 +114,9 @@
           </div>
           <div class="timeline-list">
             <div><span>01</span><p>Başvuruyu onayla ve stajyeri kendi sorumluluğuna al.</p></div>
-            <div><span>02</span><p>Eşleşen stajyere o gün için özel görev ve odak notu oluştur.</p></div>
-            <div><span>03</span><p>Günlük kayıtlarında yapılan iş ve yarın planını kontrol et.</p></div>
-            <div><span>04</span><p>Puan ve kısa yorumla ilerlemeyi netleştir.</p></div>
+            <div><span>02</span><p>Stajyere görev, not veya izin yönlendirmesi ver.</p></div>
+            <div><span>03</span><p>Günlük kayıtlar ve mesajlaşma akışından ilerlemeyi takip et.</p></div>
+            <div><span>04</span><p>Belge, puan ve yorumla süreci tamamla.</p></div>
           </div>
         </div>
 

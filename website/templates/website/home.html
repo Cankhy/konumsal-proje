@@ -160,6 +160,37 @@
 </style>
 
 <section id="hero-slider" class="relative h-[480px] overflow-hidden bg-black text-white">
+  {% if home_slides %}
+    {% for slide in home_slides %}
+      <div class="hero-slide absolute inset-0 {% if forloop.first %}flex{% else %}hidden{% endif %} items-stretch">
+        <img src="{{ slide.image.url }}"
+             alt="{{ slide.title }}"
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black/55 flex flex-col items-center justify-center text-center px-4">
+          <h2 class="text-3xl md:text-5xl font-extrabold mb-4">
+            {{ slide.title }}
+          </h2>
+          {% if slide.subtitle %}
+            <p class="max-w-3xl text-sm md:text-base mb-6">
+              {{ slide.subtitle }}
+            </p>
+          {% endif %}
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            {% if slide.button_url %}
+              <a href="{{ slide.button_url }}" class="slider-btn">
+                {{ slide.button_text }}
+              </a>
+            {% endif %}
+            {% if slide.second_button_text and slide.second_button_url %}
+              <a href="{{ slide.second_button_url }}" class="slider-btn slider-btn-secondary">
+                {{ slide.second_button_text }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
 
   <div class="hero-slide absolute inset-0 flex items-stretch">
     <img src="{% static 'images/slider/slide-1-siber.jpg' %}"
@@ -280,6 +311,7 @@
       </a>
     </div>
   </div>
+  {% endif %}
 
   <button id="hero-prev"
           class="absolute left-4 top-1/2 -translate-y-1/2 text-3xl md:text-4xl text-white/70 hover:text-white">
@@ -291,12 +323,18 @@
   </button>
 
   <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-    <span class="hero-dot w-8 h-[3px] bg-white"></span>
-    <span class="hero-dot w-8 h-[3px] bg-white/40"></span>
-    <span class="hero-dot w-8 h-[3px] bg-white/40"></span>
-    <span class="hero-dot w-8 h-[3px] bg-white/40"></span>
-    <span class="hero-dot w-8 h-[3px] bg-white/40"></span>
-    <span class="hero-dot w-8 h-[3px] bg-white/40"></span>
+    {% if home_slides %}
+      {% for slide in home_slides %}
+        <span class="hero-dot w-8 h-[3px] {% if forloop.first %}bg-white{% else %}bg-white/40{% endif %}"></span>
+      {% endfor %}
+    {% else %}
+      <span class="hero-dot w-8 h-[3px] bg-white"></span>
+      <span class="hero-dot w-8 h-[3px] bg-white/40"></span>
+      <span class="hero-dot w-8 h-[3px] bg-white/40"></span>
+      <span class="hero-dot w-8 h-[3px] bg-white/40"></span>
+      <span class="hero-dot w-8 h-[3px] bg-white/40"></span>
+      <span class="hero-dot w-8 h-[3px] bg-white/40"></span>
+    {% endif %}
   </div>
 </section>
 
@@ -311,6 +349,36 @@
   <div class="grid gap-10 md:grid-cols-4 mt-4"></div>
 </section>
 
+{% if home_service_cards %}
+  <div class="grid services-grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+    {% for card in home_service_cards %}
+      <article class="space-y-3">
+        <div class="service-card">
+          <img src="{{ card.image.url }}" alt="{{ card.title }}">
+          <div class="service-overlay bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+
+          <a href="{{ card.link_url|default:'#' }}" class="absolute inset-0 flex items-center justify-center">
+            <div class="inline-block bg-black/70 rounded-full px-5 py-2">
+              <h3 class="service-card-title text-white text-lg md:text-xl font-extrabold tracking-wide text-center"
+                  style="text-shadow:
+                         -2px -2px 3px rgba(0,0,0,0.9),
+                          2px -2px 3px rgba(0,0,0,0.9),
+                         -2px  2px 3px rgba(0,0,0,0.9),
+                          2px  2px 3px rgba(0,0,0,0.9);">
+                {{ card.title }}
+              </h3>
+            </div>
+          </a>
+        </div>
+        {% if card.description %}
+          <p class="text-xs md:text-sm text-slate-600 text-center">
+            {{ card.description }}
+          </p>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
 <div class="grid services-grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
 
   <article class="space-y-3">
@@ -497,6 +565,7 @@
     </p>
   </article>
 </div>
+{% endif %}
 
 <section class="relative h-[420px] md:h-[460px] overflow-hidden">
   <img src="{% static 'images/bg-biz-kimiz.jpg' %}"
